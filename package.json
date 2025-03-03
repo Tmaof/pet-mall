@@ -1,0 +1,23 @@
+{
+  "name": "pet-mall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "宠物商城",
+  "scripts": {
+    "start:admin": "pnpm --filter admin start",
+    "build:admin": "pnpm --filter admin build",
+    "start:client": "pnpm --filter client start",
+    "build:client": "pnpm --filter client build",
+    "start:server": "pnpm --filter server start",
+    "build:server": "pnpm --filter server build",
+    "debug:server": "pnpm --filter server start:debug",
+    "start": "concurrently \"pnpm start:server\" \"pnpm start:admin\" \"pnpm start:client\"",
+    "debug": "concurrently \"pnpm debug:server\" \"pnpm start:admin\" \"pnpm start:client\" "
+  },
+  "keywords": [],
+  "author": "TianMaoFu",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
