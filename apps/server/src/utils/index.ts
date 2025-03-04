@@ -19,7 +19,11 @@ const getCommonRes = <DataT>(res?:Partial<CommonResponse<DataT>>) => {
         success: true,
     };
 
-    return Object.assign(defaultRes, res);
+    const result = Object.assign(defaultRes, res);
+    if (result.success === false && !result.code) {
+        result.code = ResCodeEnum.fail;
+    }
+    return result;
 };
 
 

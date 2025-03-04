@@ -10,7 +10,7 @@ import { UserLogModule } from './modules/staff/user-log/user-log.module';
 import { entitiesPaths, envFilePathAll } from 'config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigEnum } from 'config/env/config.enum';
-
+import { CategoryModule } from './modules/product/category/category.module';
 
 @Global()
 @Module({
@@ -40,11 +40,14 @@ import { ConfigEnum } from 'config/env/config.enum';
                 return dbConfig;
             },
         }),
+        // 员工相关模块
         UserModule,
         AuthModule,
         RolesModule,
         PermissionModule,
         UserLogModule,
+        // 产品相关模块
+        CategoryModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */
