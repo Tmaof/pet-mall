@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlobalInterceptor = void 0;
-const user_log_service_1 = require("../modules/user-log/user-log.service");
+const user_log_service_1 = require("../modules/staff/user-log/user-log.service");
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
 let GlobalInterceptor = class GlobalInterceptor {

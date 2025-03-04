@@ -1,4 +1,4 @@
-import { UserLogService } from '@/modules/user-log/user-log.service';
+import { UserLogService } from '@/modules/staff/user-log/user-log.service';
 import {
     CallHandler,
     ExecutionContext,

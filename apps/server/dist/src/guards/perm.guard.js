@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PermGuard = void 0;
 const constant_1 = require("../constant");
 const permCode_1 = require("../constant/permCode");
-const user_service_1 = require("../modules/user/user.service");
+const user_service_1 = require("../modules/staff/user/user.service");
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 let PermGuard = class PermGuard {

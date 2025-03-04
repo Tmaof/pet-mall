@@ -1,6 +1,6 @@
 import { NEED_PERMISSION_CODE } from '@/constant';
 import { PermissionInfo, permTree } from '@/constant/permCode';
-import { UserService } from '@/modules/user/user.service';
+import { UserService } from '@/modules/staff/user/user.service';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 

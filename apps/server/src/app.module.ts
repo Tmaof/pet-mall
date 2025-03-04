@@ -1,12 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { UserModule } from './modules/user/user.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { RolesModule } from './modules/role/role.module';
-import { PermissionModule } from './modules/permission/permission.module';
+import { UserModule } from './modules/staff/user/user.module';
+import { AuthModule } from './modules/staff/auth/auth.module';
+import { RolesModule } from './modules/staff/role/role.module';
+import { PermissionModule } from './modules/staff/permission/permission.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
-import { UserLogModule } from './modules/user-log/user-log.module';
+import { UserLogModule } from './modules/staff/user-log/user-log.module';
 import { entitiesPaths, envFilePathAll } from 'config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigEnum } from 'config/env/config.enum';
