@@ -3,9 +3,14 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ['plugin:vue/vue3-essential', '@vue/standard', 'eslint:recommended'],
+  extends: [
+    'plugin:vue/vue3-essential',
+    '@vue/standard',
+    'eslint:recommended',
+    '@vue/typescript'
+  ],
   parserOptions: {
-    parser: '@babel/eslint-parser',
+    parser: '@typescript-eslint/parser',
     requireConfigFile: false // 解决 ESLint 无法正确识别 Babel 配置文件
   },
   rules: {

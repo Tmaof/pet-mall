@@ -15,7 +15,7 @@ import '@/style/index.scss'
 // 打包svg图标到style标签
 import '@/assets/icon'
 // 注册SvgIcon为全局组件
-import SvgIcon from '@/components/SvgIcon'
+import SvgIcon from '@/components/SvgIcon/index.vue'
 // vue-i18n
 import { I18N, elementPlusConf } from '@/i18n'
 // 解决 element-plus 导致的「ResizeObserver loop limit exceeded」问题
