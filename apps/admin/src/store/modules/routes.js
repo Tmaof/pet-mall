@@ -58,6 +58,8 @@ function getUserPrivateRoutes(privateRoutes, menus) {
       // 因为先过滤的子路由
       // 如果过滤后，该路由还有子路由，不管你有没有该路由页面权限，都应该保留，否则看不到（不能添加到vue-router）子路由
       // 如果没有子路由，我就要看看是否过滤该路由
+
+      // 【开发帮助】如果在开发中，需要临时观察私有路由是否生效，可以注释下面代码
       const exist = menus.includes(route.name)
       if (!exist) {
         privateRoutes.splice(privateRoutes.indexOf(route), 1)

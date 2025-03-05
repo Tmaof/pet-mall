@@ -23,6 +23,7 @@ module.exports = defineConfig({
       .end()
   },
   devServer: {
+    hot: true,
     port: 8080, // 项目启动端口号
     client: {
       overlay: false // 关闭 未捕获错误提示蒙层

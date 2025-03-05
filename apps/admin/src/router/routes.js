@@ -49,6 +49,54 @@ export const publicRoutes = () => {
 export const privateRoutes = () => {
   return [
     {
+      path: '/product',
+      name: 'product',
+      component: Layout,
+      redirect: '/product/category',
+      meta: {
+        title: i18n.$t('router.routes.079395-0'),
+        icon: 'my-product'
+      },
+      children: [
+        {
+          path: 'category',
+          name: 'product-category',
+          component: () => import('@/views/Product/Category'),
+          meta: {
+            title: i18n.$t('router.routes.079395-1'),
+            icon: 'my-product-category'
+          }
+        },
+        {
+          path: 'tag',
+          name: 'product-tag',
+          component: () => import('@/views/Product/Tag'),
+          meta: {
+            title: i18n.$t('router.routes.079395-2'),
+            icon: 'my-tag'
+          }
+        },
+        {
+          path: 'add',
+          name: 'product-add',
+          component: () => import('@/views/Product/Add'),
+          meta: {
+            title: i18n.$t('router.routes.079395-3'),
+            icon: 'my-plus'
+          }
+        },
+        {
+          path: 'list',
+          name: 'product-list',
+          component: () => import('@/views/Product/List'),
+          meta: {
+            title: i18n.$t('router.routes.079395-4'),
+            icon: 'my-numbered-list'
+          }
+        }
+      ]
+    },
+    {
       path: '/',
       component: Layout,
       children: [

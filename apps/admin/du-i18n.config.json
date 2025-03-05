@@ -1,6 +1,6 @@
 {
 	"quoteKeys": [
-		"this.$t",
+		"i18n.$t",
 		"$t",
 		"i18n.$t"
 	],
