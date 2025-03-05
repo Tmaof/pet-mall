@@ -28,8 +28,8 @@ export const langList = [
 // 自定义$t方法，返回一个计算属性，主要用于解决在js模块中使用t函数生成的语言不具备响应性的问题
 // （具体来说就是使用i18n.locale切换语言时，在js模块中定义的i18n语言不会改变，只有vue模板语法中的才改变）
 // 所以我定义了这么个函数来返回一个计算属性（ref对象），当然在js模块中使用时，你需要记得解包（.value），因为它是一个ref对象.
-I18N.global.$t = function (key) {
-  return computed(() => I18N.global.t(key))
+I18N.global.$t = function (...args) {
+  return computed(() => I18N.global.t(...args))
 }
 
 // 获取计算属性的value
