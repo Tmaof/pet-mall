@@ -14,12 +14,19 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "node"
     ],
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
+      "server/*": [
+        "../server/src/*"
+      ],
+      "server-mdl/*": [
+        "../server/src/modules/*"
+      ],
     },
     "lib": [
       "esnext",

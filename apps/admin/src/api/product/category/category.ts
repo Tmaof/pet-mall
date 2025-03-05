@@ -1,8 +1,9 @@
 import request from '@/utility/request'
+import { GetCategoryTreeResDto } from './res-dto'
 
 /** 获取分类树 */
 export function getCategoryTree() {
-  return request({
+  return request<GetCategoryTreeResDto[]>({
     url: '/category/tree',
     method: 'get'
   })

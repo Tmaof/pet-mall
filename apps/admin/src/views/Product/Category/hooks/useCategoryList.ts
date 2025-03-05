@@ -1,8 +1,9 @@
 import { ref } from 'vue'
-import { getCategoryTree, deleteCategoryById } from '@/api/product/category'
+import { getCategoryTree, deleteCategoryById } from '@/api/product/category/category'
+import { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
 
 export function useCategoryList() {
-  const categoryTree = ref([])
+  const categoryTree = ref<GetCategoryTreeResDto[]>([])
   const loading = ref(false)
 
   // 获取分类树

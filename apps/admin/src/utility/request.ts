@@ -1,6 +1,9 @@
 import axios from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 import store from '@/store'
+import type { ResType } from '@/api/index.type'
+
 const serve = axios.create({
   baseURL: process.env.VUE_APP_baseUrl,
   timeout: 10000,
@@ -27,7 +30,7 @@ serve.interceptors.request.use(
 serve.interceptors.response.use(
   (response) => {
     // 2xx 范围的状态码都会触发该函数。
-    const { success, message, data } = response.data
+    const { success, message, data } = response.data as ResType<any>
     if (success) {
       // 直接返回数据
       console.log('res:', response.data)
@@ -47,4 +50,14 @@ serve.interceptors.response.use(
   }
 )
 
-export default serve
+/**
+ * 请求函数。
+ * 如果请求成功会直接返回业务数据data(不包含公共响应如：code,success)，如果请求失败会toast提示错误信息且Promise.reject
+ * @param config 请求配置
+ * @returns 请求结果
+ */
+function request<T>(config: AxiosRequestConfig) {
+  return serve<T, T>(config)
+}
+
+export default request

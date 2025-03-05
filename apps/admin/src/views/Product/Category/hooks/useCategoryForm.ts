@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { createCategory as apiCreateCategory, updateCategory as apiUpdateCategory } from '@/api/product/category'
+import { createCategory as apiCreateCategory, updateCategory as apiUpdateCategory } from '@/api/product/category/category'
 import i18n from '@/i18n'
 
 export function useCategoryForm() {
