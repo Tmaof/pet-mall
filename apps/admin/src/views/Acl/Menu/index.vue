@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column :label="$t('Menu.index.925822-3')">
           <template #default="{ row }">
-            <el-tag :type="row.type === 1 ? '' : 'success'">{{
+            <el-tag :type="row.type === 1 ? 'primary' : 'success'">{{
               row.type === 1 ? $t('Menu.index.925822-4') : $t('Menu.index.925822-5')
             }}</el-tag>
           </template>
