@@ -1,5 +1,5 @@
 import i18n from '@/i18n'
-import { getUserListAll } from '@/api/user-manage'
+import { getUserListAll } from '@/api/rbac/user-manage.js'
 import { keys } from '../constant.js'
 import { dateFilter } from '@/filter'
 // eslint-disable-next-line camelcase

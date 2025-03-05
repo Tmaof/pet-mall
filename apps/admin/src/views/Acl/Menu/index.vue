@@ -60,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import AddPerm from './components/AddPerm'
-import { getPermissionList, deletePermission } from '@/api/permission-manage'
+import { getPermissionList, deletePermission } from '@/api/rbac/permission-manage'
 const isShowAddPerm = ref(false)
 const parentInfo = ref({ id: undefined, name: '' })
 const permissionList = ref()

@@ -30,8 +30,8 @@
 <script setup>
 import { useStore } from 'vuex'
 import { defineEmits, defineProps, computed, ref, onMounted, watch } from 'vue'
-import { getRoleList } from '@/api/role-manage'
-import { getUserRole, assignRolesToUser } from '@/api/user-manage'
+import { getRoleList } from '@/api/rbac/role-manage'
+import { getUserRole, assignRolesToUser } from '@/api/rbac/user-manage'
 const { getters } = useStore()
 const props = defineProps({
   modelValue: {

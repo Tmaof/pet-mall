@@ -36,7 +36,7 @@
 <script setup>
 import i18n from '@/i18n'
 import { defineEmits, defineProps, computed, ref } from 'vue'
-import { addRole } from '@/api/role-manage'
+import { addRole } from '@/api/rbac/role-manage'
 import { useStore } from 'vuex'
 const { getters } = useStore()
 const props = defineProps({

@@ -33,7 +33,7 @@
 <script setup>
 import i18n from '@/i18n'
 import { ref, defineProps, defineEmits, computed } from 'vue'
-import { addPermission } from '@/api/permission-manage'
+import { addPermission } from '@/api/rbac/permission-manage'
 import { useStore } from 'vuex'
 const { getters } = useStore()
 const emit = defineEmits(['update:modelValue', 'complete'])

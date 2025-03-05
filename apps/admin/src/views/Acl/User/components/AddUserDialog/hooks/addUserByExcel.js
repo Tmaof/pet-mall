@@ -1,4 +1,4 @@
-import { addUserBatch } from '@/api/user-manage'
+import { addUserBatch } from '@/api/rbac/user-manage'
 import { keys } from '../../../constant'
 
 export default async function addUserByExcel(excelData, password) {

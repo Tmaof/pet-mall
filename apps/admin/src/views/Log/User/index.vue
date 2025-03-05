@@ -158,8 +158,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getUserLogs, deleteUserLogsByTimeRange } from '@/api/user-log'
-import { getUserListAll } from '@/api/user-manage'
+import { getUserLogs, deleteUserLogsByTimeRange } from '@/api/log/user-log'
+import { getUserListAll } from '@/api/rbac/user-manage'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'

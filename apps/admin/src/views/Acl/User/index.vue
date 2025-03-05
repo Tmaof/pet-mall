@@ -91,7 +91,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getUserList, deleteUserById } from '@/api/user-manage'
+import { getUserList, deleteUserById } from '@/api/rbac/user-manage'
 import AddUserDialog from './components/AddUserDialog'
 import exportExcel from './hooks/exportExcel'
 import AssignRoles from './components/AssignRoles'

@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { getRoleList, deleteRole } from '@/api/role-manage'
+import { getRoleList, deleteRole } from '@/api/rbac/role-manage'
 import { onMounted, ref } from 'vue'
 import AddRole from './components/AddRole'
 import AssignPerm from './components/AssignPerm'

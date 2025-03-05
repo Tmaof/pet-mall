@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { getRolePermission, assignPermission } from '@/api/role-manage'
+import { getRolePermission, assignPermission } from '@/api/rbac/role-manage'
 import { ref, defineProps, computed, defineEmits, watch } from 'vue'
 import { useStore } from 'vuex'
 const { getters } = useStore()
