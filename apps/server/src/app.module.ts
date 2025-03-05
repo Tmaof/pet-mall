@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigEnum } from 'config/env/config.enum';
 import { CategoryModule } from './modules/product/category/category.module';
 import { TagModule } from './modules/product/tag/tag.module';
+import { ProductModule } from './modules/product/product/product.module';
 
 @Global()
 @Module({
@@ -50,6 +51,7 @@ import { TagModule } from './modules/product/tag/tag.module';
         // 产品相关模块
         CategoryModule,
         TagModule,
+        ProductModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */
