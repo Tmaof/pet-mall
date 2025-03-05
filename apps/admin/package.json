@@ -40,7 +40,6 @@
     "xlsx": "0.17"
   },
   "devDependencies": {
-    "@types/node": "workspace:*",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@commitlint/cli": "12.1.4",
