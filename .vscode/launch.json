@@ -15,7 +15,7 @@
             "runtimeVersion": "18",
             "runtimeArgs": [
                 "run-script",
-                "start:debug"
+                "debug:server"
             ],
             "internalConsoleOptions": "neverOpen"
         }
