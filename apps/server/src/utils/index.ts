@@ -57,3 +57,18 @@ export const objToJsonStr = <T, ExcludeKeys extends keyof T = never>(obj: T, ign
     }
     return newObj;
 };
+
+
+/**
+ * 定义上传文件的文件名
+ * @param file 上传的文件
+ * @returns 文件名
+ */
+export function getUploadFilename (file:Express.Multer.File) {
+    // 年-月-日_时-分-秒-毫秒_文件名
+    const date = new Date();
+    const filename = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}-${date.getMilliseconds()}_${file.originalname}`;
+    // 文件名不能包含特殊字符
+    return filename.replace(/[^a-zA-Z0-9-_.]/g, '');
+}
+

@@ -13,6 +13,7 @@ import { ConfigEnum } from 'config/env/config.enum';
 import { CategoryModule } from './modules/product/category/category.module';
 import { TagModule } from './modules/product/tag/tag.module';
 import { ProductModule } from './modules/product/product/product.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Global()
 @Module({
@@ -52,6 +53,8 @@ import { ProductModule } from './modules/product/product/product.module';
         CategoryModule,
         TagModule,
         ProductModule,
+        // 上传模块
+        UploadModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */

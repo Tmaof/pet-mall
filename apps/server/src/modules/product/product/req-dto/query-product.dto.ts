@@ -1,5 +1,6 @@
-import { IsOptional, IsNumber, IsString, IsEnum, IsDateString } from 'class-validator';
-import { ProductSaleStatus } from '../product.entity';
+import {
+    IsOptional, IsNumber, IsString, IsEnum, IsDateString, IsBoolean
+} from 'class-validator';
 
 /** 排序字段枚举 */
 export enum ProductOrderBy {
@@ -33,8 +34,8 @@ export class QueryProductDto {
         categoryId?: number;
 
     @IsOptional()
-    @IsEnum(ProductSaleStatus, { message: '商品状态只能是0或1' })
-        isOnSale?: ProductSaleStatus;
+    @IsBoolean({ message: '是否上架必须是布尔值' })
+        isOnSale?: boolean;
 
     @IsOptional()
     @IsDateString({}, { message: '创建开始时间格式不正确' })

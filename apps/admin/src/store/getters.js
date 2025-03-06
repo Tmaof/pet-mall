@@ -10,5 +10,6 @@ export default {
   },
   screenInfo: (state) => state.layout.screenInfo,
   isMobile: (state) => state.layout.screenInfo.isMobile,
-  routes: (state) => state.routes.routes
+  routes: (state) => state.routes.routes,
+  isDarkMode: (state) => state.layout.isDarkMode
 }

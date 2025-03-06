@@ -80,9 +80,9 @@ const { form, rules, resetForm, createCategory, updateCategory } = useCategoryFo
 /** 计算对话框标题 */
 const dialogTitle = computed(() => {
   if (props.mode === 'create') {
-    return props.parentCategory ? i18n.$t('components.CategoryDialog.044870-9') : i18n.$t('components.CategoryDialog.044870-10')
+    return props.parentCategory ? i18n.$t('components.CategoryDialog.044870-9').value : i18n.$t('components.CategoryDialog.044870-10').value
   }
-  return i18n.$t('components.CategoryDialog.044870-11')
+  return i18n.$t('components.CategoryDialog.044870-11').value
 })
 
 // 监听 category 变化，更新表单数据

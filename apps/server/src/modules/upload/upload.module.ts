@@ -1,0 +1,42 @@
+import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
+import { UploadController } from './upload.controller';
+import { UploadService } from './upload.service';
+import { staticPrefix, uploadDir } from 'config';
+import { diskStorage } from 'multer';
+import { getUploadFilename } from '@/utils';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { existsSync, mkdirSync } from 'fs';
+
+// 确保上传目录存在
+if (!existsSync(uploadDir)) {
+    mkdirSync(uploadDir, { recursive: true });
+}
+
+@Module({
+    imports: [
+        // 配置文件上传
+        MulterModule.register({
+            // dest: uploadDir,
+            storage: diskStorage({
+                destination: uploadDir,
+                filename: (req, file, cb) => {
+                    const filename = getUploadFilename(file);
+                    return cb(null, filename);
+                },
+            }),
+        }),
+        // 配置静态文件服务
+        ServeStaticModule.forRoot({
+            rootPath: uploadDir,
+            serveRoot: staticPrefix, // 访问路径前缀
+            serveStaticOptions: {
+                index: false, // 禁止目录浏览
+                maxAge: 2592000, // 缓存30天
+            },
+        }),
+    ],
+    controllers: [UploadController],
+    providers: [UploadService],
+})
+export class UploadModule {}

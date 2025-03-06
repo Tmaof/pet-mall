@@ -1,16 +1,17 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ReqValidationPipe } from './pipes/validation.pipe';
 import { AllExceptionFilter } from './filters/all-exception.filter';
-import { serverConfig } from 'config';
+import { serverConfig, globalPrefix } from 'config';
 import { ConfigEnum } from 'config/env/config.enum';
 
 /** */
 async function bootstrap () {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const httpAdapter = app.get(HttpAdapterHost);
     // 设置全局前缀
-    app.setGlobalPrefix('api/v1');
+    app.setGlobalPrefix(globalPrefix);
 
     // 全局管道
     app.useGlobalPipes(ReqValidationPipe);

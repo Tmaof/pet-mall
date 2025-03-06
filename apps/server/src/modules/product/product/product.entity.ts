@@ -9,13 +9,6 @@ import {
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 
-/** 商品上下架状态枚举 */
-export enum ProductSaleStatus {
-    /** 下架 */
-    OFF_SALE = 0,
-    /** 在售 */
-    ON_SALE = 1
-}
 
 @Entity('product')
 export class Product {
@@ -69,10 +62,10 @@ export class Product {
     @Column({
         name: 'is_on_sale',
         type: 'tinyint',
-        default: ProductSaleStatus.OFF_SALE,
-        comment: '商品状态：0-下架 1-在售',
+        default: true,
+        comment: '是否上架',
     })
-        isOnSale: ProductSaleStatus;
+        isOnSale: boolean;
 
     @CreateDateColumn({
         name: 'created_at',

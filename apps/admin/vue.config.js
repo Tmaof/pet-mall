@@ -1,3 +1,5 @@
+// 提示：修改配置文件后，需要重启项目
+
 const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -29,12 +31,16 @@ module.exports = defineConfig({
       overlay: false // 关闭 未捕获错误提示蒙层
     },
     proxy: {
-      '/api/v1': {
+      [process.env.VUE_APP_baseUrl]: {
         target: 'http://127.0.0.1:3005', // 目标服务器地址
         changeOrigin: true // 是否改变请求源
         // pathRewrite: {
         //   '^/api/v1': '' // 路径重写，将 /api/v1 替换为空
         // }
+      },
+      [process.env.VUE_APP_uploadUrl]: {
+        target: 'http://127.0.0.1:3005', // 目标服务器地址
+        changeOrigin: true // 是否改变请求源
       }
     }
   }

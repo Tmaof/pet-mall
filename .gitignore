@@ -36,3 +36,6 @@ lerna-debug.log*
 # Tests
 **/coverage
 **/.nyc_output
+
+# 服务端上传的文件
+#/apps/server/uploads

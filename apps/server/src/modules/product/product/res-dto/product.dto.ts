@@ -1,4 +1,3 @@
-import { ProductSaleStatus } from '../product.entity';
 
 /** 商品信息响应DTO */
 export class ProductDto {
@@ -27,7 +26,7 @@ export class ProductDto {
     stock: number;
 
     /** 商品状态 */
-    isOnSale: ProductSaleStatus;
+    isOnSale: boolean;
 
     /** 创建时间 */
     createdAt: Date;

@@ -15,6 +15,15 @@ export const envFilePathAll = [commonEnvFilePath, envFilePath];
 // 注意：path.resolve和path.join的区别；最终是运行打包的代码在dist目录中
 export const entitiesPaths = [path.join(__dirname, '../', '/src/modules', '/**/*.entity{.ts,.js}')];
 
+/** 上传文件路径 */
+export const uploadDir = path.resolve('config', '../', 'uploads');
+
+/** 全局前缀 */
+export const globalPrefix = '/api/v1';
+
+/** 静态文件访问前缀 */
+export const staticPrefix =  '/get-file';
+
 /** 获取配置对象 */
 function getServerConfig () {
     /** 读取不同的.env文件 */
@@ -37,3 +46,5 @@ export const serverConfig = getServerConfig();
 console.info('serverConfig', serverConfig);
 console.info('entitiesPaths', entitiesPaths);
 console.info('envFilePathAll', envFilePathAll);
+console.info('uploadDir', uploadDir);
+console.info('staticPrefix', staticPrefix);
