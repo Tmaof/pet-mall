@@ -23,7 +23,6 @@ const isDark = useDark({
     : 'theme-filter-invert-light theme-filter-invert-dark', // 添加的属性值,drak是 element-plus 的暗夜样式的类（https://element-plus.gitee.io/zh-CN/guide/dark-mode.html）
   valueLight: props.normalMode ? 'theme-light' : 'theme-filter-invert-light',
   onChanged(isDark, defaultHandler, mode) {
-    console.log('isDark', isDark)
     defaultHandler(mode)
     // 暗黑模式变化，同步到vuex
     store.commit('layout/SET_isDarkMode', isDark)
