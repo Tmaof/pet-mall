@@ -154,7 +154,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useProductList } from './hooks/useProductList'
 import { getCategoryTree } from '@/api/product/category/category'
 import type { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
-import type { ProductDto } from '@/api/product/product/res-dto'
+import type { ProductDto } from '@/api/product/list/res-dto'
 import { dateFilter } from '@/filter/index'
 
 const router = useRouter()

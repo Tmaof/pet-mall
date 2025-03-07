@@ -22,7 +22,7 @@ import ProductForm from '../components/ProductForm/index.vue'
 import { updateProduct, getProduct } from '@/api/product/list/list'
 import { getCategoryTree } from '@/api/product/category/category'
 import type { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
-import type { ProductDto } from '@/api/product/product/res-dto'
+import type { ProductDto } from '@/api/product/list/res-dto'
 
 const router = useRouter()
 const route = useRoute()
