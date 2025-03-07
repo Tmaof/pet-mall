@@ -4,11 +4,16 @@ import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './req-dto/create-category.dto';
 import { GetCategoryTreeResDto } from './res-dto/get-category-tree.dto';
+import { Product } from '../product/product.entity';
 
 @Injectable()
 export class CategoryService {
-    constructor (@InjectRepository(Category)
-    private categoryRepository: Repository<Category>,) {}
+    constructor (
+        @InjectRepository(Category)
+        private categoryRepository: Repository<Category>,
+        @InjectRepository(Product)
+        private productRepository: Repository<Product>
+    ) {}
 
     /** 创建分类 */
     async create (dto: CreateCategoryDto) {
@@ -108,6 +113,11 @@ export class CategoryService {
                 for (const child of children) {
                     await deleteCategory(child.id);
                 }
+
+                // 删除分类前，需要把商品表中的分类id设置为null
+                await this.productRepository.update({ categoryId: parentId }, { categoryId: null });
+
+                // 删除分类
                 await this.categoryRepository.delete(parentId);
             };
 

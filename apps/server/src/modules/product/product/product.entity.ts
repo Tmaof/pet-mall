@@ -26,6 +26,7 @@ export class Product {
         name: 'category_id',
         type: 'bigint',
         comment: '分类ID',
+        nullable: true,
     })
         categoryId: number;
 
