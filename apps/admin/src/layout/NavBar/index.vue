@@ -136,7 +136,7 @@ function setIsCollSideBar(value) {
 .navbar-container-fixed {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 5;
 }
 /**
 移动端时，不显示面包屑
