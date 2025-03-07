@@ -11,6 +11,14 @@ export function getTagList(params: { page: number; pageSize: number }) {
   })
 }
 
+/** 获取所有标签 */
+export function getAllTags() {
+  return request<TagDto[]>({
+    url: '/tag/all',
+    method: 'get'
+  })
+}
+
 /** 创建标签 */
 export function createTag(data: CreateTagDto) {
   return request<TagDto>({

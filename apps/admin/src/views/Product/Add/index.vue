@@ -3,6 +3,7 @@
     <product-form
       ref="formRef"
       :category-tree="categoryTree"
+      :tags="tags"
       @submit="handleSubmit"
     />
   </el-card>
@@ -17,13 +18,20 @@ import { getCategoryTree } from '@/api/product/category/category'
 import type { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
 import type { CreateProductDto } from '@/api/product/add/req.dto'
 import i18n from '@/i18n'
+import type { TagDto } from '@/api/product/tag/res-dto'
+import { getAllTags } from '@/api/product/tag/tag'
 
 const formRef = ref()
 const categoryTree = ref<GetCategoryTreeResDto[]>([])
-
+const tags = ref<TagDto[]>([])
 /** 获取分类树 */
 const fetchCategoryTree = async () => {
   categoryTree.value = await getCategoryTree()
+}
+
+/** 获取标签 */
+const fetchTags = async () => {
+  tags.value = await getAllTags()
 }
 
 /** 提交表单 */
@@ -36,6 +44,7 @@ const handleSubmit = async (formData: CreateProductDto) => {
 
 onMounted(() => {
   fetchCategoryTree()
+  fetchTags()
 })
 </script>
 

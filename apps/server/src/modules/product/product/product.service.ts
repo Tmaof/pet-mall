@@ -7,13 +7,15 @@ import { UpdateProductDto } from './req-dto/update-product.dto';
 import { QueryProductDto, ProductOrderBy, OrderDirection } from './req-dto/query-product.dto';
 import { ProductDto, ProductListDto } from './res-dto/product.dto';
 import { CategoryService } from '../category/category.service';
+import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class ProductService {
     constructor (
         @InjectRepository(Product)
         private productRepository: Repository<Product>,
-        private categoryService: CategoryService
+        private categoryService: CategoryService,
+        private tagService: TagService
     ) {}
 
     /**
@@ -21,7 +23,14 @@ export class ProductService {
      * @param createProductDto 创建商品DTO
      */
     async create (createProductDto: CreateProductDto) {
-        const product = this.productRepository.create(createProductDto);
+        const { tagIds, ...productData } = createProductDto;
+        const product = this.productRepository.create(productData);
+
+        if (tagIds) {
+            const tags = await this.tagService.findByIds(tagIds);
+            product.tags = tags;
+        }
+
         await this.productRepository.save(product);
     }
 
@@ -61,7 +70,7 @@ export class ProductService {
         // 执行查询
         const [products, total] = await this.productRepository.findAndCount({
             where,
-            relations: ['category'],
+            relations: ['category', 'tags'],
             order: { [orderBy]: orderDirection },
             skip: (page - 1) * pageSize,
             take: pageSize,
@@ -80,7 +89,7 @@ export class ProductService {
     async findOne (id: number): Promise<ProductDto> {
         const product = await this.productRepository.findOne({
             where: { id },
-            relations: ['category'],
+            relations: ['category', 'tags'],
         });
 
         if (!product) {
@@ -105,6 +114,7 @@ export class ProductService {
             throw new Error('商品不存在');
         }
 
+        // 商品-分类 关联
         if (updateProductDto.categoryId) {
             const category = await this.categoryService.findOne(updateProductDto.categoryId);
             if (!category) {
@@ -112,6 +122,12 @@ export class ProductService {
             } else {
                 product.category = category;
             }
+        }
+
+        // 商品-标签 关联
+        if (updateProductDto?.tagIds?.length) {
+            const tags = await this.tagService.findByIds(updateProductDto.tagIds);
+            product.tags = tags;
         }
 
         Object.assign(product, updateProductDto);
@@ -149,6 +165,7 @@ export class ProductService {
             isOnSale: product.isOnSale,
             createdAt: product.createdAt,
             updatedAt: product.updatedAt,
+            tags: product.tags,
         };
     }
 }

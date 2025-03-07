@@ -388,6 +388,8 @@
 	"hooks.useProductForm.142325-11": "product description",
 	"hooks.useProductForm.142325-12": "submit",
 	"hooks.useProductForm.142325-13": "reset",
+	"hooks.useProductForm.142325-14": "tags",
+	"hooks.useProductForm.142325-15": "Please select tags",
 	"Add.index.799084-0": "Product added successfully",
 	"List.index.303665-0": "Product ID",
 	"List.index.303665-1": "Please enter the product ID",

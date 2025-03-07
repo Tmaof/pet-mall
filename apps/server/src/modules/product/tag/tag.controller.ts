@@ -44,6 +44,15 @@ export class TagController {
     }
 
     /**
+     * 获取所有标签
+     */
+    @Get('all')
+    async findAllTags () {
+        const data = await this.tagService.findAllTags();
+        return getCommonRes({ data });
+    }
+
+    /**
      * 获取指定标签
      */
     @Get(':id')

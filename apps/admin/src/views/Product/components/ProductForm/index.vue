@@ -57,6 +57,12 @@
       <el-switch v-model="form.isOnSale" />
     </el-form-item>
 
+    <el-form-item :label="$t('hooks.useProductForm.142325-14')" prop="tagIds">
+      <el-select tag-type="success" filterable :multiple-limit="5" v-model="form.tagIds" multiple :placeholder="$t('hooks.useProductForm.142325-15')">
+        <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id" />
+      </el-select>
+    </el-form-item>
+
     <el-form-item :label="$t('hooks.useProductForm.142325-11')" prop="description">
       <md-editor v-model="form.description" :height="400" />
     </el-form-item>
@@ -73,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, defineExpose, reactive } from 'vue'
+import { ref, defineProps, defineEmits, defineExpose } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import MdEditor from '../MdEditor/index.vue'
 import { useProductForm } from './hooks/useProductForm'
@@ -82,9 +88,11 @@ import type { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
 import { CreateProductDto } from '@/api/product/add/req.dto'
 import i18n from '@/i18n'
 import { SALE_STATUS } from '@/enums'
+import type { TagDto } from '@/api/product/tag/res-dto'
 
 interface Props {
   categoryTree: GetCategoryTreeResDto[]
+  tags: TagDto[]
 }
 
 defineProps<Props>()
@@ -139,7 +147,9 @@ const handleReset = () => {
 const handleSetFormData = (data: any) => {
   handleReset()
   // 格式化售卖状态
-  data.isOnSale = data.isOnSale === SALE_STATUS.sale ? true : false
+  data.isOnSale = data.isOnSale === SALE_STATUS.sale
+  // 格式化标签
+  data.tagIds = data.tags.map((tag: TagDto) => tag.id)
   Object.assign(form, data)
 }
 

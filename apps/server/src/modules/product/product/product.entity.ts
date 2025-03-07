@@ -5,10 +5,13 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    JoinTable,
+    ManyToMany
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { SALE_STATUS } from './enum';
+import { Tag } from '../tag/tag.entity';
 
 @Entity('product')
 export class Product {
@@ -85,4 +88,11 @@ export class Product {
     @ManyToOne(() => Category, (category) => category.products)
     @JoinColumn({ name: 'category_id' })
         category: Category;
+
+    /** 关联标签，一个商品有多个标签 */
+    // 在 Tag 和 Product 的多对多关系中，两边都设置了 cascade: true 的删除选项，这可能会导致循环删除的问题。
+    // 我们需要只在一边设置级联删除。
+    @ManyToMany(() => Tag, (tag) => tag.products, { cascade: ['remove', 'insert', 'update'] })
+    @JoinTable({ name: 'product_tag' })
+        tags: Tag[];
 }

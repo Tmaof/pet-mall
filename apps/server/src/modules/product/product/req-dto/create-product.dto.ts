@@ -1,6 +1,6 @@
 import {
     IsNotEmpty, IsNumber, IsString, IsOptional, Length, Min, Max,
-    IsEnum
+    IsEnum, IsArray
 } from 'class-validator';
 import { SALE_STATUS } from '../enum';
 
@@ -37,4 +37,9 @@ export class CreateProductDto {
     @IsOptional()
     @IsEnum(SALE_STATUS, { message: '是否上架必须是数字' })
         isOnSale?: SALE_STATUS;
+
+    @IsOptional()
+    @IsArray({ message: '标签必须是数组' })
+    @IsNumber({}, { each: true, message: '标签id必须是数字' })
+        tagIds?: number[];
 }

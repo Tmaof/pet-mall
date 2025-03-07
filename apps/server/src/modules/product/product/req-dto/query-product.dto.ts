@@ -1,6 +1,4 @@
-import {
-    IsOptional, IsNumber, IsString, IsEnum, IsDateString
-} from 'class-validator';
+import { IsOptional, IsNumber, IsString, IsEnum, IsDateString } from 'class-validator';
 import { SALE_STATUS } from '../enum';
 
 /** 排序字段枚举 */

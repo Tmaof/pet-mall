@@ -10,7 +10,8 @@ export function useProductForm() {
     description: '',
     price: 0,
     stock: 0,
-    isOnSale: true
+    isOnSale: true,
+    tagIds: []
   })
 
   /** 表单验证规则 */

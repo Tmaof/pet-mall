@@ -1,4 +1,5 @@
-import { SALE_STATUS } from '../enum';
+import { SALE_STATUS } from '../enum/index';
+import { Tag } from '../../tag/tag.entity';
 
 /** 商品信息响应DTO */
 export class ProductDto {
@@ -34,6 +35,9 @@ export class ProductDto {
 
     /** 最后更新时间 */
     updatedAt: Date;
+
+    /** 标签列表 */
+    tags: Tag[];
 }
 
 /** 商品列表响应DTO */

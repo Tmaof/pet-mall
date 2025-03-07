@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Tag } from './tag.entity';
 import { CreateTagDto } from './req-dto/create-tag.dto';
 import { UpdateTagDto } from './req-dto/update-tag.dto';
@@ -46,6 +46,24 @@ export class TagService {
             list: tags.map(tag => this.toTagDto(tag)),
             total,
         };
+    }
+
+    /**
+     * 获取所有标签
+     * @returns 标签列表
+     */
+    async findAllTags () {
+        return await this.tagRepository.find();
+    }
+
+    /**
+     * 根据ID列表查找标签
+     * @param ids 标签ID列表
+     * @returns 标签列表
+     */
+    async findByIds (ids: number[]) {
+        const tags = await this.tagRepository.find({ where: { id: In(ids) } });
+        return tags;
     }
 
     /**
