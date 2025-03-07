@@ -96,6 +96,7 @@
         <el-table-column prop="mainImage" :label="$t('List.index.303665-15')" width="100">
           <template #default="{ row }">
             <el-image
+              preview-teleported
               :src="row.mainImage"
               :preview-src-list="[row.mainImage]"
               fit="cover"
