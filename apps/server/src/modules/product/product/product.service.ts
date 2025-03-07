@@ -6,11 +6,15 @@ import { CreateProductDto } from './req-dto/create-product.dto';
 import { UpdateProductDto } from './req-dto/update-product.dto';
 import { QueryProductDto, ProductOrderBy, OrderDirection } from './req-dto/query-product.dto';
 import { ProductDto, ProductListDto } from './res-dto/product.dto';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class ProductService {
-    constructor (@InjectRepository(Product)
-    private productRepository: Repository<Product>,) {}
+    constructor (
+        @InjectRepository(Product)
+        private productRepository: Repository<Product>,
+        private categoryService: CategoryService
+    ) {}
 
     /**
      * 创建商品
@@ -99,6 +103,15 @@ export class ProductService {
 
         if (!product) {
             throw new Error('商品不存在');
+        }
+
+        if (updateProductDto.categoryId) {
+            const category = await this.categoryService.findOne(updateProductDto.categoryId);
+            if (!category) {
+                throw new Error('分类不存在');
+            } else {
+                product.category = category;
+            }
         }
 
         Object.assign(product, updateProductDto);

@@ -20,7 +20,7 @@ export function useProductForm() {
       { min: 1, max: 100, message: () => i18n.$t('hooks.useProductForm.142325-1').value, trigger: 'blur' }
     ],
     categoryId: [
-      { required: true, message: () => i18n.$t('hooks.useProductForm.142325-2').value, trigger: 'change', type: 'array', min: 1 }
+      { required: true, message: () => i18n.$t('hooks.useProductForm.142325-2').value, trigger: 'change' }
     ],
     mainImage: [
       { required: true, message: () => i18n.$t('hooks.useProductForm.142325-3').value, trigger: 'change' }
@@ -35,22 +35,8 @@ export function useProductForm() {
     ]
   }
 
-  /** 重置表单 */
-  const resetForm = () => {
-    Object.assign(form, {
-      title: '',
-      categoryId: null,
-      mainImage: '',
-      description: '',
-      price: 0,
-      stock: 0,
-      isOnSale: true
-    })
-  }
-
   return {
     form,
-    rules,
-    resetForm
+    rules
   }
 }

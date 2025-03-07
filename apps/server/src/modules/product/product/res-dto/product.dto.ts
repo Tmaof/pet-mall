@@ -1,3 +1,4 @@
+import { SALE_STATUS } from '../enum';
 
 /** 商品信息响应DTO */
 export class ProductDto {
@@ -26,7 +27,7 @@ export class ProductDto {
     stock: number;
 
     /** 商品状态 */
-    isOnSale: boolean;
+    isOnSale: SALE_STATUS;
 
     /** 创建时间 */
     createdAt: Date;

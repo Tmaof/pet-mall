@@ -9,7 +9,9 @@
   >
     <router-view v-slot="{ Component, route }">
       <transition mode="out-in" appear
-        ><keep-alive>
+        >
+        <!-- 编辑商品组件不需要缓存 -->
+        <keep-alive :exclude="['EditProduct']">
           <component :is="Component" :key="route.path" />
         </keep-alive>
       </transition>

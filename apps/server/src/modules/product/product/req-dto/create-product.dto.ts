@@ -1,7 +1,8 @@
 import {
     IsNotEmpty, IsNumber, IsString, IsOptional, Length, Min, Max,
-    IsBoolean
+    IsEnum
 } from 'class-validator';
+import { SALE_STATUS } from '../enum';
 
 export class CreateProductDto {
     @IsNotEmpty({ message: '商品标题不能为空' })
@@ -34,6 +35,6 @@ export class CreateProductDto {
         stock: number;
 
     @IsOptional()
-    @IsBoolean({ message: '是否上架必须是布尔值' })
-        isOnSale?: boolean;
+    @IsEnum(SALE_STATUS, { message: '是否上架必须是数字' })
+        isOnSale?: SALE_STATUS;
 }

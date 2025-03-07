@@ -6,7 +6,8 @@ import {
     Put,
     Param,
     Delete,
-    UseGuards
+    UseGuards,
+    Query
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './req-dto/create-product.dto';
@@ -33,7 +34,7 @@ export class ProductController {
      * 获取商品列表
      */
     @Get()
-    async findAll (@Body() query: QueryProductDto) {
+    async findAll (@Query() query: QueryProductDto) {
         const data = await this.productService.findAll(query);
         return getCommonRes({ data });
     }

@@ -2,6 +2,7 @@
   <el-form
     ref="formRef"
     :model="form"
+    v-model="form"
     :rules="rules"
     label-width="120px"
     class="product-form"
@@ -72,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, defineExpose } from 'vue'
+import { ref, defineProps, defineEmits, defineExpose, reactive } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
 import MdEditor from '../MdEditor/index.vue'
 import { useProductForm } from './hooks/useProductForm'
@@ -80,6 +81,7 @@ import { uploadFile } from '@/api/upload/upload'
 import type { GetCategoryTreeResDto } from '@/api/product/category/res-dto'
 import { CreateProductDto } from '@/api/product/add/req.dto'
 import i18n from '@/i18n'
+import { SALE_STATUS } from '@/enums'
 
 interface Props {
   categoryTree: GetCategoryTreeResDto[]
@@ -90,7 +92,7 @@ defineProps<Props>()
 const emit = defineEmits(['submit'])
 
 const formRef = ref<FormInstance>()
-const { form, rules, resetForm } = useProductForm()
+const { form, rules } = useProductForm()
 
 /** 上传图片 */
 const uploadImage = async ({ file }: { file: File }) => {
@@ -109,7 +111,9 @@ const uploadImage = async ({ file }: { file: File }) => {
 function formatFormData(form:any):CreateProductDto {
   return {
     ...form,
-    categoryId: form.categoryId[form.categoryId.length - 1]
+    categoryId: form.categoryId[form.categoryId.length - 1],
+    isOnSale: form.isOnSale ? SALE_STATUS.sale : SALE_STATUS.stop,
+    categoryName: undefined
   }
 }
 
@@ -129,12 +133,20 @@ const handleSubmit = async () => {
 /** 重置表单 */
 const handleReset = () => {
   formRef.value?.resetFields()
-  resetForm()
+}
+
+/** 设置表单数据 */
+const handleSetFormData = (data: any) => {
+  handleReset()
+  // 格式化售卖状态
+  data.isOnSale = data.isOnSale === SALE_STATUS.sale ? true : false
+  Object.assign(form, data)
 }
 
 // 暴露重置表单的函数
 defineExpose({
-  resetForm
+  resetForm: handleReset,
+  setFormData: handleSetFormData
 })
 </script>
 <script lang="ts">

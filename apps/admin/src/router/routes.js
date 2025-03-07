@@ -52,7 +52,7 @@ export const privateRoutes = () => {
       path: '/product',
       name: 'product',
       component: Layout,
-      redirect: '/product/category',
+      redirect: '/product/list',
       meta: {
         title: i18n.$t('router.routes.079395-0'),
         icon: 'my-product'
@@ -92,6 +92,15 @@ export const privateRoutes = () => {
           meta: {
             title: i18n.$t('router.routes.079395-4'),
             icon: 'my-numbered-list'
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'product-edit',
+          component: () => import('@/views/Product/Edit'),
+          meta: {
+            // 不需要显示在 侧边栏
+            // title: '编辑商品',
           }
         }
       ]

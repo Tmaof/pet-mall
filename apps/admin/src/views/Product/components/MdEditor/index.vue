@@ -90,8 +90,13 @@ const initEditor = async () => {
 watch(
   () => props.modelValue,
   (newVal) => {
-    if (vditor.value && (vditor.value.getValue() !== newVal)) {
-      vditor.value.setValue(newVal)
+    try {
+      if (vditor.value) {
+        if (vditor.value.getValue() === newVal) return
+        vditor.value.setValue(newVal)
+      }
+    } catch (error) {
+      // console.error(error)
     }
   }
 )

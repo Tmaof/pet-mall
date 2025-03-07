@@ -8,7 +8,7 @@ import {
     JoinColumn
 } from 'typeorm';
 import { Category } from '../category/category.entity';
-
+import { SALE_STATUS } from './enum';
 
 @Entity('product')
 export class Product {
@@ -62,10 +62,10 @@ export class Product {
     @Column({
         name: 'is_on_sale',
         type: 'tinyint',
-        default: true,
+        default: SALE_STATUS.sale,
         comment: '是否上架',
     })
-        isOnSale: boolean;
+        isOnSale: number;
 
     @CreateDateColumn({
         name: 'created_at',

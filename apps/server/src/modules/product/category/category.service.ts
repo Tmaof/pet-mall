@@ -83,6 +83,11 @@ export class CategoryService {
         return rootCategories;
     }
 
+    /** 获取分类 */
+    async findOne (id: number) {
+        return this.categoryRepository.findOne({ where: { id } });
+    }
+
     /** 删除分类 */
     async delete (id: number) {
         const queryRunner = this.categoryRepository.manager.connection.createQueryRunner();
