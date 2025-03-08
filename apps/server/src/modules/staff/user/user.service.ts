@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { JwtPayloadParsed } from '@/modules/jwt/types';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
 import * as argon2 from 'argon2';
-import { CreateUserBatchDto } from './dto/create-user-batch.dto';
-import { Role } from '../role/role.entity';
-import { UpdateUserRoleDto } from './dto/update-user-role.dto';
-import { JwtPayloadParsed } from '../auth/types';
-import { Permission } from '../permission/permission.entity';
+import { Repository } from 'typeorm';
 import { PermissionTypeEnum } from '../permission/enum';
-import { GetUserAllPagingDto, GetUserRoleDto } from './dto/get-user.dto';
+import { Permission } from '../permission/permission.entity';
+import { Role } from '../role/role.entity';
 import { FindAllExcelResDto } from './dto-res/get.dto';
+import { CreateUserBatchDto } from './dto/create-user-batch.dto';
+import { GetUserAllPagingDto, GetUserRoleDto } from './dto/get-user.dto';
+import { UpdateUserRoleDto } from './dto/update-user-role.dto';
+import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
@@ -26,6 +26,10 @@ export class UserService {
     /** 获取当前用户的信息 */
     async getCurrentUser (jwtPayload:JwtPayloadParsed) {
         // console.log('jwtPayload', jwtPayload);
+        if (!('userId' in jwtPayload)) {
+            throw new UnauthorizedException('非员工未登录');
+        }
+
         const user = await this.userRepository.findOne({
             where: { id: jwtPayload.userId, username: jwtPayload.username },
             // relations: ['role', 'role.permission'],
@@ -244,7 +248,7 @@ export class UserService {
 
         const user = await this.userRepository.findOne({ where: { id: userId } });
         if (!user) {
-            return { message: '用户不存在' };
+            throw new Error('用户不存在');
         }
         const queryList = payload.map(item => {
             return { id: item.id };
@@ -268,7 +272,7 @@ export class UserService {
         // return this.userRepository.delete(id);
         const user = await this.userRepository.findOne({ where: { id: userId } });
         if (!user) {
-            return { message: '用户不存在' };
+            throw new Error('用户不存在');
         }
         this.userRepository.remove(user);
         return { message: '删除成功' };

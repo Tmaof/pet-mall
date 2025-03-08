@@ -67,8 +67,8 @@ export class UserController {
     @Post('update/role')
     @setNeedPerm(permTree.permManage.children.userList.children.assignRole)
     async updateUserRole (@Body() dto: UpdateUserRoleDto) {
-        const data = await this.userService.updateUserRole(dto);
-        return getCommonRes(data);
+        await this.userService.updateUserRole(dto);
+        return getCommonRes();
     }
 
     /** 删除用户 */

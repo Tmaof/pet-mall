@@ -1,5 +1,6 @@
 import { NEED_PERMISSION_CODE } from '@/constant';
 import { PermissionInfo, permTree } from '@/constant/permCode';
+import { JwtPayloadParsed } from '@/modules/jwt/types';
 import { UserService } from '@/modules/staff/user/user.service';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -41,12 +42,18 @@ export class PermGuard implements CanActivate {
 
         // 判断是否有用户， 是否是有效用户
         const request = context.switchToHttp().getRequest();
-        if (!request.user) {
+        const payloadInfo = request.user as JwtPayloadParsed;
+        if (!payloadInfo) {
             // 注意：使用 JwtGuard 之后 才添加 request.user
             console.warn('权限守卫：用户未登录，没有request.user');
             return false;
         }
-        const user = await this.userService.findOne(request.user.userId);
+        if (!('userId' in payloadInfo)) {
+            console.warn('权限守卫：非员工用户，没有userId');
+            return false;
+        }
+
+        const user = await this.userService.findOne(payloadInfo.userId);
         if (!user) {
             console.warn('权限守卫：用户不存在');
             return false;

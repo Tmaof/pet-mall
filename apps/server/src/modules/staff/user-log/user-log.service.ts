@@ -4,7 +4,7 @@ import { Between, FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { UserLog } from './user-log.entity';
 import { CreateUserLogDto } from './dto-req/post.dto';
 import { UserService } from '../user/user.service';
-import { JwtPayloadParsed } from '../auth/types';
+import { JwtPayloadParsed } from '@/modules/jwt/types';
 import * as requestIp from 'request-ip';
 import { objToJsonStr } from '@/utils';
 import { GetUserLogAllPagingDto } from './dto-req/get.dto';
@@ -40,7 +40,7 @@ export class UserLogService {
      */
     async recordUserLog (request, data, startTime:number) {
         const userInfo = request.user as JwtPayloadParsed;
-        if (!userInfo) {
+        if (!userInfo || !('userId' in userInfo)) {
             return;
         }
         const user = await this.userService.findOne(userInfo.userId);

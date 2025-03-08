@@ -1,18 +1,20 @@
+import { MyJwtModule } from '@/modules/jwt/jwt.module';
 import { Global, Module } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { UserModule } from './modules/staff/user/user.module';
-import { AuthModule } from './modules/staff/auth/auth.module';
-import { RolesModule } from './modules/staff/role/role.module';
-import { PermissionModule } from './modules/staff/permission/permission.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { GlobalInterceptor } from './interceptors/global.interceptor';
-import { UserLogModule } from './modules/staff/user-log/user-log.module';
-import { entitiesPaths, envFilePathAll } from 'config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { entitiesPaths, envFilePathAll } from 'config';
 import { ConfigEnum } from 'config/env/config.enum';
+import { GlobalInterceptor } from './interceptors/global.interceptor';
+import { ClientAuthModule } from './modules/client/auth/auth.module';
 import { CategoryModule } from './modules/product/category/category.module';
-import { TagModule } from './modules/product/tag/tag.module';
 import { ProductModule } from './modules/product/product/product.module';
+import { TagModule } from './modules/product/tag/tag.module';
+import { UserAuthModule } from './modules/staff/auth/auth.module';
+import { PermissionModule } from './modules/staff/permission/permission.module';
+import { RolesModule } from './modules/staff/role/role.module';
+import { UserLogModule } from './modules/staff/user-log/user-log.module';
+import { UserModule } from './modules/staff/user/user.module';
 import { UploadModule } from './modules/upload/upload.module';
 
 @Global()
@@ -43,9 +45,11 @@ import { UploadModule } from './modules/upload/upload.module';
                 return dbConfig;
             },
         }),
+        // jwt 模块
+        MyJwtModule,
         // 员工相关模块
         UserModule,
-        AuthModule,
+        UserAuthModule,
         RolesModule,
         PermissionModule,
         UserLogModule,
@@ -55,6 +59,8 @@ import { UploadModule } from './modules/upload/upload.module';
         ProductModule,
         // 上传模块
         UploadModule,
+        // 客户鉴权模块
+        ClientAuthModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */

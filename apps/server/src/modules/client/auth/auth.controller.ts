@@ -9,28 +9,27 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
-import { UserAuthService } from './auth.service';
-import { SigninUserDto } from './dto/signin-user.dto';
+import { ClientAuthService } from './auth.service';
+import { SigninClientDto } from './req-dto';
 
-
-@Controller('auth')
+@Controller('client-auth')
 @UseInterceptors(ClassSerializerInterceptor)
-export class UserAuthController {
-    constructor (private authService: UserAuthService,) {}
+export class ClientAuthController {
+    constructor (private authService: ClientAuthService,) {}
 
     /** 登录 */
     @Post('/signin')
-    async signin (@Body() dto: SigninUserDto) {
-        const { username, password } = dto;
-        const token = await this.authService.signin(username, password);
+    async signin (@Body() dto: SigninClientDto) {
+        const { clientname, password } = dto;
+        const token = await this.authService.signin(clientname, password);
         return getCommonRes({ data: { token } });
     }
 
     /** 注册 */
     @Post('/signup')
-    async signup (@Body() dto: SigninUserDto) {
-        const { username, password } = dto;
-        const data = await this.authService.signup(username, password);
+    async signup (@Body() dto: SigninClientDto) {
+        const { clientname, password } = dto;
+        const data = await this.authService.signup(clientname, password);
         return getCommonRes({ data });
     }
 
