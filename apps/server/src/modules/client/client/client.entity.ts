@@ -22,10 +22,10 @@ export class Client {
     @Column({ comment: '性别', default: 0, type: 'tinyint' })
         gender: number;
 
-    @Column({ comment: '邮箱' })
+    @Column({ comment: '邮箱', default: '' })
         email: string;
 
-    @Column({ comment: '联系电话' })
+    @Column({ comment: '联系电话', default: '' })
         phone: string;
 
     @Column({ comment: '状态，0-禁用 1-启用', default: 1, type: 'tinyint' })

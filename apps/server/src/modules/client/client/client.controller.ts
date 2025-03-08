@@ -24,7 +24,7 @@ export class ClientController {
     /** 获取当前用户的信息 */
     @Get('/info')
     async getCurrentClient (@Req() req) {
-        const data = await this.clientService.getCurrentClient(req.client);
+        const data = await this.clientService.getCurrentClient(req.user);
         return getCommonRes({ data });
     }
 
