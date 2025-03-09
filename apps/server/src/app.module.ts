@@ -16,6 +16,7 @@ import { RolesModule } from './modules/staff/role/role.module';
 import { UserLogModule } from './modules/staff/user-log/user-log.module';
 import { UserModule } from './modules/staff/user/user.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { SearchModule } from './modules/search/search.module';
 
 @Global()
 @Module({
@@ -61,6 +62,8 @@ import { UploadModule } from './modules/upload/upload.module';
         UploadModule,
         // 客户鉴权模块
         ClientAuthModule,
+        // 搜索模块
+        SearchModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */

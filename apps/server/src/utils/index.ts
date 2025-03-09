@@ -72,3 +72,27 @@ export function getUploadFilename (file:Express.Multer.File) {
     return filename.replace(/[^a-zA-Z0-9-_.]/g, '');
 }
 
+/**
+ * 从长文本中提取匹配关键词的上下文
+ * @param text 原文本
+ * @param keyword 关键词
+ * @param contextLength 上下文长度(单侧)
+ * @returns 提取的上下文
+ */
+export function extractMatchContext (
+    text: string,
+    keyword: string,
+    contextLength = 10,
+): string {
+    const index = text.indexOf(keyword);
+    if (index === -1) return text;
+
+    const start = Math.max(0, index - contextLength);
+    const end = Math.min(text.length, index + keyword.length + contextLength);
+    let result = text.slice(start, end);
+
+    if (start > 0) result = `...${result}`;
+    if (end < text.length) result = `${result}...`;
+
+    return result;
+}
