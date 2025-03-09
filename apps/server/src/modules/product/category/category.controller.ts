@@ -12,6 +12,7 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './req-dto/create-category.dto';
 import { JwtGuard } from '@/guards/jwt.guard';
 import { getCommonRes } from '@/utils';
+import { Public } from '@/decorator/index.decorator';
 
 @Controller('category')
 @UseGuards(JwtGuard)
@@ -27,6 +28,7 @@ export class CategoryController {
 
     /** 获取分类树 */
     @Get('tree')
+    @Public()
     async getCategoryTree () {
         const data = await this.categoryService.getCategoryTree();
         return getCommonRes({ data });
