@@ -5,7 +5,7 @@ import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
 const serve = axios.create({
-  baseURL: '/api/v1',
+  baseURL: import.meta.env.VITE_APP_baseUrl,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 });
