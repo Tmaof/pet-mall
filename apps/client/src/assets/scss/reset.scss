@@ -1,0 +1,7 @@
+// 自动填充时无需默认背景色
+input:-internal-autofill-selected {
+  background-color: #00000000 !important;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}

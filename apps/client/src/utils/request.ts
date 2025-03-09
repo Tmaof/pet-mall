@@ -5,7 +5,7 @@ import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
 const serve = axios.create({
-  baseURL: process.env.VUE_APP_baseUrl,
+  baseURL: '/api/v1',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 });
@@ -20,7 +20,7 @@ serve.interceptors.request.use(
   },
   error => {
     // 对请求错误做些什么
-    Message.error({ content: error.message });
+    Message.error(error.message);
     return Promise.reject(error);
   }
 );
@@ -36,7 +36,7 @@ serve.interceptors.response.use(
       return data;
     } else {
       // 响应成功，但是后端业务逻辑处理失败
-      Message.error({ content: message });
+      Message.error(message);
       return Promise.reject(message);
     }
   },
@@ -44,7 +44,7 @@ serve.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     const { message } = error.response.data;
-    Message.error({ content: message || error.message });
+    Message.error(message || error.message);
     return Promise.reject(error);
   }
 );

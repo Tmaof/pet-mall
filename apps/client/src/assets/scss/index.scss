@@ -1,0 +1,41 @@
+
+@import './mixin.scss';
+
+// 通用容器类
+.glass-container {
+    @include glass-effect;
+    border-radius: 24px;
+    padding: 40px;
+}
+
+// 渐变按钮类
+.gradient-button {
+    background: var(--theme-gradient-primary);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(to bottom right,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0) 80%);
+        transform: rotate(45deg);
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(22, 119, 255, 0.2);
+
+        &::after {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+    }
+}
