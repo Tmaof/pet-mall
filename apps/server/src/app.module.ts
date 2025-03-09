@@ -17,6 +17,7 @@ import { UserLogModule } from './modules/staff/user-log/user-log.module';
 import { UserModule } from './modules/staff/user/user.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { SearchModule } from './modules/search/search.module';
+import { HomePageModule } from './modules/home-page/home-page.module';
 
 @Global()
 @Module({
@@ -64,6 +65,8 @@ import { SearchModule } from './modules/search/search.module';
         ClientAuthModule,
         // 搜索模块
         SearchModule,
+        // 首页商品数据模块
+        HomePageModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */
