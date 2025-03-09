@@ -5,7 +5,7 @@ import { MoreThanOrEqual, Repository } from 'typeorm';
 import { Product } from '../product/product/product.entity';
 import { toProductDto } from '../product/product/utils';
 import { HOME_MODULE_CONFIG, HomeModuleType } from './constants';
-import { HomeModuleItem, HomePageResDto } from './res-dto/index.dto';
+import { HomeModuleItem, HomePageResDto } from './res-dto';
 
 @Injectable()
 export class HomePageService {

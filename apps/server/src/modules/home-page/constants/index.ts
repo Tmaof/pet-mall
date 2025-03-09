@@ -1,7 +1,7 @@
 /** 首页模块配置 */
 export const HOME_MODULE_CONFIG = {
     /** 每个模块最多显示商品数量 */
-    MAX_PRODUCTS_PER_MODULE: 10,
+    MAX_PRODUCTS_PER_MODULE: 8,
     /** 最新商品的时间范围(天) */
     NEW_PRODUCTS_DAYS: 14,
 } as const;

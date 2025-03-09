@@ -4,14 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Like, Repository } from 'typeorm';
 import { Category } from '../product/category/category.entity';
 import { Product } from '../product/product/product.entity';
+import { toProductDto } from '../product/product/utils';
 import { Tag } from '../product/tag/tag.entity';
 import { SEARCH_CONFIG, SEARCH_PRODUCT_CONFIG, SEARCH_PRODUCT_WEIGHTS, SEARCH_WEIGHTS } from './constants';
 import { SearchResultType } from './enum';
-import { SearchSuggestDto } from './req-dto';
+import { SearchSuggestReqDto } from './req-dto';
 import { SearchProductDto } from './req-dto/search-product.dto';
 import { SearchSuggestItem, SearchSuggestResDto } from './res-dto';
 import { SearchProductResDto } from './res-dto/search-product.dto';
-import { toProductDto } from '../product/product/utils';
 
 @Injectable()
 export class SearchService {
@@ -29,7 +29,7 @@ export class SearchService {
    * @param dto 搜索建议请求DTO
    * @returns 搜索建议响应DTO
    */
-    async getSuggestions (dto: SearchSuggestDto): Promise<SearchSuggestResDto> {
+    async getSuggestions (dto: SearchSuggestReqDto): Promise<SearchSuggestResDto> {
         const { keyword } = dto;
         const suggestions: SearchSuggestItem[] = [];
 

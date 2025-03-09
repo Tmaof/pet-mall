@@ -1,6 +1,6 @@
 import { getCommonRes } from '@/utils';
 import { Controller, Get, Query } from '@nestjs/common';
-import { SearchSuggestDto } from './req-dto';
+import { SearchSuggestReqDto } from './req-dto';
 import { SearchProductDto } from './req-dto/search-product.dto';
 import { SearchService } from './search.service';
 
@@ -13,7 +13,7 @@ export class SearchController {
    * @param dto 搜索建议请求DTO
    */
     @Get('suggest')
-    async getSuggestions (@Query() dto: SearchSuggestDto) {
+    async getSuggestions (@Query() dto: SearchSuggestReqDto) {
         const data = await this.searchService.getSuggestions(dto);
         return getCommonRes({ data });
     }

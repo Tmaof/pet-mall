@@ -1,3 +1,5 @@
+export type { ProductDto } from 'server-mdl/product/product/res-dto/product.dto';
+
 /**
  * 公共响应类型
  * @template T

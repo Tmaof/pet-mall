@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './req-dto/create-category.dto';
-import { GetCategoryTreeResDto } from './res-dto/get-category-tree.dto';
+import { GetCategoryTreeResDto } from './res-dto';
 import { Product } from '../product/product.entity';
 
 @Injectable()
