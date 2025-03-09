@@ -8,6 +8,7 @@ import { QueryProductDto, ProductOrderBy, OrderDirection } from './req-dto/query
 import { ProductDto, ProductListDto } from './res-dto/product.dto';
 import { CategoryService } from '../category/category.service';
 import { TagService } from '../tag/tag.service';
+import { toProductDto } from './utils';
 
 @Injectable()
 export class ProductService {
@@ -77,7 +78,7 @@ export class ProductService {
         });
 
         return {
-            list: products.map(product => this.toProductDto(product)),
+            list: products.map(product => toProductDto(product)),
             total,
         };
     }
@@ -96,7 +97,7 @@ export class ProductService {
             throw new Error('商品不存在');
         }
 
-        return this.toProductDto(product);
+        return toProductDto(product);
     }
 
     /**
@@ -146,26 +147,5 @@ export class ProductService {
         }
 
         await this.productRepository.remove(product);
-    }
-
-    /**
-     * 将商品实体转换为DTO
-     * @param product 商品实体
-     */
-    private toProductDto (product: Product): ProductDto {
-        return {
-            id: product.id,
-            title: product.title,
-            categoryId: product.categoryId,
-            categoryName: product.category?.name || '',
-            mainImage: product.mainImage,
-            description: product.description || '',
-            price: Number(product.price),
-            stock: product.stock,
-            isOnSale: product.isOnSale,
-            createdAt: product.createdAt,
-            updatedAt: product.updatedAt,
-            tags: product.tags,
-        };
     }
 }
