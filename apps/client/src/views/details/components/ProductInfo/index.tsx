@@ -1,6 +1,7 @@
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
-import { Image, Skeleton, Tag } from 'antd';
-import { FC } from 'react';
+import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Button, Image, Skeleton, Tag, message } from 'antd';
+import { FC, useState } from 'react';
 import './index.scss';
 
 interface Props {
@@ -9,6 +10,24 @@ interface Props {
 }
 
 const ProductInfo: FC<Props> = ({ data, loading }) => {
+  const [isCollected, setIsCollected] = useState(false);
+
+  /** 处理添加购物车 */
+  const handleAddToCart = () => {
+    message.success('已添加到购物车');
+  };
+
+  /** 处理立即购买 */
+  const handleBuyNow = () => {
+    message.info('正在前往结算页面...');
+  };
+
+  /** 处理收藏切换 */
+  const handleCollectToggle = () => {
+    setIsCollected(prev => !prev);
+    message.success(isCollected ? '已取消收藏' : '收藏成功');
+  };
+
   if (loading) {
     return (
       <div className="product-info">
@@ -24,11 +43,15 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
 
   if (!data) return null;
 
+  const isOutOfStock = data.stock <= 0;
+  const isOffSale = data.isOnSale === SALE_STATUS.stop;
+  const disableActions = isOutOfStock || isOffSale;
+
   return (
     <div className="product-info">
       <div className="product-image">
         <Image src={data.mainImage} alt={data.title} />
-        {data.stock <= 0 && <div className="sold-out">已售罄</div>}
+        {isOutOfStock && <div className="sold-out">已售罄</div>}
       </div>
       <div className="product-details">
         <h1 className="product-title">{data.title}</h1>
@@ -54,6 +77,37 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
             </Tag>
           ))}
         </div>
+        <div className="product-actions">
+          <Button
+            type="primary"
+            size="large"
+            icon={<ShoppingCartOutlined />}
+            onClick={handleAddToCart}
+            disabled={disableActions}
+            className="action-btn cart-btn"
+          >
+            加入购物车
+          </Button>
+          <Button
+            type="primary"
+            size="large"
+            onClick={handleBuyNow}
+            disabled={disableActions}
+            className="action-btn buy-btn"
+          >
+            立即购买
+          </Button>
+          <Button
+            type="text"
+            size="large"
+            icon={isCollected ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+            onClick={handleCollectToggle}
+            className={`collect-btn ${isCollected ? 'collected' : ''}`}
+          />
+        </div>
+        {disableActions && (
+          <div className="action-tips">{isOutOfStock ? '该商品已售罄' : '该商品已下架'}</div>
+        )}
       </div>
     </div>
   );
