@@ -1,4 +1,4 @@
-import { BackTop } from 'antd';
+import { FloatButton } from 'antd';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductList } from './components/ProductList';
@@ -20,7 +20,9 @@ const Search: FC = () => {
         <SearchBar onSearch={handleSearch} />
         <ProductList data={products} loading={loading} pagination={pagination} />
       </div>
-      <BackTop />
+      <FloatButton.Group shape="circle" style={{ insetInlineEnd: 8 }}>
+        <FloatButton.BackTop visibilityHeight={200} />
+      </FloatButton.Group>
     </div>
   );
 };
