@@ -1,8 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { Index } from '@/views/index';
 import { Signin } from '@/views/auth/signin';
 import { Signup } from '@/views/auth/signup';
+import { Details } from '@/views/details';
+import { Index } from '@/views/index';
 import { Search } from '@/views/search';
+import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/search',
     element: <Search />,
+  },
+  {
+    path: '/details/:id',
+    element: <Details />,
   },
 ]);
 

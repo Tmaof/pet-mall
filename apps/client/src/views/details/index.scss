@@ -1,0 +1,12 @@
+.details-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--theme-bg-layout);
+  padding: 40px 0;
+
+  .details-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+}

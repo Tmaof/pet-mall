@@ -1,0 +1,21 @@
+.product-description {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--theme-bg-elevated);
+  border-radius: 12px;
+  box-shadow: var(--theme-shadow-sm);
+
+  #vditor-preview {
+    border: none;
+
+    .vditor-reset {
+      opacity: 1 !important;
+      cursor: default !important;
+      padding: 0 !important;
+    }
+
+    .vditor-toolbar{
+      display: none;
+    }
+  }
+}

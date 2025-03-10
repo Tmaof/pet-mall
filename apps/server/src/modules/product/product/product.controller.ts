@@ -15,6 +15,7 @@ import { UpdateProductDto } from './req-dto/update-product.dto';
 import { QueryProductDto } from './req-dto/query-product.dto';
 import { JwtGuard } from '@/guards/jwt.guard';
 import { getCommonRes } from '@/utils';
+import { Public } from '@/decorator/index.decorator';
 
 @Controller('product')
 @UseGuards(JwtGuard)
@@ -43,6 +44,7 @@ export class ProductController {
      * 获取指定商品
      */
     @Get(':id')
+    @Public()
     async findOne (@Param('id') id: string) {
         const data = await this.productService.findOne(+id);
         return getCommonRes({ data });
