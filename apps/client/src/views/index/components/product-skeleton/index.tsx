@@ -4,17 +4,20 @@ import './index.scss';
 
 interface ProductSkeletonProps {
   count?: number;
+  isShowTitle?: boolean;
 }
 
-const ProductSkeleton: FC<ProductSkeletonProps> = ({ count = 4 }) => {
+const ProductSkeleton: FC<ProductSkeletonProps> = ({ count = 4, isShowTitle = true }) => {
   return (
     <div className="product-skeleton-container">
-      <Skeleton.Input
-        active
-        size="large"
-        className="module-title-skeleton"
-        style={{ width: '180px', height: '32px', marginBottom: '24px' }}
-      />
+      {isShowTitle && (
+        <Skeleton.Input
+          active
+          size="large"
+          className="module-title-skeleton"
+          style={{ width: '180px', height: '32px', marginBottom: '24px' }}
+        />
+      )}
       <div className="product-skeleton-grid">
         {Array.from({ length: count }).map((_, index) => (
           <div key={index} className="product-skeleton-item">

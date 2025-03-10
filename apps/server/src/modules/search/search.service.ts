@@ -9,9 +9,25 @@ import { Tag } from '../product/tag/tag.entity';
 import { SEARCH_CONFIG, SEARCH_PRODUCT_CONFIG, SEARCH_PRODUCT_WEIGHTS, SEARCH_WEIGHTS } from './constants';
 import { SearchResultType } from './enum';
 import { SearchSuggestReqDto } from './req-dto';
-import { SearchProductDto } from './req-dto/search-product.dto';
 import { SearchSuggestItem, SearchSuggestResDto } from './res-dto';
 import { SearchProductResDto } from './res-dto/search-product.dto';
+
+/**
+ * 合并商品结果并去重
+ * 如果同一个商品有多个来源，取最高权重
+ */
+function mergeAndDedupeProducts (products: (Product & { weight: number })[]) {
+    const productMap = new Map<number, Product & { weight: number }>();
+
+    products.forEach(product => {
+        const existing = productMap.get(product.id);
+        if (!existing || existing.weight < product.weight) {
+            productMap.set(product.id, product);
+        }
+    });
+
+    return Array.from(productMap.values());
+}
 
 @Injectable()
 export class SearchService {
@@ -106,11 +122,22 @@ export class SearchService {
     }
 
     /**
-     * 搜索商品
+     * 搜索商品。
+     * 支持多种搜索方式:
+     * 1. 直接通过关键词匹配商品标题和描述
+     * 2. 通过完全匹配分类名，找到所有子分类下的商品
+     * 3. 通过完全匹配标签名，找到所有相关商品
+     * 4. 使用权重系统对不同来源的搜索结果进行排序
+     * 5. 支持分页
+     * 6. 结果去重，同一商品多个来源取最高权重
      * @param dto 搜索商品请求DTO
      * @returns 搜索商品响应DTO
      */
-    async searchProducts (dto: SearchProductDto): Promise<SearchProductResDto> {
+    async searchProducts (dto: {
+        keyword?: string;
+        page?: number;
+        pageSize?: number;
+    }): Promise<SearchProductResDto> {
         const {
             keyword,
             page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE,
@@ -127,7 +154,7 @@ export class SearchService {
         const productsFromTags = await this.searchProductsByTags(keyword);
 
         // 4. 合并结果并去重
-        const mergedProducts = this.mergeAndDedupeProducts([
+        const mergedProducts = mergeAndDedupeProducts([
             ...productsFromKeyword,
             ...productsFromCategory,
             ...productsFromTags,
@@ -251,19 +278,61 @@ export class SearchService {
     }
 
     /**
-     * 合并商品结果并去重
-     * 如果同一个商品有多个来源，取最高权重
+     * 搜索最新商品，支持分页
      */
-    private mergeAndDedupeProducts (products: (Product & { weight: number })[]) {
-        const productMap = new Map<number, Product & { weight: number }>();
+    async searchLatestProducts (dto: { page: number, pageSize: number }): Promise<SearchProductResDto> {
+        const { page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
 
-        products.forEach(product => {
-            const existing = productMap.get(product.id);
-            if (!existing || existing.weight < product.weight) {
-                productMap.set(product.id, product);
-            }
+        const [products, total] = await this.productRepository.findAndCount({
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+            order: { createdAt: 'DESC' },
         });
 
-        return Array.from(productMap.values());
+        return {
+            list: products.map(product => toProductDto(product)),
+            total,
+            page,
+            pageSize,
+        };
+    }
+
+    /**
+     * 根据id查找分类下的商品
+     */
+    async findCategoryProducts (dto: { id: number, page: number, pageSize: number }): Promise<SearchProductResDto> {
+        const { id, page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
+        const leafCategories = await this.findLeafCategories(id);
+        const [products, total] = await this.productRepository.findAndCount({
+            where: { categoryId: In(leafCategories.map(item => item.id)) },
+            relations: ['category', 'tags'],
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+        });
+
+        return {
+            list: products.map(product => toProductDto(product)),
+            total,
+            page,
+            pageSize,
+        };
+    }
+
+    /** 根据id查找标签下的商品 */
+    async findTagProducts (dto: { id: number, page: number, pageSize: number }): Promise<SearchProductResDto> {
+        const { id, page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
+        const [products, total] = await this.productRepository.findAndCount({
+            where: { tags: { id } },
+            relations: ['category', 'tags'],
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+        });
+
+        return {
+            list: products.map(product => toProductDto(product)),
+            total,
+            page,
+            pageSize,
+        };
     }
 }

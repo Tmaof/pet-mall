@@ -1,0 +1,20 @@
+.product-list {
+  width: 100%;
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .ant-empty {
+    margin: 80px 0;
+  }
+}

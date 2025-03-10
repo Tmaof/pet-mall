@@ -12,7 +12,7 @@ const CategoryNav: FC = () => {
 
   /** 处理分类点击 */
   const handleChange = (value: number[]) => {
-    navigate(`/search?categoryId=${value[value.length - 1]}`);
+    navigate(`/search?id=${value[value.length - 1]}&type=category`);
   };
 
   const [openCategoryId, setOpenCategoryId] = useState<number | null>(null);

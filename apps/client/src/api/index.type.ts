@@ -10,3 +10,9 @@ export type ResType<T> = {
   data: T;
   success: boolean;
 };
+
+/** 商品售卖状态 */
+export const SALE_STATUS = {
+  stop: 0,
+  sale: 1,
+} as const;

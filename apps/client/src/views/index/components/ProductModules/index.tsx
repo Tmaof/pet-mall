@@ -1,7 +1,7 @@
 import { HomePageResDto } from '@/api/home/res.dto';
 import { FC } from 'react';
 import { ProductCard } from '../ProductCard';
-import { ProductSkeleton } from './components/product-skeleton';
+import { ProductSkeleton } from '../product-skeleton';
 import './index.scss';
 
 interface Props {

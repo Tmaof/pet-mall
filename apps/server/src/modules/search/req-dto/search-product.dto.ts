@@ -1,13 +1,16 @@
 import { Type } from 'class-transformer';
 import {
-    IsInt, IsNotEmpty, IsOptional, IsString, Length, Min
+    IsInt,
+    IsOptional,
+    IsString,
+    Min,
 } from 'class-validator';
+import { SearchResultType } from '../enum';
 
 export class SearchProductDto {
-    @IsNotEmpty({ message: '搜索关键词不能为空' })
+    @IsOptional()
     @IsString({ message: '搜索关键词必须是字符串' })
-    @Length(1, 50, { message: '搜索关键词长度必须在1-50个字符之间' })
-        keyword: string;
+        keyword?: string;
 
     @IsOptional()
     @Type(() => Number)
@@ -20,4 +23,11 @@ export class SearchProductDto {
     @IsInt({ message: '每页条数必须是整数' })
     @Min(1, { message: '每页条数必须大于0' })
         pageSize?: number;
+    // 搜索页面可能接收的搜索参数
+    /** 类型 */
+    @IsOptional()
+        type?: SearchResultType;
+    /** 相关类型id */
+    @IsOptional()
+        id?: number;
 }
