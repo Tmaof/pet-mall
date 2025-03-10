@@ -8,6 +8,7 @@
   background: var(--theme-bg-header);
   backdrop-filter: blur(10px);
   box-shadow: var(--theme-shadow-sm);
+  border-bottom: 1px solid var(--theme-divider);
 
   .header-content {
     max-width: 1200px;

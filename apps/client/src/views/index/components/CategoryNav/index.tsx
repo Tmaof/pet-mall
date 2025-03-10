@@ -1,5 +1,6 @@
 import { AlignLeftOutlined } from '@ant-design/icons';
 import { Cascader } from 'antd';
+import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCategoryNav } from './hooks';
@@ -33,7 +34,11 @@ const CategoryNav: FC = () => {
 
   return (
     <nav className="category-nav">
-      <div className="category-all-icon">
+      <div
+        className={classNames('category-all-icon', {
+          'category-all-icon-active': openAllCategory,
+        })}
+      >
         <AlignLeftOutlined
           onClick={e => {
             e.stopPropagation();
@@ -54,11 +59,13 @@ const CategoryNav: FC = () => {
         {categories.map(category => (
           <li
             key={category.id}
-            className="category-item"
+            className={classNames('category-item', {
+              'active-category-item': category.id === openCategoryId,
+            })}
             onMouseMove={() => setOpenCategoryId(category.id)}
             onMouseLeave={() => setOpenCategoryId(null)}
           >
-            <span className="category-name">{category.name}</span>
+            <div className="category-name">{category.name}</div>
             <Cascader
               fieldNames={{ label: 'name', value: 'id', children: 'children' }}
               expandTrigger="hover"
