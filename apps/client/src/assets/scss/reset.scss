@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 // 自动填充时无需默认背景色
 input:-internal-autofill-selected {
   background-color: #00000000 !important;

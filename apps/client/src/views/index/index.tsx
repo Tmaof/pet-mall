@@ -20,8 +20,8 @@ const Index: FC = () => {
     <div className="index-page">
       <Header />
       <div className="index-content">
-        <SearchBar />
         <CategoryNav />
+        <SearchBar />
         <ProductModules data={homeData?.modules} loading={loading} />
       </div>
       <Footer />

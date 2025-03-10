@@ -1,55 +1,71 @@
-import { getCategoryTree } from '@/api/home';
-import { GetCategoryTreeResDto } from '@/api/home/res.dto';
+import { AlignLeftOutlined } from '@ant-design/icons';
+import { Cascader } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCategoryNav } from './hooks';
 import './index.scss';
 
 const CategoryNav: FC = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<GetCategoryTreeResDto[]>([]);
-  const [activeId, setActiveId] = useState<number | null>(null);
-
-  useEffect(() => {
-    getCategoryTree().then(setCategories);
-  }, []);
+  const { categories } = useCategoryNav();
 
   /** 处理分类点击 */
-  const handleClick = (category: GetCategoryTreeResDto) => {
-    if (!category.children?.length) {
-      navigate(`/search?categoryId=${category.id}`);
-    }
+  const handleChange = (value: number[]) => {
+    navigate(`/search?categoryId=${value[value.length - 1]}`);
   };
+
+  const [openCategoryId, setOpenCategoryId] = useState<number | null>(null);
+  // 控制所有分类展开
+  const [openAllCategory, setOpenAllCategory] = useState<boolean>(false);
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const className = (e.target as HTMLElement).className;
+      if (className.includes('ant-cascader')) {
+        return;
+      }
+      setOpenAllCategory(false);
+    };
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
 
   return (
     <nav className="category-nav">
+      <div className="category-all-icon">
+        <AlignLeftOutlined
+          onClick={e => {
+            e.stopPropagation();
+            setOpenAllCategory(true);
+          }}
+        />
+        <Cascader
+          placement="bottomRight"
+          fieldNames={{ label: 'name', value: 'id', children: 'children' }}
+          expandTrigger="hover"
+          options={categories}
+          open={openAllCategory}
+          onChange={handleChange}
+          size="large"
+        />
+      </div>
       <ul className="category-list">
         {categories.map(category => (
           <li
             key={category.id}
             className="category-item"
-            onMouseEnter={() => setActiveId(category.id)}
-            onMouseLeave={() => setActiveId(null)}
-            onClick={() => handleClick(category)}
+            onMouseMove={() => setOpenCategoryId(category.id)}
+            onMouseLeave={() => setOpenCategoryId(null)}
           >
             <span className="category-name">{category.name}</span>
-            {category.children?.length > 0 && activeId === category.id && (
-              <div className="sub-categories">
-                <ul className="sub-list">
-                  {category.children.map(child => (
-                    <li
-                      key={child.id}
-                      className="sub-item"
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleClick(child);
-                      }}
-                    >
-                      {child.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <Cascader
+              fieldNames={{ label: 'name', value: 'id', children: 'children' }}
+              expandTrigger="hover"
+              options={category.children}
+              open={category.id === openCategoryId}
+              onChange={handleChange}
+            />
           </li>
         ))}
       </ul>
