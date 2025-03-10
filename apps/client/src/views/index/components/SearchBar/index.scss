@@ -27,3 +27,24 @@
     }
   }
 }
+
+.home-page-dropdown-container {
+  max-height: 300px;
+  overflow: auto;
+  .dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin: 10px 0;
+    // border-bottom: 1px solid var(--theme-border);
+    cursor: pointer;
+
+    .dropdown-item-text {
+      margin-right: 10px;
+    }
+
+    .ant-tag {
+      margin: 0;
+    }
+  }
+}

@@ -32,6 +32,7 @@ export class SearchService {
     async getSuggestions (dto: SearchSuggestReqDto): Promise<SearchSuggestResDto> {
         const { keyword } = dto;
         const suggestions: SearchSuggestItem[] = [];
+        if (!keyword) return { suggestions: [] };
 
         // 1. 搜索商品
         const products = await this.productRepository.find({
