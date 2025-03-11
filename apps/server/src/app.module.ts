@@ -18,6 +18,7 @@ import { UserModule } from './modules/staff/user/user.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { SearchModule } from './modules/search/search.module';
 import { HomePageModule } from './modules/home-page/home-page.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Global()
 @Module({
@@ -67,6 +68,8 @@ import { HomePageModule } from './modules/home-page/home-page.module';
         SearchModule,
         // 首页商品数据模块
         HomePageModule,
+        // 国家省市区
+        AddressModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */
