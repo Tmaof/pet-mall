@@ -8,4 +8,4 @@ export const ADDRESS_CONSTANTS = {
     MAX_CONSIGNEE_LENGTH: 50,
     /** 联系电话最大长度 */
     MAX_PHONE_LENGTH: 20,
-} as const;
+};

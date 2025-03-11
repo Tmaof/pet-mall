@@ -19,6 +19,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { SearchModule } from './modules/search/search.module';
 import { HomePageModule } from './modules/home-page/home-page.module';
 import { AddressModule } from './modules/address/address.module';
+import { ClientAddressModule } from './modules/client/address/address.module';
 
 @Global()
 @Module({
@@ -64,6 +65,8 @@ import { AddressModule } from './modules/address/address.module';
         UploadModule,
         // 客户鉴权模块
         ClientAuthModule,
+        // 客户管理地址模块
+        ClientAddressModule,
         // 搜索模块
         SearchModule,
         // 首页商品数据模块

@@ -71,7 +71,7 @@ export class ClientAddressController {
     /**
    * 设置默认地址
    */
-    @Put(':id/default')
+    @Put('/default/:id')
     async setDefault (@ReqUser('clientId') clientId: number, @Param('id') id: string) {
         await this.addressService.setDefault(clientId, +id);
         return getCommonRes();

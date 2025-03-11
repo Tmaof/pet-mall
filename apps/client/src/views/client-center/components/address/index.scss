@@ -1,0 +1,67 @@
+.address-page {
+  // padding: 24px;
+  background: var(--theme-bg-base);
+  border-radius: 8px;
+  min-height: 500px;
+
+  .address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .address-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .address-item {
+    background: var(--theme-bg-elevated);
+    border: 1px solid var(--theme-border-base);
+    transition: all 0.3s;
+
+    &:hover {
+      border-color: var(--theme-primary);
+      box-shadow: var(--theme-shadow-lg);
+    }
+
+    .address-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .address-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .address-title {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .name {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--theme-text-primary);
+      }
+
+      .phone {
+        color: var(--theme-text-secondary);
+      }
+    }
+
+    .address-detail {
+      color: var(--theme-text-secondary);
+      line-height: 1.5;
+    }
+
+    .address-actions {
+      margin-left: 24px;
+      white-space: nowrap;
+    }
+  }
+}
