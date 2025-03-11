@@ -2,8 +2,8 @@ import { ProductDto, SALE_STATUS } from '@/api/index.type';
 import { Image, Tag } from 'antd';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { errImgFallback } from '../../../../constants';
 import './index.scss';
-import { fallback } from './constants';
 
 interface Props {
   data: ProductDto;
@@ -17,7 +17,7 @@ const ProductCard: FC<Props> = ({ data }) => {
   return (
     <div className="product-card" onClick={() => navigate(`/details/${data.id}`)}>
       <div className="product-image">
-        <Image fallback={fallback} preview={false} src={data.mainImage} alt={data.title} />
+        <Image fallback={errImgFallback} preview={false} src={data.mainImage} alt={data.title} />
         {data.stock <= 0 && <div className="sold-out">已售罄</div>}
       </div>
       <div className="product-info">

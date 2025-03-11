@@ -1,0 +1,68 @@
+.buy-dialog {
+  .product-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--theme-bg-spotlight);
+    border-radius: 8px;
+
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .info {
+      flex: 1;
+      min-width: 0;
+
+      .ant-typography {
+        margin: 0 0 8px;
+      }
+
+      .price {
+        color: var(--theme-error);
+
+        .currency {
+          font-size: 14px;
+          margin-right: 2px;
+        }
+
+        .amount {
+          font-size: 20px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .ant-form {
+    .ant-input-number {
+      width: 120px;
+    }
+  }
+
+  .total {
+    margin-top: 24px;
+    text-align: right;
+    font-size: 16px;
+
+    .label {
+      color: var(--theme-text-secondary);
+      margin-right: 8px;
+    }
+
+    .currency {
+      color: var(--theme-error);
+      margin-right: 2px;
+    }
+
+    .amount {
+      color: var(--theme-error);
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+} 

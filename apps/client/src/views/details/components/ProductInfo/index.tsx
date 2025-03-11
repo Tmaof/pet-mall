@@ -1,4 +1,6 @@
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
+import { BuyDialog } from '@/components/BuyDialog';
+import { useShowDialogFn } from '@/utils/show-dialog';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC, useState } from 'react';
@@ -11,6 +13,7 @@ interface Props {
 
 const ProductInfo: FC<Props> = ({ data, loading }) => {
   const [isCollected, setIsCollected] = useState(false);
+  const showDialog = useShowDialogFn();
 
   /** 处理添加购物车 */
   const handleAddToCart = () => {
@@ -19,7 +22,18 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
 
   /** 处理立即购买 */
   const handleBuyNow = () => {
-    message.info('正在前往结算页面...');
+    showDialog<Parameters<typeof BuyDialog>[0]>(BuyDialog, {
+      open: true,
+      product: data!,
+      onOk: handleBuyConfirm,
+      onCancel: () => {},
+    });
+  };
+
+  /** 处理购买确认 */
+  const handleBuyConfirm = (values: { productId: number; quantity: number }) => {
+    console.log('购买信息:', values);
+    message.success('购买成功!');
   };
 
   /** 处理收藏切换 */
@@ -48,68 +62,70 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   const disableActions = isOutOfStock || isOffSale;
 
   return (
-    <div className="product-info">
-      <div className="product-image">
-        <Image src={data.mainImage} alt={data.title} />
-        {isOutOfStock && <div className="sold-out">已售罄</div>}
+    <>
+      <div className="product-info">
+        <div className="product-image">
+          <Image src={data.mainImage} alt={data.title} />
+          {isOutOfStock && <div className="sold-out">已售罄</div>}
+        </div>
+        <div className="product-details">
+          <h1 className="product-title">{data.title}</h1>
+          <div className="product-meta">
+            <div className="product-price">
+              <span className="currency">¥</span>
+              <span className="amount">{data.price}</span>
+            </div>
+            <div className="product-stock">
+              库存: <span>{data.stock}</span>
+            </div>
+            <div className="product-status">
+              状态:
+              <span className={data.isOnSale === SALE_STATUS.sale ? 'on-sale' : 'off-sale'}>
+                {data.isOnSale === SALE_STATUS.sale ? '在售' : '下架'}
+              </span>
+            </div>
+          </div>
+          <div className="product-tags">
+            {data.tags?.map(tag => (
+              <Tag key={tag.id} color="var(--theme-primary)">
+                {tag.name}
+              </Tag>
+            ))}
+          </div>
+          <div className="product-actions">
+            <Button
+              type="primary"
+              size="large"
+              icon={<ShoppingCartOutlined />}
+              onClick={handleAddToCart}
+              disabled={disableActions}
+              className="action-btn cart-btn"
+            >
+              加入购物车
+            </Button>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleBuyNow}
+              disabled={disableActions}
+              className="action-btn buy-btn"
+            >
+              立即购买
+            </Button>
+            <Button
+              type="text"
+              size="large"
+              icon={isCollected ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
+              onClick={handleCollectToggle}
+              className={`collect-btn ${isCollected ? 'collected' : ''}`}
+            />
+          </div>
+          {disableActions && (
+            <div className="action-tips">{isOutOfStock ? '该商品已售罄' : '该商品已下架'}</div>
+          )}
+        </div>
       </div>
-      <div className="product-details">
-        <h1 className="product-title">{data.title}</h1>
-        <div className="product-meta">
-          <div className="product-price">
-            <span className="currency">¥</span>
-            <span className="amount">{data.price}</span>
-          </div>
-          <div className="product-stock">
-            库存: <span>{data.stock}</span>
-          </div>
-          <div className="product-status">
-            状态:
-            <span className={data.isOnSale === SALE_STATUS.sale ? 'on-sale' : 'off-sale'}>
-              {data.isOnSale === SALE_STATUS.sale ? '在售' : '下架'}
-            </span>
-          </div>
-        </div>
-        <div className="product-tags">
-          {data.tags?.map(tag => (
-            <Tag key={tag.id} color="var(--theme-primary)">
-              {tag.name}
-            </Tag>
-          ))}
-        </div>
-        <div className="product-actions">
-          <Button
-            type="primary"
-            size="large"
-            icon={<ShoppingCartOutlined />}
-            onClick={handleAddToCart}
-            disabled={disableActions}
-            className="action-btn cart-btn"
-          >
-            加入购物车
-          </Button>
-          <Button
-            type="primary"
-            size="large"
-            onClick={handleBuyNow}
-            disabled={disableActions}
-            className="action-btn buy-btn"
-          >
-            立即购买
-          </Button>
-          <Button
-            type="text"
-            size="large"
-            icon={isCollected ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
-            onClick={handleCollectToggle}
-            className={`collect-btn ${isCollected ? 'collected' : ''}`}
-          />
-        </div>
-        {disableActions && (
-          <div className="action-tips">{isOutOfStock ? '该商品已售罄' : '该商品已下架'}</div>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
