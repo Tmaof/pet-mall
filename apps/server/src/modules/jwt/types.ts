@@ -16,6 +16,7 @@ export type UserJwtPayloadInfo = {
     userId:number;
 }
 
+export type JwtPayloadParsedKey = keyof userJwtParsed | keyof clientJwtParsed;
 
 /** jwt 负载 解析后，添加到 请求对象 req 中  */
 export type JwtPayloadParsed = userJwtParsed | clientJwtParsed;

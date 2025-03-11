@@ -1,7 +1,7 @@
 import { IS_PUBLIC_KEY, NEED_PERMISSION_CODE } from '@/constant';
 import { PermissionInfo } from '@/constant/permCode';
-import { SetMetadata } from '@nestjs/common';
-
+import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
+import { JwtPayloadParsed, JwtPayloadParsedKey } from '@/modules/jwt/types';
 
 /**
  * 创建了一个Public装饰器，它使用SetMetadata函数将IS_PUBLIC_KEY设置为true。
@@ -20,3 +20,18 @@ export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 export const setNeedPerm = (perm:PermissionInfo) => {
     return  SetMetadata(NEED_PERMISSION_CODE, perm);
 };
+
+/**
+ * 定义 HTTP 路由参数装饰器。
+ * 获取请求用户信息
+ * @param key 获取用户信息中的某个属性
+ * @returns
+ */
+export const ReqUser = createParamDecorator((key: JwtPayloadParsedKey, ctx: ExecutionContext) => {
+    if (!key) return;
+    const request = ctx.switchToHttp().getRequest();
+    const user = request.user as JwtPayloadParsed;
+    if (!user) throw new Error('用户信息不存在');
+    return user[key];
+},);
+
