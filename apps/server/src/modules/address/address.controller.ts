@@ -14,6 +14,6 @@ export class AddressController {
     @Get('tree')
     async getRegionTree () {
         const data = await this.addressService.getRegionTree();
-        return getCommonRes(data);
+        return getCommonRes({ data });
     }
 }
