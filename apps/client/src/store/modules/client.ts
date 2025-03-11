@@ -1,3 +1,4 @@
+import { TOKEN_KEY } from '@/constants/key';
 import { createSlice } from '@reduxjs/toolkit';
 
 const clientSlice = createSlice({
@@ -5,13 +6,16 @@ const clientSlice = createSlice({
   name: 'client',
   /** 初始化数据 */
   initialState: {
-    token: '',
+    // 从localStorage中获取token
+    token: localStorage.getItem(TOKEN_KEY) || '',
   },
   /** 同步修改数据方法 */
   reducers: {
     /** 设置token */
     setToken: (state, action) => {
       state.token = action.payload;
+      // 将token存储到localStorage
+      localStorage.setItem(TOKEN_KEY, action.payload);
     },
   },
 });

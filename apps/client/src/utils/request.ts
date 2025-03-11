@@ -1,5 +1,5 @@
 import type { ResType } from '@/api/index.type';
-// import store from '@/store'
+import store from '@/store';
 import { message as Message } from 'antd';
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
@@ -14,8 +14,10 @@ const serve = axios.create({
 serve.interceptors.request.use(
   config => {
     // 如果有token，则在请求头中进行携带,方便进行用户鉴权
-    // if (store.getters.token) {
-    // }
+    const token = store.getState().client?.token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   error => {
