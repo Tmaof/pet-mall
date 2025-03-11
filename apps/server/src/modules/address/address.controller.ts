@@ -1,6 +1,7 @@
 import { Public } from '@/decorator/index.decorator';
 import { Controller, Get } from '@nestjs/common';
 import { AddressService } from './address.service';
+import { getCommonRes } from '@/utils';
 
 @Controller('address')
 export class AddressController {
@@ -12,6 +13,7 @@ export class AddressController {
     @Public()
     @Get('tree')
     async getRegionTree () {
-        return await this.addressService.getRegionTree();
+        const data = await this.addressService.getRegionTree();
+        return getCommonRes(data);
     }
 }
