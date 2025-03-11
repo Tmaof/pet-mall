@@ -8,6 +8,12 @@ import './index.scss';
 const Header: FC = () => {
   const navigate = useNavigate();
 
+  const handleMenuClick = ({ key }: { key: string }) => {
+    const item = userMenuItems.find(item => item.key === key);
+    if (!item) return;
+    navigate(item.path);
+  };
+
   return (
     <header className="index-header">
       <div className="header-content">
@@ -18,7 +24,11 @@ const Header: FC = () => {
           <Badge count={5} size="small">
             <ShoppingCartOutlined className="icon-btn" onClick={() => navigate('/cart')} />
           </Badge>
-          <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={['hover']}>
+          <Dropdown
+            menu={{ items: userMenuItems, onClick: handleMenuClick }}
+            placement="bottomRight"
+            trigger={['hover']}
+          >
             <UserOutlined className="icon-btn" />
           </Dropdown>
         </div>

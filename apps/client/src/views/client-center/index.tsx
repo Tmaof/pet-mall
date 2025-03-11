@@ -1,12 +1,29 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CLIENT_CENTER_TABS } from './constants';
 import './index.scss';
 
 const ClientCenter = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [valueTab, setValueTab] = useState<string>('profile');
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // 监听query参数的tabKey
+  useEffect(() => {
+    const tabKey = searchParams.get('tabKey');
+    if (tabKey) {
+      setValueTab(tabKey);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (key: string) => {
+    setValueTab(key);
+    navigate(`/client-center?tabKey=${key}`);
+  };
 
   return (
     <div className="client-center-page">
@@ -26,6 +43,8 @@ const ClientCenter = () => {
 
         <div className="content-panel">
           <Tabs
+            activeKey={valueTab}
+            onChange={handleTabChange}
             tabPosition="left"
             items={CLIENT_CENTER_TABS.map(tab => ({
               label: (
