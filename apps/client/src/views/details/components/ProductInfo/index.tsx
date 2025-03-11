@@ -1,6 +1,5 @@
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
-import { BuyDialog } from '@/components/BuyDialog';
-import { useShowDialogFn } from '@/utils/show-dialog';
+import { useBuyDialog } from '@/components/BuyDialog/hook';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC, useState } from 'react';
@@ -13,7 +12,8 @@ interface Props {
 
 const ProductInfo: FC<Props> = ({ data, loading }) => {
   const [isCollected, setIsCollected] = useState(false);
-  const showDialog = useShowDialogFn();
+
+  const { showBuyDialog } = useBuyDialog();
 
   /** 处理添加购物车 */
   const handleAddToCart = () => {
@@ -22,7 +22,7 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
 
   /** 处理立即购买 */
   const handleBuyNow = () => {
-    showDialog<Parameters<typeof BuyDialog>[0]>(BuyDialog, {
+    showBuyDialog({
       open: true,
       product: data!,
       onOk: handleBuyConfirm,

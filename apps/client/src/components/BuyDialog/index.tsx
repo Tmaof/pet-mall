@@ -4,7 +4,7 @@ import { Form, Image, InputNumber, Modal, Typography } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import './index.scss';
 
-interface Props {
+export interface BuyDialogProps {
   open: boolean;
   product: ProductDto;
   onOk: (values: { productId: number; quantity: number }) => void;
@@ -13,7 +13,7 @@ interface Props {
   title?: string;
 }
 
-const BuyDialog: FC<Props> = ({
+const BuyDialog: FC<BuyDialogProps> = ({
   open,
   product,
   onOk,
