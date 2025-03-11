@@ -4,6 +4,7 @@ import { Details } from '@/views/details';
 import { Index } from '@/views/index';
 import { Search } from '@/views/search';
 import { createBrowserRouter } from 'react-router-dom';
+import { ClientCenter } from '@/views/client-center';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: '/details/:id',
     element: <Details />,
+  },
+  {
+    path: '/client-center',
+    element: <ClientCenter />,
   },
 ]);
 
