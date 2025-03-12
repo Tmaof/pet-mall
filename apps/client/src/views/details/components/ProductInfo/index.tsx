@@ -1,5 +1,7 @@
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
 import { useBuyDialog } from '@/components/BuyDialog/hook';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchClientAddresses } from '@/store/modules/client';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC, useState } from 'react';
@@ -12,7 +14,8 @@ interface Props {
 
 const ProductInfo: FC<Props> = ({ data, loading }) => {
   const [isCollected, setIsCollected] = useState(false);
-
+  const { clientAddresses } = useAppSelector(state => state.client);
+  const dispatch = useAppDispatch();
   const { showBuyDialog } = useBuyDialog();
 
   /** 处理添加购物车 */
@@ -21,10 +24,17 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   };
 
   /** 处理立即购买 */
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
+    let list = clientAddresses;
+    // 如果没有地址列表，可能没有获取过，先获取地址列表
+    if (list.length === 0) {
+      list = await dispatch(fetchClientAddresses());
+    }
+
     showBuyDialog({
       open: true,
       product: data!,
+      addressList: list,
       onOk: handleBuyConfirm,
       onCancel: () => {},
     });

@@ -1,13 +1,16 @@
+import { AddressDto } from '@/api/client/address/res.dto';
 import { ProductDto } from '@/api/index.type';
 import { errImgFallback } from '@/constants';
-import { Form, Image, InputNumber, Modal, Typography } from 'antd';
+import { EnvironmentOutlined, HomeOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { Form, Image, InputNumber, Modal, Radio, Space, Typography } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import './index.scss';
 
 export interface BuyDialogProps {
   open: boolean;
   product: ProductDto;
-  onOk: (values: { productId: number; quantity: number }) => void;
+  addressList: AddressDto[];
+  onOk: (values: { productId: number; quantity: number; addressId: number }) => void;
   onCancel: () => void;
   okText?: string;
   title?: string;
@@ -16,6 +19,7 @@ export interface BuyDialogProps {
 const BuyDialog: FC<BuyDialogProps> = ({
   open,
   product,
+  addressList,
   onOk,
   onCancel,
   okText = '确认购买',
@@ -41,6 +45,7 @@ const BuyDialog: FC<BuyDialogProps> = ({
       onOk({
         productId: product.id,
         quantity: values.quantity,
+        addressId: values.addressId,
       });
     } catch (error) {
       console.error('Validate Failed:', error);
@@ -51,13 +56,18 @@ const BuyDialog: FC<BuyDialogProps> = ({
   useEffect(() => {
     if (open) {
       const initialQuantity = 1;
-      form.setFieldsValue({ quantity: initialQuantity });
+      const defaultAddress = addressList.find(addr => addr.isDefault);
+      form.setFieldsValue({
+        quantity: initialQuantity,
+        addressId: defaultAddress?.id,
+      });
       setTotal(calculateTotal(initialQuantity));
     }
-  }, [open, form, product.price]);
+  }, [open, form, product.price, addressList]);
 
   return (
     <Modal
+      width={600}
       title={title}
       open={open}
       onOk={handleSubmit}
@@ -81,15 +91,46 @@ const BuyDialog: FC<BuyDialogProps> = ({
         </div>
         <Form form={form} layout="vertical">
           <Form.Item
-            label="购买数量"
+            label={
+              <span className="form-label">
+                <EnvironmentOutlined /> 收货地址
+              </span>
+            }
+            name="addressId"
+            rules={[{ required: true, message: '请选择收货地址' }]}
+          >
+            <Radio.Group className="address-radio-group">
+              <Space direction="vertical" style={{ width: '100%' }}>
+                {addressList.map(address => (
+                  <Radio key={address.id} value={address.id} className="address-radio-card">
+                    <div className="address-card">
+                      <div className="address-header">
+                        <span className="contact-name">{address.consignee}</span>
+                        <span className="contact-phone">{address.phone}</span>
+                      </div>
+                      <div className="address-content">
+                        <HomeOutlined className="address-icon" />
+                        <span className="address-text">
+                          {address.province} {address.city} {address.district} {address.detail}
+                        </span>
+                      </div>
+                    </div>
+                  </Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label={
+              <span className="form-label">
+                <ShoppingOutlined /> 购买数量
+              </span>
+            }
             name="quantity"
             rules={[
               { required: true, message: '请输入购买数量' },
-              {
-                type: 'number',
-                min: 1,
-                message: '购买数量必须大于0',
-              },
+              { type: 'number', min: 1, message: '购买数量必须大于0' },
               {
                 type: 'number',
                 max: product.stock,
