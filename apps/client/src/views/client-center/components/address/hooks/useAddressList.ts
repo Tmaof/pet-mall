@@ -1,17 +1,18 @@
-import { deleteAddress, getAddressList, setDefaultAddress } from '@/api/client/address';
-import { AddressDto } from '@/api/client/address/res.dto';
+import { deleteAddress, setDefaultAddress } from '@/api/client/address';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchClientAddresses } from '@/store/modules/client';
 import { useEffect, useState } from 'react';
 
 export function useAddressList() {
-  const [addressList, setAddressList] = useState<AddressDto[]>([]);
+  const dispatch = useAppDispatch();
+  const { clientAddresses: addressList } = useAppSelector(state => state.client);
   const [loading, setLoading] = useState(false);
 
   /** 加载地址列表 */
   const loadAddressList = async () => {
     setLoading(true);
     try {
-      const { list } = await getAddressList();
-      setAddressList(list);
+      await dispatch(fetchClientAddresses());
     } finally {
       setLoading(false);
     }

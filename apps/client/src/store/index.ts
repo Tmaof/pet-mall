@@ -15,9 +15,9 @@ const store = configureStore({
 export default store;
 
 /** 根状态类型 */
-type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 /** 派发类型 */
-type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch;
 
 /** 使用dispatch */
 export const useAppDispatch = () => useDispatch<AppDispatch>();
