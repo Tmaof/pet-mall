@@ -40,3 +40,23 @@
     }
   }
 }
+
+.scroll-bar-normal {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--theme-border);
+    border-radius: 3px;
+
+    &:hover {
+      background-color: var(--theme-text-disabled);
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--theme-bg-spotlight);
+    border-radius: 3px;
+  }
+}
