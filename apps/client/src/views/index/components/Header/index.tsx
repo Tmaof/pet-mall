@@ -22,7 +22,10 @@ const Header: FC = () => {
         </div>
         <div className="header-right">
           <Badge count={5} size="small">
-            <ShoppingCartOutlined className="icon-btn" onClick={() => navigate('/cart')} />
+            <ShoppingCartOutlined
+              className="icon-btn"
+              onClick={() => navigate('/client-center?tabKey=cart')}
+            />
           </Badge>
           <Dropdown
             menu={{ items: userMenuItems, onClick: handleMenuClick }}
