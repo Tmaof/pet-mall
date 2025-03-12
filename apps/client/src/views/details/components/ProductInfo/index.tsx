@@ -1,3 +1,5 @@
+import { createOrder } from '@/api/client/order';
+import { CreateOrderDto } from '@/api/client/order/req.dto';
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
 import { useBuyDialog } from '@/components/BuyDialog/hook';
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -5,6 +7,7 @@ import { fetchClientAddresses } from '@/store/modules/client';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.scss';
 
 interface Props {
@@ -17,6 +20,7 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   const { clientAddresses } = useAppSelector(state => state.client);
   const dispatch = useAppDispatch();
   const { showBuyDialog } = useBuyDialog();
+  const navigate = useNavigate();
 
   /** 处理添加购物车 */
   const handleAddToCart = () => {
@@ -41,9 +45,19 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   };
 
   /** 处理购买确认 */
-  const handleBuyConfirm = (values: { productId: number; quantity: number }) => {
-    console.log('购买信息:', values);
-    message.success('购买成功!');
+  const handleBuyConfirm = async (values: {
+    productId: number;
+    quantity: number;
+    addressId: number;
+  }) => {
+    const { productId, quantity, addressId } = values;
+    const data: CreateOrderDto = {
+      items: [{ productId, quantity }],
+      addressId,
+    };
+    await createOrder(data);
+    // 跳转至支付页面
+    navigate('/payment');
   };
 
   /** 处理收藏切换 */

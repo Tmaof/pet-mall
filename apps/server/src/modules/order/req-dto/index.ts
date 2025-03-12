@@ -1,33 +1,80 @@
+import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+
 
 export class CreateOrderDto {
     /** 订单商品列表 */
-    items: OrderItemDto[];
-    addressId: number;
-    remark?: string;
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => OrderItemDto)
+        items: OrderItemDto[];
+
+    /** 收货地址ID */
+    @IsNumber()
+        addressId: number;
+
+    /** 备注 */
+    @IsString()
+    @IsOptional()
+        remark?: string;
 }
 
 /** 订单商品项 */
 export class OrderItemDto {
     /** 商品ID */
-    productId: number;
+    @IsNumber()
+        productId: number;
 
     /** 购买数量 */
-    quantity: number;
+    @IsNumber()
+        quantity: number;
 }
 
 
 export class UpdateOrderStatusDto {
-    status: number;
-    trackingNumber?: string;
-    paymentNo?: string;
+    /** 订单状态 */
+    @IsNumber()
+        status: number;
+
+    /** 物流单号 */
+    @IsString()
+    @IsOptional()
+        trackingNumber?: string;
+
+    /** 支付单号 */
+    @IsString()
+    @IsOptional()
+        paymentNo?: string;
 }
 
-
 export class QueryOrderDto {
-    id?: number;
-    status?: number;
-    startDate?: string;
-    endDate?: string;
-    page?: number;
-    pageSize?: number;
+    /** 订单ID */
+    @IsNumber()
+    @IsOptional()
+        id?: number;
+
+    /** 订单状态 */
+    @IsNumber()
+    @IsOptional()
+        status?: number;
+
+    /** 开始日期 */
+    @IsString()
+    @IsOptional()
+        startDate?: string;
+
+    /** 结束日期 */
+    @IsString()
+    @IsOptional()
+        endDate?: string;
+
+    /** 页码 */
+    @IsNumber()
+    @IsOptional()
+        page?: number;
+
+    /** 每页条数 */
+    @IsNumber()
+    @IsOptional()
+        pageSize?: number;
 }

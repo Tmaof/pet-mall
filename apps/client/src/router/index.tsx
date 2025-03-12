@@ -5,6 +5,7 @@ import { Index } from '@/views/index';
 import { Search } from '@/views/search';
 import { createBrowserRouter } from 'react-router-dom';
 import { ClientCenter } from '@/views/client-center';
+import { Payment } from '@/views/payment';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: '/client-center',
     element: <ClientCenter />,
+  },
+  {
+    path: '/payment',
+    element: <Payment />,
   },
 ]);
 
