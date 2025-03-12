@@ -112,4 +112,8 @@ export const permTree = {
             },
         },
     },
+    orderManage: {
+        name: '订单管理',
+        code: 'order-management',
+    },
 };
