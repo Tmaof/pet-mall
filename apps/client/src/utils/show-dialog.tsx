@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, FC, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const showDialogContext = createContext<ReturnType<typeof useShowDialog>['showDialog']>(() => {});
@@ -6,7 +6,7 @@ const showDialogContext = createContext<ReturnType<typeof useShowDialog>['showDi
 /**
  * 在子组件中可以使用 useShowDialogFn 来获取 showDialog 函数，来显示对话框组件。
  */
-export const ShowDialogProvider = ({ children }: { children: React.ReactNode }) => {
+export const ShowDialogProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { componentList, showDialog } = useShowDialog();
   return (
     <showDialogContext.Provider value={showDialog}>
@@ -22,6 +22,7 @@ export const ShowDialogProvider = ({ children }: { children: React.ReactNode }) 
  * 获取 showDialog 函数，用于在组件中调用 来显示对话框组件。
  * 由于是将 对话框组件列表 componentList 渲染到 APP组件中，所以对话框组件可以 使用其他 Provider 提供的数据。
  * 例如：将可以将 <ShowDialogProvider> 渲染到 <ConfigProvider locale={locale}> 中，则对话框组件中的组件可以拿到 antd的 locale 数据。
+ * 例如：可以使用 useNavigate() ，不会报错：useNavigate() may be used only in the context of a <Router> component.
  * 对比使用 createRoot来渲染组件，是新建了一个新的根节点，则不能使用另一个根节点中的 Provider 提供的数据。
  */
 export const useShowDialogFn = () => {
