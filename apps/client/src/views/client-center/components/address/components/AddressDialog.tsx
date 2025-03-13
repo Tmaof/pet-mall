@@ -55,16 +55,25 @@ const AddressDialog = ({ open, editAddress, onClose, onSuccess }: AddressDialogP
   /** 初始化表单数据 */
   useEffect(() => {
     if (!open) return;
-    let data = {};
+    let formData = {};
     if (editAddress) {
       const area = [editAddress.provinceCode, editAddress.cityCode, editAddress.districtCode];
-      data = {
+      formData = {
         ...editAddress,
         // 省市区 级联选择器 数据特殊处理
         area: area,
       };
+      const areaData = {
+        province: editAddress.province,
+        provinceCode: editAddress.provinceCode,
+        city: editAddress.city,
+        cityCode: editAddress.cityCode,
+        district: editAddress.district,
+        districtCode: editAddress.districtCode,
+      };
+      setArea(areaData);
     }
-    form.setFieldsValue(data);
+    form.setFieldsValue(formData);
   }, [open, editAddress]);
 
   const [options, setOptions] = useState<any[]>([]);
