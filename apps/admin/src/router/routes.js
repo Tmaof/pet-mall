@@ -105,6 +105,28 @@ export const privateRoutes = () => {
         }
       ]
     },
+    // 订单管理
+    {
+      path: '/order',
+      name: 'order-management',
+      component: Layout,
+      redirect: '/order/list',
+      meta: {
+        title: '订单管理',
+        icon: 'my-product'
+      },
+      children: [
+        {
+          path: 'list',
+          name: 'order-list',
+          component: () => import('@/views/Order/List'),
+          meta: {
+            title: '订单列表',
+            icon: 'my-numbered-list'
+          }
+        }
+      ]
+    },
     {
       path: '/',
       component: Layout,

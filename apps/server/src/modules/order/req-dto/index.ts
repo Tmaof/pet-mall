@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { OrderStatus } from '../enum';
 
 /** 创建订单 */
 export class CreateOrderDto {
@@ -34,7 +35,7 @@ export class OrderItemDto {
 export class UpdateOrderStatusDto {
     /** 订单状态 */
     @IsNumber()
-        status: number;
+        status: OrderStatus;
 
     /** 物流单号 */
     @IsString()
@@ -51,7 +52,7 @@ export class UpdateOrderStatusDto {
 export class UpdateOrderStatusByClientDto {
     /** 订单状态 */
     @IsNumber()
-        status: number;
+        status: OrderStatus;
 }
 
 /** 查询订单 */
@@ -64,7 +65,7 @@ export class QueryOrderDto {
     /** 订单状态 */
     @IsNumber()
     @IsOptional()
-        status?: number;
+        status?: OrderStatus;
 
     /** 开始日期 */
     @IsString()

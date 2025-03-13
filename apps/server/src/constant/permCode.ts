@@ -115,5 +115,11 @@ export const permTree = {
     orderManage: {
         name: '订单管理',
         code: 'order-management',
+        children: {
+            orderList: {
+                name: '订单列表',
+                code: 'order-list',
+            },
+        },
     },
 };
