@@ -22,6 +22,8 @@ import { AddressModule } from './modules/address/address.module';
 import { ClientAddressModule } from './modules/client/address/address.module';
 import { OrderModule } from './modules/order/order.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Global()
 @Module({
@@ -51,6 +53,8 @@ import { PaymentModule } from './modules/payment/payment.module';
                 return dbConfig;
             },
         }),
+        // 定时任务模块
+        ScheduleModule.forRoot(),
         // jwt 模块
         MyJwtModule,
         // 员工相关模块

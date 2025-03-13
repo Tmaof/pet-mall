@@ -210,7 +210,9 @@ export class PaymentService {
                 status: PaymentStatus.PENDING,
                 createdAt: LessThan(fiveMinutesAgo),
             },
+            relations: ['order'],
         });
+        console.info(`【定时任务】处理超时未支付的支付记录：${timeoutPayments.length}`);
         // 处理超时未支付的支付记录
         for (const payment of timeoutPayments) {
             // 1. 更新支付记录状态为已关闭
