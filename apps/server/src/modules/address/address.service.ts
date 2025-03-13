@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Region } from './address.entity';
+import { regionList } from './region-list';
 import { RegionItemDto, RegionResDto } from './res-dto';
 import { formatRegion } from './utils';
 
@@ -34,5 +35,13 @@ export class AddressService {
         const data = formatRegion(china);
         await dfs([data], 1);
         return { list: data.children };
+    }
+
+    /**
+     * 获取3级行政区划列表：省份、市、县。
+     * 从文件中读取数据。
+     */
+    async getRegionTreeByFile (): Promise<RegionResDto> {
+        return { list: regionList };
     }
 }

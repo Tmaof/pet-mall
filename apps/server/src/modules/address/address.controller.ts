@@ -13,7 +13,8 @@ export class AddressController {
     @Public()
     @Get('tree')
     async getRegionTree () {
-        const data = await this.addressService.getRegionTree();
+        // const data = await this.addressService.getRegionTree();
+        const data = await this.addressService.getRegionTreeByFile();
         return getCommonRes({ data });
     }
 }
