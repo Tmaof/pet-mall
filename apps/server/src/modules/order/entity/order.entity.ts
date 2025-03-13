@@ -1,4 +1,3 @@
-import { Address } from '@/modules/client/address/address.entity';
 import { Client } from '@/modules/client/client/client.entity';
 import {
     Column,
@@ -10,8 +9,8 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
-import { OrderItem } from './order-item.entity';
 import { OrderStatus } from '../enum';
+import { OrderItem } from './order-item.entity';
 
 @Entity('order')
 export class Order {
@@ -40,14 +39,6 @@ export class Order {
         comment: '订单状态',
     })
         status: OrderStatus;
-
-    @Column({
-        name: 'address_id',
-        type: 'bigint',
-        nullable: true,
-        comment: '收货地址ID',
-    })
-        addressId: number;
 
     @Column({
         name: 'address_snapshot',
@@ -127,10 +118,6 @@ export class Order {
     @ManyToOne(() => Client)
     @JoinColumn({ name: 'client_id' })
         client: Client;
-
-    @ManyToOne(() => Address)
-    @JoinColumn({ name: 'address_id' })
-        address: Address;
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
         orderItems: OrderItem[];

@@ -73,7 +73,7 @@ export class OrderService {
             order.clientId = clientId;
             order.totalAmount = totalAmount;
             order.status = OrderStatus.PENDING_PAYMENT;
-            order.addressId = addressId;
+            // order.addressId = addressId; // 不需要保存地址ID，保存快照即可，因为地址可能会被修改，删除
             order.addressSnapshot = { ...address }; // 保存地址快照
             order.remark = remark;
 
