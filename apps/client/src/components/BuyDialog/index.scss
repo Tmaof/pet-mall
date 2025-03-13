@@ -81,6 +81,28 @@
     }
   }
 
+  .no-address-tips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--theme-text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+
+    .tips-icon {
+      font-size: 16px;
+    }
+
+    background: var(--theme-bg-spotlight);
+    border-radius: 8px;
+    padding: 8px 16px;
+
+    &:hover {
+      color: var(--theme-primary);
+    }
+  }
+
   .address-radio-group {
     @extend .scroll-bar-normal;
 

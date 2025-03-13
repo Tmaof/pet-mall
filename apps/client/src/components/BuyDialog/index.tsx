@@ -1,9 +1,15 @@
 import { AddressDto } from '@/api/client/address/res.dto';
 import { ProductDto } from '@/api/index.type';
 import { errImgFallback } from '@/constants';
-import { EnvironmentOutlined, HomeOutlined, ShoppingOutlined } from '@ant-design/icons';
+import {
+  EnvironmentOutlined,
+  HomeOutlined,
+  PlusSquareOutlined,
+  ShoppingOutlined,
+} from '@ant-design/icons';
 import { Form, Image, InputNumber, Modal, Radio, Space, Typography } from 'antd';
 import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.scss';
 
 export interface BuyDialogProps {
@@ -25,6 +31,7 @@ const BuyDialog: FC<BuyDialogProps> = ({
   okText = '确认购买',
   title = '确认购买信息',
 }) => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [total, setTotal] = useState<string>('0.00');
 
@@ -50,6 +57,14 @@ const BuyDialog: FC<BuyDialogProps> = ({
     } catch (error) {
       console.error('Validate Failed:', error);
     }
+  };
+
+  /** 跳转至地址管理页面 */
+  const handleToAddress = () => {
+    onCancel();
+    setTimeout(() => {
+      navigate('/client-center?tabKey=address');
+    }, 200);
   };
 
   /** 重置表单和总价 */
@@ -99,26 +114,33 @@ const BuyDialog: FC<BuyDialogProps> = ({
             name="addressId"
             rules={[{ required: true, message: '请选择收货地址' }]}
           >
-            <Radio.Group className="address-radio-group">
-              <Space direction="vertical" style={{ width: '100%' }}>
-                {addressList.map(address => (
-                  <Radio key={address.id} value={address.id} className="address-radio-card">
-                    <div className="address-card">
-                      <div className="address-header">
-                        <span className="contact-name">{address.consignee}</span>
-                        <span className="contact-phone">{address.phone}</span>
+            {addressList.length > 0 ? (
+              <Radio.Group className="address-radio-group">
+                <Space direction="vertical" style={{ width: '100%' }}>
+                  {addressList.map(address => (
+                    <Radio key={address.id} value={address.id} className="address-radio-card">
+                      <div className="address-card">
+                        <div className="address-header">
+                          <span className="contact-name">{address.consignee}</span>
+                          <span className="contact-phone">{address.phone}</span>
+                        </div>
+                        <div className="address-content">
+                          <HomeOutlined className="address-icon" />
+                          <span className="address-text">
+                            {address.province} {address.city} {address.district} {address.detail}
+                          </span>
+                        </div>
                       </div>
-                      <div className="address-content">
-                        <HomeOutlined className="address-icon" />
-                        <span className="address-text">
-                          {address.province} {address.city} {address.district} {address.detail}
-                        </span>
-                      </div>
-                    </div>
-                  </Radio>
-                ))}
-              </Space>
-            </Radio.Group>
+                    </Radio>
+                  ))}
+                </Space>
+              </Radio.Group>
+            ) : (
+              <div className="no-address-tips" onClick={handleToAddress}>
+                <PlusSquareOutlined className="tips-icon" />
+                <div className="tips-text">添加收货地址</div>
+              </div>
+            )}
           </Form.Item>
 
           <Form.Item
