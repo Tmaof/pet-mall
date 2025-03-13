@@ -21,6 +21,7 @@ import { HomePageModule } from './modules/home-page/home-page.module';
 import { AddressModule } from './modules/address/address.module';
 import { ClientAddressModule } from './modules/client/address/address.module';
 import { OrderModule } from './modules/order/order.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Global()
 @Module({
@@ -76,6 +77,8 @@ import { OrderModule } from './modules/order/order.module';
         AddressModule,
         // 订单模块
         OrderModule,
+        // 支付模块
+        PaymentModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */

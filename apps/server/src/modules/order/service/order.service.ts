@@ -5,9 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { OrderItem } from '../entity/order-item.entity';
 import { Order } from '../entity/order.entity';
+import { OrderStatus } from '../enum';
 import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
 import { OrderDto, OrderListDto } from '../res-dto';
-import { OrderStatus } from '../enum';
 
 @Injectable()
 export class OrderService {
@@ -330,20 +330,24 @@ export class OrderService {
     private validateStatusChange (currentStatus: OrderStatus, newStatus: OrderStatus): void {
         // 状态流转验证规则
         const validTransitions = {
+            // 初始态：待付款
             [OrderStatus.PENDING_PAYMENT]: [
                 OrderStatus.PAID,
                 OrderStatus.CANCELED_BY_CLIENT,
                 OrderStatus.CANCELED_BY_ADMIN,
                 OrderStatus.FAILED_NO_STOCK,
             ],
+            // 已付款
             [OrderStatus.PAID]: [
                 OrderStatus.PENDING_SHIPMENT,
                 OrderStatus.CANCELED_BY_ADMIN,
             ],
+            // 待发货
             [OrderStatus.PENDING_SHIPMENT]: [
                 OrderStatus.SHIPPED,
                 OrderStatus.CANCELED_BY_ADMIN,
             ],
+            // 已发货
             [OrderStatus.SHIPPED]: [
                 OrderStatus.COMPLETED,
             ],
@@ -352,6 +356,7 @@ export class OrderService {
             [OrderStatus.CANCELED_BY_CLIENT]: [],
             [OrderStatus.CANCELED_BY_ADMIN]: [],
             [OrderStatus.FAILED_NO_STOCK]: [],
+            [OrderStatus.CLOSED_NO_PAY]: [],
         };
 
         if (!validTransitions[currentStatus].includes(newStatus)) {

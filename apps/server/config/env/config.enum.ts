@@ -58,4 +58,16 @@ export enum ConfigEnum {
      * 用于指定应用程序监听的端口号。
      */
     APP_PORT = 'APP_PORT',
+
+    // h5pay：https://h5zhifu.com/doc/api/native.html
+    /** h5pay 应用ID */
+    H5PAY_APP_ID = 'H5PAY_APP_ID',
+    /** h5pay 应用密钥 */
+    H5PAY_APP_KEY = 'H5PAY_APP_KEY',
+    /** h5pay 支付接口地址 */
+    H5PAY_API_URL = 'H5PAY_API_URL',
+    /** h5pay 支付回调地址 */
+    H5PAY_NOTIFY_URL = 'H5PAY_NOTIFY_URL',
+    /** 订单超时时间 */
+    H5PAY_EXPIRE_TIME = 'H5PAY_EXPIRE_TIME',
 }

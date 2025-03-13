@@ -16,4 +16,6 @@ export enum OrderStatus {
     CANCELED_BY_ADMIN = 7,
     /** 失败(库存不足) */
     FAILED_NO_STOCK = 8,
+    /** 已关闭(超时未支付) */
+    CLOSED_NO_PAY = 9,
 }
