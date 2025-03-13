@@ -1,4 +1,5 @@
-import { createAddress, getRegionTree, updateAddress } from '@/api/client/address';
+import { createAddress, updateAddress } from '@/api/client/address';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { Button, Cascader, Form, Input, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { ADDRESS_FORM_FIELDS, ADDRESS_FORM_LABELS } from '../constants';
@@ -6,10 +7,13 @@ import { AddressFormValues } from '../types';
 import './AddressDialog.scss';
 import { rules } from './rules';
 import { AddressDialogProps } from './types';
+import { fetchRegionTree } from '@/store/modules/client';
 
 const AddressDialog = ({ open, editAddress, onClose, onSuccess }: AddressDialogProps) => {
   const [form] = Form.useForm<AddressFormValues>();
   const [areaData, setArea] = useState<object>({});
+  const dispatch = useAppDispatch();
+  const regionTree = useAppSelector(state => state.client.regionTree);
 
   /** 处理区域选择变化 */
   const handleAreaChange = (_: (string | number)[], selectedOptions: any[]) => {
@@ -76,13 +80,11 @@ const AddressDialog = ({ open, editAddress, onClose, onSuccess }: AddressDialogP
     form.setFieldsValue(formData);
   }, [open, editAddress]);
 
-  const [options, setOptions] = useState<any[]>([]);
-  // 获取地区树
+  // 初始化省市区数据
   useEffect(() => {
-    getRegionTree().then(({ list }) => {
-      setOptions(list);
-    });
-  }, []);
+    if (regionTree.length) return;
+    dispatch(fetchRegionTree());
+  }, [regionTree, dispatch]);
 
   return (
     <Modal
@@ -119,7 +121,7 @@ const AddressDialog = ({ open, editAddress, onClose, onSuccess }: AddressDialogP
           rules={rules.area}
         >
           <Cascader
-            options={options}
+            options={regionTree}
             onChange={handleAreaChange}
             placeholder="请选择所在地区"
             fieldNames={{ label: 'name', value: 'code', children: 'children' }}
