@@ -19,3 +19,13 @@ export enum OrderStatus {
     /** 已关闭(超时未支付) */
     CLOSED_NO_PAY = 9,
 }
+
+
+export enum ShippingMethod {
+    /** 快递 */
+    EXPRESS = 'express',
+    /** 自提 */
+    SELF_PICKUP = 'self_pickup',
+    /** 卡券 */
+    COUPON = 'coupon',
+}

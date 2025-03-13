@@ -9,7 +9,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
-import { OrderStatus } from '../enum';
+import { OrderStatus, ShippingMethod } from '../enum';
 import { OrderItem } from './order-item.entity';
 
 @Entity('order')
@@ -81,7 +81,7 @@ export class Order {
         nullable: true,
         comment: '配送方式',
     })
-        shippingMethod: string;
+        shippingMethod: ShippingMethod;
 
     @Column({
         name: 'tracking_number',
@@ -91,6 +91,15 @@ export class Order {
         comment: '物流单号',
     })
         trackingNumber: string;
+
+    @Column({
+        name: 'shipping_company',
+        type: 'varchar',
+        length: 100,
+        nullable: true,
+        comment: '物流公司',
+    })
+        shippingCompany: string;
 
     @Column({
         name: 'remark',
