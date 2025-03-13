@@ -1,4 +1,7 @@
 // order.dto.ts
+import { PaymentMethod } from '@/modules/payment/enum';
+import { ShippingMethod } from '../enum';
+
 export class OrderItemDto {
     id: number;
     productId: number;
@@ -14,11 +17,12 @@ export class OrderDto {
     totalAmount: number;
     status: number;
     addressSnapshot: any;
-    paymentMethod: string;
+    paymentMethod: PaymentMethod;
     paymentTime: Date;
     paymentNo: string;
-    shippingMethod: string;
+    shippingMethod: ShippingMethod;
     trackingNumber: string;
+    shippingCompany: string;
     remark: string;
     createdAt: Date;
     updatedAt: Date;

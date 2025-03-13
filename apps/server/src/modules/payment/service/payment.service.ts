@@ -163,8 +163,9 @@ export class PaymentService {
 
             // 3. 更新订单状态
             const { order } = payment;
-            order.status = OrderStatus.PAID;
+            order.status = OrderStatus.PENDING_SHIPMENT;// 待发货
             order.paymentTime = payment.paidAt;
+            order.paymentMethod = payment.paymentMethod;
             order.paymentNo = transactionId;
             await queryRunner.manager.save(order);
 

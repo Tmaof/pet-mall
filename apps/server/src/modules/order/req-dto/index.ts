@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 
-
+/** 创建订单 */
 export class CreateOrderDto {
     /** 订单商品列表 */
     @IsArray()
@@ -30,7 +30,7 @@ export class OrderItemDto {
         quantity: number;
 }
 
-
+/** 【管理员】 更新订单状态 */
 export class UpdateOrderStatusDto {
     /** 订单状态 */
     @IsNumber()
@@ -41,12 +41,20 @@ export class UpdateOrderStatusDto {
     @IsOptional()
         trackingNumber?: string;
 
-    /** 支付单号 */
+    /** 物流公司 */
     @IsString()
     @IsOptional()
-        paymentNo?: string;
+        shippingCompany?: string;
 }
 
+/** 【客户】 更新订单状态 */
+export class UpdateOrderStatusByClientDto {
+    /** 订单状态 */
+    @IsNumber()
+        status: number;
+}
+
+/** 查询订单 */
 export class QueryOrderDto {
     /** 订单ID */
     @IsNumber()

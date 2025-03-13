@@ -1,4 +1,5 @@
 import { Client } from '@/modules/client/client/client.entity';
+import { PaymentMethod } from '@/modules/payment/enum';
 import {
     Column,
     CreateDateColumn,
@@ -50,12 +51,12 @@ export class Order {
 
     @Column({
         name: 'payment_method',
-        type: 'varchar',
-        length: 50,
+        type: 'enum',
+        enum: PaymentMethod,
         nullable: true,
         comment: '支付方式',
     })
-        paymentMethod: string;
+        paymentMethod: PaymentMethod;
 
     @Column({
         name: 'payment_time',

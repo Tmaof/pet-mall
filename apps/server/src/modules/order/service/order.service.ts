@@ -5,8 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { OrderItem } from '../entity/order-item.entity';
 import { Order } from '../entity/order.entity';
-import { OrderStatus } from '../enum';
-import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
+import { OrderStatus, ShippingMethod } from '../enum';
+import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto, UpdateOrderStatusDto } from '../req-dto';
 import { OrderDto, OrderListDto } from '../res-dto';
 
 @Injectable()
@@ -175,10 +175,10 @@ export class OrderService {
     }
 
     /**
-     * 更新订单状态
+     * 【客户】更新订单状态
      */
-    async updateStatus (clientId: number, id: number, updateOrderStatusDto: UpdateOrderStatusDto): Promise<OrderDto> {
-        const { status, trackingNumber, paymentNo } = updateOrderStatusDto;
+    async updateStatus (clientId: number, id: number, updateOrderStatusDto: UpdateOrderStatusByClientDto): Promise<OrderDto> {
+        const { status } = updateOrderStatusDto;
 
         // 使用事务进行更新
         const queryRunner = this.dataSource.createQueryRunner();
@@ -199,34 +199,20 @@ export class OrderService {
             // 2. 验证状态更新的合法性
             this.validateStatusChange(order.status, status);
 
-            // 3. 更新订单状态
-            order.status = status;
 
             // 如果是取消订单，需要归还库存
-            if (status === OrderStatus.CANCELED_BY_CLIENT || status === OrderStatus.CANCELED_BY_ADMIN) {
-                // 只有待支付状态的订单取消才需要归还库存
-                if (order.status === OrderStatus.PENDING_PAYMENT) {
-                    for (const item of order.orderItems) {
-                        const product = await this.productRepository.findOne({ where: { id: item.productId } });
-                        if (product) {
-                            product.stock += item.quantity;
-                            await queryRunner.manager.save(product);
-                        }
+            if (status === OrderStatus.CANCELED_BY_CLIENT) {
+                // 待支付状态的订单取消才需要归还库存
+                // 已支付，取消订单，需要归还库存
+                // if (order.status === OrderStatus.PENDING_PAYMENT) {
+                for (const item of order.orderItems) {
+                    const product = await this.productRepository.findOne({ where: { id: item.productId } });
+                    if (product) {
+                        product.stock += item.quantity;
+                        await queryRunner.manager.save(product);
                     }
                 }
             }
-
-            // 4. 更新支付信息
-            if (status === OrderStatus.PAID && !order.paymentTime) {
-                order.paymentTime = new Date();
-                if (paymentNo) order.paymentNo = paymentNo;
-            }
-
-            // 5. 更新物流信息
-            if (status === OrderStatus.SHIPPED && trackingNumber) {
-                order.trackingNumber = trackingNumber;
-            }
-
             // 6. 保存更新
             await queryRunner.manager.save(order);
 
@@ -246,17 +232,17 @@ export class OrderService {
     }
 
     /**
-     * 取消订单
+     * 【客户】取消订单
      */
     async cancelOrder (clientId: number, id: number): Promise<OrderDto> {
         return this.updateStatus(clientId, id, { status: OrderStatus.CANCELED_BY_CLIENT });
     }
 
     /**
-     * 管理员更新订单状态
+     * 【管理员】更新订单状态
      */
     async adminUpdateStatus (id: number, updateOrderStatusDto: UpdateOrderStatusDto): Promise<OrderDto> {
-        const { status, trackingNumber, paymentNo } = updateOrderStatusDto;
+        const { status, trackingNumber, shippingCompany } = updateOrderStatusDto;
 
         // 使用事务进行更新
         const queryRunner = this.dataSource.createQueryRunner();
@@ -282,28 +268,23 @@ export class OrderService {
 
             // 如果是取消订单，需要归还库存
             if (status === OrderStatus.CANCELED_BY_ADMIN) {
-                // 只有待支付状态的订单取消才需要归还库存
-                if (order.status === OrderStatus.PENDING_PAYMENT) {
-                    for (const item of order.orderItems) {
-                        const product = await this.productRepository.findOne({ where: { id: item.productId } });
-                        if (product) {
-                            product.stock += item.quantity;
-                            await queryRunner.manager.save(product);
-                        }
+                // 待支付状态的订单取消才需要归还库存
+                // 已支付，取消订单，需要归还库存
+                // if (order.status === OrderStatus.PENDING_PAYMENT) {
+                for (const item of order.orderItems) {
+                    const product = await this.productRepository.findOne({ where: { id: item.productId } });
+                    if (product) {
+                        product.stock += item.quantity;
+                        await queryRunner.manager.save(product);
                     }
                 }
             }
 
-            // 4. 更新支付信息
-            if (status === OrderStatus.PAID && !order.paymentTime) {
-                order.paymentTime = new Date();
-                if (paymentNo) order.paymentNo = paymentNo;
-            }
-
             // 5. 更新物流信息
-            if (status === OrderStatus.SHIPPED && trackingNumber) {
+            if (status === OrderStatus.SHIPPED && trackingNumber && shippingCompany) {
                 order.trackingNumber = trackingNumber;
-                order.shippingMethod = '快递';
+                order.shippingCompany = shippingCompany;
+                order.shippingMethod = ShippingMethod.EXPRESS;
             }
 
             // 6. 保存更新
@@ -332,15 +313,9 @@ export class OrderService {
         const validTransitions = {
             // 初始态：待付款
             [OrderStatus.PENDING_PAYMENT]: [
-                OrderStatus.PAID,
                 OrderStatus.CANCELED_BY_CLIENT,
                 OrderStatus.CANCELED_BY_ADMIN,
                 OrderStatus.FAILED_NO_STOCK,
-            ],
-            // 已付款
-            [OrderStatus.PAID]: [
-                OrderStatus.PENDING_SHIPMENT,
-                OrderStatus.CANCELED_BY_ADMIN,
             ],
             // 待发货
             [OrderStatus.PENDING_SHIPMENT]: [
@@ -379,6 +354,7 @@ export class OrderService {
             paymentNo: order.paymentNo,
             shippingMethod: order.shippingMethod,
             trackingNumber: order.trackingNumber,
+            shippingCompany: order.shippingCompany,
             remark: order.remark,
             createdAt: order.createdAt,
             updatedAt: order.updatedAt,
