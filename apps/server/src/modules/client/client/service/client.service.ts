@@ -53,10 +53,10 @@ export class ClientService {
             throw new Error('客户不存在');
         }
         // 判断客户名是否存在
-        if (dto.clientname) {
+        if (dto.clientname && dto.clientname !== client.clientname) {
             const clientTmp = await this.findByClientname(dto.clientname);
             if (clientTmp) {
-                throw new Error('客户名已存在');
+                throw new Error('客户名已被使用');
             }
         }
 
@@ -71,6 +71,9 @@ export class ClientService {
         const client = await this.clientRepository.findOne({ where: { id: clientId } });
         if (!client) {
             throw new Error('客户不存在');
+        }
+        if (dto.newPassword === dto.oldPassword) {
+            throw new Error('新密码不能与旧密码相同');
         }
         // 判断旧密码是否正确
         const isPasswordCorrect = await argon2.verify(client.password, dto.oldPassword);

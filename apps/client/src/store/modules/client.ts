@@ -78,7 +78,9 @@ export const fetchClientInfo = () => {
 export const updateClientInfo = (data: UpdateClientDto) => {
   return async (dispatch: AppDispatch) => {
     const res = await updateCurrentClient(data);
-    dispatch(setClientInfo(res));
+    if (res) {
+      dispatch(setClientInfo(res));
+    }
     return res;
   };
 };
