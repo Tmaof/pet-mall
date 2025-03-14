@@ -1,3 +1,4 @@
+import { ReqUser } from '@/decorator/index.decorator';
 import { JwtGuard } from '@/guards/jwt.guard';
 import { getCommonRes } from '@/utils';
 import {
@@ -10,8 +11,8 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
-import { ClientService } from './client.service';
-import { UpdateClientDto } from './req-dto';
+import { UpdateClientDto, UpdatePasswordDto } from '../req-dto';
+import { ClientService } from '../service/client.service';
 
 
 @Controller('client')
@@ -35,6 +36,16 @@ export class ClientController {
         @Body() dto: UpdateClientDto,
     ) {
         const data = await this.clientService.updateCurrentClient(req.user, dto);
+        return getCommonRes(data);
+    }
+
+    /** 更新密码 */
+    @Post('password')
+    async updatePassword (
+    @ReqUser('clientId') clientId: number,
+        @Body() dto: UpdatePasswordDto,
+    ) {
+        const data = await this.clientService.updatePassword(clientId, dto);
         return getCommonRes(data);
     }
 

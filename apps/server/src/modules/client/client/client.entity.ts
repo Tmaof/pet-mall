@@ -20,6 +20,9 @@ export class Client {
     @Column({ comment: '头像URL', default: '' })
         avatar: string;
 
+    @Column({ comment: '简介', default: '', nullable: true })
+        introduction: string;
+
     @Column({ comment: '性别', default: ClientGender.UNKNOWN, type: 'enum', enum: ClientGender })
         gender: ClientGender;
 

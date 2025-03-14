@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as argon2 from 'argon2';
 import { Repository } from 'typeorm';
-import { Client } from './client.entity';
-import { CreateClientDto, UpdateClientDto } from './req-dto';
+import { Client } from '../client.entity';
+import { CreateClientDto, UpdateClientDto, UpdatePasswordDto } from '../req-dto';
 
 @Injectable()
 export class ClientService {
@@ -42,27 +42,43 @@ export class ClientService {
 
     /** 更新当前客户信息 */
     async updateCurrentClient (jwtPayload: JwtPayloadParsed, dto: UpdateClientDto) {
-        // console.log('jwtPayload', jwtPayload);
+        if (!dto || Object.keys(dto).length === 0) {
+            throw new Error('更新信息不能为空');
+        }
         if (!('clientId' in jwtPayload)) {
             throw new Error('非客户用户');
         }
-        const { password, ...rest } = dto;
         const client = await this.clientRepository.findOne({ where: { id: jwtPayload.clientId } });
         if (!client) {
             throw new Error('客户不存在');
         }
         // 判断客户名是否存在
-        if (rest.clientname) {
-            const clientTmp = await this.findByClientname(rest.clientname);
+        if (dto.clientname) {
+            const clientTmp = await this.findByClientname(dto.clientname);
             if (clientTmp) {
                 throw new Error('客户名已存在');
             }
         }
 
-        Object.assign(client, rest);
-        if (password) {
-            client.password = await argon2.hash(password);
+        Object.assign(client, dto);
+
+        const res = await this.clientRepository.save(client);
+        return res;
+    }
+
+    /** 更新密码 */
+    async updatePassword (clientId: number, dto: UpdatePasswordDto) {
+        const client = await this.clientRepository.findOne({ where: { id: clientId } });
+        if (!client) {
+            throw new Error('客户不存在');
         }
+        // 判断旧密码是否正确
+        const isPasswordCorrect = await argon2.verify(client.password, dto.oldPassword);
+        if (!isPasswordCorrect) {
+            throw new Error('旧密码错误');
+        }
+        // 更新密码
+        client.password = await argon2.hash(dto.newPassword);
         const res = await this.clientRepository.save(client);
         return res;
     }

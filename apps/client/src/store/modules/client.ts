@@ -1,5 +1,8 @@
 import { getAddressList, getRegionTree } from '@/api/client/address';
 import { AddressDto, RegionResDto } from '@/api/client/address/res.dto';
+import { getCurrentClient, updateCurrentClient } from '@/api/client/profile';
+import { UpdateClientDto } from '@/api/client/profile/req.dto';
+import { Client } from '@/api/client/profile/res.dto';
 import { TOKEN_KEY } from '@/constants/key';
 import { createSlice } from '@reduxjs/toolkit';
 import { AppDispatch } from '../index';
@@ -15,6 +18,8 @@ const clientSlice = createSlice({
     clientAddresses: [] as AddressDto[],
     /** 省市区地区列表 */
     regionTree: [] as RegionResDto['list'],
+    /** 当前客户信息 */
+    clientInfo: null as Client | null,
   },
   /** 同步修改数据方法 */
   reducers: {
@@ -32,11 +37,15 @@ const clientSlice = createSlice({
     setRegionTree: (state, action) => {
       state.regionTree = action.payload;
     },
+    /** 设置当前客户信息 */
+    setClientInfo: (state, action) => {
+      state.clientInfo = action.payload;
+    },
   },
 });
 
 // 解构出action-Creater函数
-export const { setToken, setClientAddresses, setRegionTree } = clientSlice.actions;
+export const { setToken, setClientAddresses, setRegionTree, setClientInfo } = clientSlice.actions;
 
 /** 获取客户地址列表 */
 export const fetchClientAddresses = () => {
@@ -53,6 +62,24 @@ export const fetchRegionTree = () => {
     const { list } = await getRegionTree();
     dispatch(setRegionTree(list));
     return list;
+  };
+};
+
+/** 获取当前客户信息 */
+export const fetchClientInfo = () => {
+  return async (dispatch: AppDispatch) => {
+    const res = await getCurrentClient();
+    dispatch(setClientInfo(res));
+    return res;
+  };
+};
+
+/** 更新当前客户信息 */
+export const updateClientInfo = (data: UpdateClientDto) => {
+  return async (dispatch: AppDispatch) => {
+    const res = await updateCurrentClient(data);
+    dispatch(setClientInfo(res));
+    return res;
   };
 };
 

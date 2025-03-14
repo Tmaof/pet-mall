@@ -1,6 +1,6 @@
-import { ClientService } from '@/modules/client/client/client.service';
-import { ClientJwtPayloadInfo, JwtPayloadParsed } from '@/modules/jwt/types';
+import { ClientService } from '@/modules/client/client/service/client.service';
 import { MyJwtService } from '@/modules/jwt/jwt.service';
+import { ClientJwtPayloadInfo, JwtPayloadParsed } from '@/modules/jwt/types';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 
