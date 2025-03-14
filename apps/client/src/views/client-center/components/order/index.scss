@@ -126,3 +126,23 @@
     }
   }
 }
+
+.logistics-info {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: var(--theme-bg-spotlight);
+  border-radius: 4px;
+
+  .info-item {
+    line-height: 24px;
+
+    .label {
+      color: var(--theme-text-secondary);
+      margin-right: 8px;
+    }
+
+    .value {
+      color: var(--theme-text);
+    }
+  }
+}

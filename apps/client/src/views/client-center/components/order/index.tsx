@@ -2,7 +2,9 @@ import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, OrderStatus } from '@/api/cli
 import { OrderDto } from '@/api/client/order/res.dto';
 import { Button, Card, Empty, Image, Skeleton, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import OrderDetailDialog from './components/OrderDetailDialog';
 import { useOrderList } from './hooks/useOrderList';
 import './index.scss';
 
@@ -10,6 +12,8 @@ import './index.scss';
 const Order = () => {
   const { orderList, loading, handleCancelOrder } = useOrderList();
   const navigate = useNavigate();
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState<OrderDto>();
 
   /** 渲染订单状态标签 */
   const renderStatusTag = (status: OrderStatus) => (
@@ -50,7 +54,19 @@ const Order = () => {
       );
     }
 
+    actions.push(
+      <Button key="detail" onClick={() => handleViewDetail(order)}>
+        查看详情
+      </Button>
+    );
+
     return actions;
+  };
+
+  /** 查看订单详情 */
+  const handleViewDetail = (order: OrderDto) => {
+    setCurrentOrder(order);
+    setDetailVisible(true);
   };
 
   if (loading) {
@@ -82,6 +98,7 @@ const Order = () => {
           </div>
 
           <div className="order-content">
+            {/* 商品列表 */}
             <div className="product-list">
               {order.orderItems.map(item => (
                 <div key={item.id} className="product-item">
@@ -108,6 +125,20 @@ const Order = () => {
               ))}
             </div>
 
+            {/* 物流信息 */}
+            {order.status === OrderStatus.SHIPPED && (
+              <div className="logistics-info">
+                <div className="info-item">
+                  <span className="label">物流公司：</span>
+                  <span className="value">{order.shippingCompany}</span>
+                </div>
+                <div className="info-item">
+                  <span className="label">物流单号：</span>
+                  <span className="value">{order.trackingNumber}</span>
+                </div>
+              </div>
+            )}
+            {/* 订单底部 */}
             <div className="order-footer">
               {/* 已取消订单不显示实付金额 */}
               {order.status !== OrderStatus.CANCELED_BY_CLIENT && (
@@ -124,6 +155,13 @@ const Order = () => {
           </div>
         </Card>
       ))}
+
+      {/* 详情对话框 */}
+      <OrderDetailDialog
+        open={detailVisible}
+        order={currentOrder}
+        onClose={() => setDetailVisible(false)}
+      />
     </div>
   );
 };
