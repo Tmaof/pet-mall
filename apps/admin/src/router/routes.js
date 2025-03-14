@@ -112,7 +112,7 @@ export const privateRoutes = () => {
       component: Layout,
       redirect: '/order/list',
       meta: {
-        title: '订单管理',
+        title: i18n.$t('router.routes.679664-0'),
         icon: 'my-product'
       },
       children: [
@@ -121,7 +121,7 @@ export const privateRoutes = () => {
           name: 'order-list',
           component: () => import('@/views/Order/List'),
           meta: {
-            title: '订单列表',
+            title: i18n.$t('router.routes.679664-1'),
             icon: 'my-numbered-list'
           }
         }

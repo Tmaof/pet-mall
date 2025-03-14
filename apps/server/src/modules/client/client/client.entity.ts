@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ClientGender, ClientStatus } from './enum';
 
 @Entity('client')
 export class Client {
@@ -19,8 +20,8 @@ export class Client {
     @Column({ comment: '头像URL', default: '' })
         avatar: string;
 
-    @Column({ comment: '性别', default: 0, type: 'tinyint' })
-        gender: number;
+    @Column({ comment: '性别', default: ClientGender.UNKNOWN, type: 'enum', enum: ClientGender })
+        gender: ClientGender;
 
     @Column({ comment: '邮箱', default: '' })
         email: string;
@@ -28,6 +29,6 @@ export class Client {
     @Column({ comment: '联系电话', default: '' })
         phone: string;
 
-    @Column({ comment: '状态，0-禁用 1-启用', default: 1, type: 'tinyint' })
-        status: number;
+    @Column({ comment: '状态', default: ClientStatus.ENABLE, type: 'enum', enum: ClientStatus })
+        status: ClientStatus;
 }

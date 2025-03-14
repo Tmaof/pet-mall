@@ -6,14 +6,15 @@ import { AdminOrderController } from './controller/admin-order.controller';
 import { OrderController } from './controller/client-order.controller';
 import { OrderItem } from './entity/order-item.entity';
 import { Order } from './entity/order.entity';
-import { OrderService } from './service/order.service';
+import { ClientOrderService } from './service/client-order.service';
+import { AdminOrderService } from './service/admin-order.service';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([Order, OrderItem, Product, Address]),
     ],
     controllers: [OrderController, AdminOrderController],
-    providers: [OrderService],
-    exports: [OrderService],
+    providers: [ClientOrderService, AdminOrderService],
+    exports: [ClientOrderService, AdminOrderService],
 })
 export class OrderModule {}

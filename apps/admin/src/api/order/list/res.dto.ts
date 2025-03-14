@@ -1,1 +1,1 @@
-export { OrderDto, OrderListDto } from 'server-mdl/order/res-dto'
+export { AdminOrderDto as OrderDto, AdminOrderListDto as OrderListDto } from 'server-mdl/order/res-dto'

@@ -2,15 +2,16 @@ import { Address } from '@/modules/client/address/address.entity';
 import { Product } from '@/modules/product/product/product.entity';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Between, DataSource, Repository } from 'typeorm';
 import { OrderItem } from '../entity/order-item.entity';
 import { Order } from '../entity/order.entity';
-import { OrderStatus, ShippingMethod } from '../enum';
-import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto, UpdateOrderStatusDto } from '../req-dto';
-import { OrderDto, OrderListDto } from '../res-dto';
+import { OrderStatus } from '../enum';
+import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto } from '../req-dto';
+import { ClientOrderDto, ClientOrderListDto } from '../res-dto';
+import { validateStatusChange } from '../utils';
 
 @Injectable()
-export class OrderService {
+export class ClientOrderService {
     constructor (
         @InjectRepository(Order)
         private orderRepository: Repository<Order>,
@@ -26,7 +27,7 @@ export class OrderService {
     /**
      * 创建订单
      */
-    async create (clientId: number, createOrderDto: CreateOrderDto): Promise<OrderDto> {
+    async create (clientId: number, createOrderDto: CreateOrderDto): Promise<ClientOrderDto> {
         const { items, addressId, remark } = createOrderDto;
 
         // 使用事务确保数据一致性
@@ -117,7 +118,7 @@ export class OrderService {
     /**
      * 查询订单列表
      */
-    async findAll (clientId: number, queryOrderDto: QueryOrderDto): Promise<OrderListDto> {
+    async findAll (clientId: number, queryOrderDto: QueryOrderDto): Promise<ClientOrderListDto> {
         const {
             id,
             status,
@@ -134,10 +135,7 @@ export class OrderService {
 
         // 日期范围查询
         if (startDate && endDate) {
-            where.createdAt = {
-                $gte: new Date(startDate),
-                $lte: new Date(endDate),
-            };
+            where.createdAt = Between(new Date(startDate), new Date(endDate));
         }
 
         // 执行查询
@@ -161,7 +159,7 @@ export class OrderService {
     /**
      * 查询单个订单
      */
-    async findOne (clientId: number, id: number): Promise<OrderDto> {
+    async findOne (clientId: number, id: number): Promise<ClientOrderDto> {
         const order = await this.orderRepository.findOne({
             where: { id, clientId },
             relations: ['orderItems'],
@@ -177,7 +175,7 @@ export class OrderService {
     /**
      * 【客户】更新订单状态
      */
-    async updateStatus (clientId: number, id: number, updateOrderStatusDto: UpdateOrderStatusByClientDto): Promise<OrderDto> {
+    async updateStatus (clientId: number, id: number, updateOrderStatusDto: UpdateOrderStatusByClientDto): Promise<ClientOrderDto> {
         const { status } = updateOrderStatusDto;
 
         // 使用事务进行更新
@@ -197,7 +195,7 @@ export class OrderService {
             }
 
             // 2. 验证状态更新的合法性
-            this.validateStatusChange(order.status, status);
+            validateStatusChange(order.status, status);
 
 
             // 如果是取消订单，需要归还库存
@@ -234,115 +232,14 @@ export class OrderService {
     /**
      * 【客户】取消订单
      */
-    async cancelOrder (clientId: number, id: number): Promise<OrderDto> {
+    async cancelOrder (clientId: number, id: number): Promise<ClientOrderDto> {
         return this.updateStatus(clientId, id, { status: OrderStatus.CANCELED_BY_CLIENT });
-    }
-
-    /**
-     * 【管理员】更新订单状态
-     */
-    async adminUpdateStatus (id: number, updateOrderStatusDto: UpdateOrderStatusDto): Promise<OrderDto> {
-        const { status, trackingNumber, shippingCompany } = updateOrderStatusDto;
-
-        // 使用事务进行更新
-        const queryRunner = this.dataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-
-        try {
-            // 1. 验证订单存在
-            const order = await this.orderRepository.findOne({
-                where: { id },
-                relations: ['orderItems'],
-            });
-
-            if (!order) {
-                throw new NotFoundException('订单不存在');
-            }
-
-            // 2. 验证状态更新的合法性
-            this.validateStatusChange(order.status, status);
-
-            // 3. 更新订单状态
-            order.status = status;
-
-            // 如果是取消订单，需要归还库存
-            if (status === OrderStatus.CANCELED_BY_ADMIN) {
-                // 待支付状态的订单取消才需要归还库存
-                // 已支付，取消订单，需要归还库存
-                // if (order.status === OrderStatus.PENDING_PAYMENT) {
-                for (const item of order.orderItems) {
-                    const product = await this.productRepository.findOne({ where: { id: item.productId } });
-                    if (product) {
-                        product.stock += item.quantity;
-                        await queryRunner.manager.save(product);
-                    }
-                }
-            }
-
-            // 5. 更新物流信息
-            if (status === OrderStatus.SHIPPED && trackingNumber && shippingCompany) {
-                order.trackingNumber = trackingNumber;
-                order.shippingCompany = shippingCompany;
-                order.shippingMethod = ShippingMethod.EXPRESS;
-            }
-
-            // 6. 保存更新
-            await queryRunner.manager.save(order);
-
-            // 提交事务
-            await queryRunner.commitTransaction();
-
-            // 返回更新后的订单
-            return this.toOrderDto(order);
-        } catch (error) {
-            // 回滚事务
-            await queryRunner.rollbackTransaction();
-            throw error;
-        } finally {
-            // 释放资源
-            await queryRunner.release();
-        }
-    }
-
-    /**
-     * 验证订单状态变更的合法性
-     */
-    private validateStatusChange (currentStatus: OrderStatus, newStatus: OrderStatus): void {
-        // 状态流转验证规则
-        const validTransitions = {
-            // 初始态：待付款
-            [OrderStatus.PENDING_PAYMENT]: [
-                OrderStatus.CANCELED_BY_CLIENT,
-                OrderStatus.CANCELED_BY_ADMIN,
-                OrderStatus.FAILED_NO_STOCK,
-            ],
-            // 待发货
-            [OrderStatus.PENDING_SHIPMENT]: [
-                OrderStatus.SHIPPED,
-                OrderStatus.CANCELED_BY_ADMIN,
-            ],
-            // 已发货
-            [OrderStatus.SHIPPED]: [
-                OrderStatus.COMPLETED,
-            ],
-            // 终态：已完成、已取消、失败
-            [OrderStatus.COMPLETED]: [],
-            [OrderStatus.CANCELED_BY_CLIENT]: [],
-            [OrderStatus.CANCELED_BY_ADMIN]: [],
-            [OrderStatus.FAILED_NO_STOCK]: [],
-            [OrderStatus.CLOSED_NO_PAY]: [],
-        };
-
-        if (!validTransitions[currentStatus].includes(newStatus)) {
-            throw new BadRequestException(`订单状态不能从 ${currentStatus} 变更为 ${newStatus}`);
-        }
     }
 
     /**
      * 转换为DTO
      */
-    private toOrderDto (order: Order): OrderDto {
+    private toOrderDto (order: Order): ClientOrderDto {
         return {
             id: order.id,
             clientId: order.clientId,

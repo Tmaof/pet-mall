@@ -1,7 +1,9 @@
 import { OrderStatus } from '@/api/order/list/enum'
+import i18n from '@/i18n'
+import { Ref } from 'vue'
 
 interface OrderStatusOption {
-  label: string
+  label: Ref<string>
   value: OrderStatus
 }
 
@@ -11,21 +13,21 @@ interface OrderStatusOption {
 export function useOrderStatus() {
   /** 订单状态选项 */
   const orderStatusOptions: OrderStatusOption[] = [
-    { label: '待付款', value: OrderStatus.PENDING_PAYMENT },
-    { label: '待发货', value: OrderStatus.PENDING_SHIPMENT },
-    { label: '已发货', value: OrderStatus.SHIPPED },
-    { label: '已完成', value: OrderStatus.COMPLETED },
-    { label: '已取消(买家)', value: OrderStatus.CANCELED_BY_CLIENT },
-    { label: '已取消(卖家)', value: OrderStatus.CANCELED_BY_ADMIN },
-    { label: '失败(库存不足)', value: OrderStatus.FAILED_NO_STOCK },
-    { label: '已关闭(超时未支付)', value: OrderStatus.CLOSED_NO_PAY }
+    { label: i18n.$t('hooks.useOrderStatus.032603-0'), value: OrderStatus.PENDING_PAYMENT },
+    { label: i18n.$t('hooks.useOrderStatus.032603-1'), value: OrderStatus.PENDING_SHIPMENT },
+    { label: i18n.$t('hooks.useOrderStatus.032603-2'), value: OrderStatus.SHIPPED },
+    { label: i18n.$t('hooks.useOrderStatus.032603-3'), value: OrderStatus.COMPLETED },
+    { label: i18n.$t('hooks.useOrderStatus.032603-4'), value: OrderStatus.CANCELED_BY_CLIENT },
+    { label: i18n.$t('hooks.useOrderStatus.032603-5'), value: OrderStatus.CANCELED_BY_ADMIN },
+    { label: i18n.$t('hooks.useOrderStatus.032603-6'), value: OrderStatus.FAILED_NO_STOCK },
+    { label: i18n.$t('hooks.useOrderStatus.032603-7'), value: OrderStatus.CLOSED_NO_PAY }
   ]
 
   /**
    * 获取订单状态标签
    */
   const getOrderStatusLabel = (status: OrderStatus): string => {
-    return orderStatusOptions.find(item => item.value === status)?.label || '未知状态'
+    return orderStatusOptions.find(item => item.value === status)?.label.value || i18n.$t('hooks.useOrderStatus.101296-11').value
   }
 
   /**

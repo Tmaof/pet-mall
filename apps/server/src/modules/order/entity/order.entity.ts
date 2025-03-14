@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { OrderStatus, ShippingMethod } from '../enum';
 import { OrderItem } from './order-item.entity';
+import { AddressSnapshotDto } from '../res-dto';
 
 @Entity('order')
 export class Order {
@@ -47,7 +48,7 @@ export class Order {
         nullable: true,
         comment: '收货地址快照',
     })
-        addressSnapshot: Record<string, any>;
+        addressSnapshot: AddressSnapshotDto;
 
     @Column({
         name: 'payment_method',

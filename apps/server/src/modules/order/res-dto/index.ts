@@ -1,6 +1,7 @@
 // order.dto.ts
 import { PaymentMethod } from '@/modules/payment/enum';
 import { ShippingMethod } from '../enum';
+import { Client } from '@/modules/client/client/client.entity';
 
 export class OrderItemDto {
     id: number;
@@ -11,12 +12,21 @@ export class OrderItemDto {
     unitPriceSnapshot: number;
 }
 
-export class OrderDto {
+export class AddressSnapshotDto {
+    consignee: string;
+    phone: string;
+    province: string;
+    city: string;
+    district: string;
+    detail: string;
+}
+
+export class ClientOrderDto {
     id: number;
     clientId: number;
     totalAmount: number;
     status: number;
-    addressSnapshot: any;
+    addressSnapshot: AddressSnapshotDto;
     paymentMethod: PaymentMethod;
     paymentTime: Date;
     paymentNo: string;
@@ -29,7 +39,17 @@ export class OrderDto {
     orderItems: OrderItemDto[];
 }
 
-export class OrderListDto {
-    list: OrderDto[];
+export class ClientOrderListDto {
+    list: ClientOrderDto[];
+    total: number;
+}
+
+
+export class AdminOrderDto extends ClientOrderDto {
+    client: Client;
+}
+
+export class AdminOrderListDto {
+    list: AdminOrderDto[];
     total: number;
 }

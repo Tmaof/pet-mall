@@ -12,12 +12,12 @@ import {
     UseGuards
 } from '@nestjs/common';
 import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
-import { OrderService } from '../service/order.service';
+import { ClientOrderService } from '../service/client-order.service';
 
 @Controller('order')
 @UseGuards(JwtGuard)
 export class OrderController {
-    constructor (private readonly orderService: OrderService) {}
+    constructor (private readonly orderService: ClientOrderService) {}
 
     /**
      * 创建订单

@@ -5,21 +5,24 @@ import { PermGuard } from '@/guards/perm.guard';
 import { getCommonRes } from '@/utils';
 import {
     Body,
+    ClassSerializerInterceptor,
     Controller,
     Get,
     Param,
     Put,
     Query,
-    UseGuards
+    UseGuards,
+    UseInterceptors
 } from '@nestjs/common';
 import { QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
-import { OrderService } from '../service/order.service';
+import { AdminOrderService } from '../service/admin-order.service';
 
 @Controller('admin/order')
 @UseGuards(JwtGuard, PermGuard)
 @setNeedPerm(permTree.orderManage)
+@UseInterceptors(ClassSerializerInterceptor)
 export class AdminOrderController {
-    constructor (private readonly orderService: OrderService) {}
+    constructor (private readonly orderService: AdminOrderService) {}
 
     /**
      * 管理员获取所有订单
