@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from '@/store';
+import { fetchClientInfo } from '@/store/modules/client';
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import classNames from 'classnames';
@@ -11,6 +13,8 @@ const ClientCenter = () => {
   const [valueTab, setValueTab] = useState<string>('profile');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { clientInfo } = useAppSelector(state => state.client);
+  const dispatch = useAppDispatch();
 
   // 监听query参数的tabKey
   useEffect(() => {
@@ -25,22 +29,16 @@ const ClientCenter = () => {
     navigate(`/client-center?tabKey=${key}`);
   };
 
+  useEffect(() => {
+    if (!clientInfo) {
+      dispatch(fetchClientInfo());
+    }
+  }, [clientInfo, dispatch]);
+
   return (
     <div className="client-center-page">
       <div className="client-center-container">
-        <div className={classNames('user-info-panel', { collapsed })}>
-          <div className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          </div>
-          <div className="user-info-content">
-            <div className="user-avatar">
-              <UserOutlined />
-            </div>
-            <h2 className="username">用户名</h2>
-            <p className="user-desc">这里是用户简介</p>
-          </div>
-        </div>
-
+        {/* 内容面板 */}
         <div className="content-panel">
           <Tabs
             activeKey={valueTab}
@@ -57,6 +55,23 @@ const ClientCenter = () => {
               children: <div className="tab-content">{tab.children}</div>,
             }))}
           />
+        </div>
+        {/* 用户信息面板 */}
+        <div className={classNames('user-info-panel', { collapsed })}>
+          <div className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </div>
+          <div className="user-info-content">
+            {clientInfo?.avatar ? (
+              <img className="user-avatar" src={clientInfo.avatar} alt="avatar" />
+            ) : (
+              <div className="user-avatar">
+                <UserOutlined />
+              </div>
+            )}
+            <h2 className="username">{clientInfo?.clientname}</h2>
+            <p className="user-desc">{clientInfo?.introduction}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -19,13 +19,14 @@
       width: 280px;
       background: var(--theme-bg-container);
       border-radius: 12px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
+      border: 1px solid var(--theme-divider);
 
       .collapse-btn {
         position: absolute;
         top: 12px;
-        right: 12px;
+        right: 0;
         width: 32px;
         height: 32px;
         display: flex;
@@ -82,15 +83,11 @@
       }
 
       &.collapsed {
-        width: 80px;
-
+        width: 32px;
+        border: none;
         .user-info-content {
           opacity: 0;
           transform: scale(0.8);
-        }
-
-        .collapse-btn {
-          right: 24px;
         }
       }
     }
