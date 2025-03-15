@@ -1,4 +1,5 @@
-import { ReqUser, Public } from '@/decorator/index.decorator';
+import { Public, ReqUser } from '@/decorator/index.decorator';
+import { getCommonRes } from '@/utils';
 import {
     Body, Controller, Get, Param, Post, Query, UseGuards
 } from '@nestjs/common';
@@ -17,7 +18,8 @@ export class PaymentController {
     @ReqUser('clientId') clientId: number,
         @Body() createPaymentDto: CreatePaymentDto
     ) {
-        return this.paymentService.createPayment(clientId, createPaymentDto);
+        const data = await this.paymentService.createPayment(clientId, createPaymentDto);
+        return getCommonRes({ data });
     }
 
     /** 获取支付状态 */
@@ -28,7 +30,8 @@ export class PaymentController {
         // 是否测试使用
         @Query('isTest') isTest: string
     ) {
-        return this.paymentService.getPaymentStatus(clientId, paymentId, isTest);
+        const data = await this.paymentService.getPaymentStatus(clientId, paymentId, isTest);
+        return getCommonRes({ data });
     }
 
     /** 支付回调 */

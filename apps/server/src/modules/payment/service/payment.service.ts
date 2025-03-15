@@ -40,7 +40,7 @@ export class PaymentService {
         }
 
         // 2. 检查是否已有支付记录
-        const existingPayment = await this.paymentRepository.findOne({ where: { order } });
+        const existingPayment = await this.paymentRepository.findOne({ where: { order: { id: order.id } } });
 
         if (existingPayment) {
             // 如果有未支付的记录，且创建时间在xx分钟内，返回已有记录

@@ -2,12 +2,12 @@ import { createOrder } from '@/api/client/order';
 import { CreateOrderDto } from '@/api/client/order/req.dto';
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
 import { useBuyDialog } from '@/components/BuyDialog/hook';
+import { usePaymentQRDia } from '@/components/PaymentQRDia/hook';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchClientAddresses } from '@/store/modules/client';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './index.scss';
 
 interface Props {
@@ -20,7 +20,7 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   const { clientAddresses } = useAppSelector(state => state.client);
   const dispatch = useAppDispatch();
   const { showBuyDialog } = useBuyDialog();
-  const navigate = useNavigate();
+  const { showPaymentQRDia } = usePaymentQRDia();
 
   /** 处理添加购物车 */
   const handleAddToCart = () => {
@@ -55,9 +55,12 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
       items: [{ productId, quantity }],
       addressId,
     };
-    await createOrder(data);
-    // 跳转至支付页面
-    navigate('/payment');
+    const order = await createOrder(data);
+    // 跳转至支付
+    showPaymentQRDia({
+      order,
+      onOk: () => {},
+    });
   };
 
   /** 处理收藏切换 */

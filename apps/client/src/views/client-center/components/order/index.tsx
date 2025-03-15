@@ -1,5 +1,6 @@
 import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS, OrderStatus } from '@/api/client/order/enum';
 import { OrderDto } from '@/api/client/order/res.dto';
+import { usePaymentQRDia } from '@/components/PaymentQRDia/hook';
 import { Button, Card, Empty, Image, Skeleton, Space, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -14,6 +15,7 @@ const Order = () => {
   const navigate = useNavigate();
   const [detailVisible, setDetailVisible] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<OrderDto>();
+  const { showPaymentQRDia } = usePaymentQRDia();
 
   /** 渲染订单状态标签 */
   const renderStatusTag = (status: OrderStatus) => (
@@ -27,7 +29,7 @@ const Order = () => {
     // 待付款订单可以付款和取消
     if (order.status === OrderStatus.PENDING_PAYMENT) {
       actions.push(
-        <Button key="pay" type="primary" onClick={() => navigate(`/payment/${order.id}`)}>
+        <Button key="pay" type="primary" onClick={() => handlePayment(order)}>
           立即付款
         </Button>,
         <Button key="cancel" onClick={() => handleCancelOrder(order.id)}>
@@ -67,6 +69,13 @@ const Order = () => {
   const handleViewDetail = (order: OrderDto) => {
     setCurrentOrder(order);
     setDetailVisible(true);
+  };
+
+  const handlePayment = (order: OrderDto) => {
+    showPaymentQRDia({
+      order,
+      onOk: () => {},
+    });
   };
 
   if (loading) {
