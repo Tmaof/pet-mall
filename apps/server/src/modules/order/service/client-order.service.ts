@@ -9,6 +9,7 @@ import { OrderStatus } from '../enum';
 import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto } from '../req-dto';
 import { ClientOrderDto, ClientOrderListDto } from '../res-dto';
 import { validateStatusChange } from '../utils';
+import { SALE_STATUS } from '@/modules/product/product/enum';
 
 @Injectable()
 export class ClientOrderService {
@@ -54,7 +55,7 @@ export class ClientOrderService {
                     throw new BadRequestException(`商品ID ${item.productId} 不存在`);
                 }
 
-                if (product.isOnSale !== 1) {
+                if (product.isOnSale !== SALE_STATUS.sale) {
                     throw new BadRequestException(`商品 ${product.title} 已下架`);
                 }
 
