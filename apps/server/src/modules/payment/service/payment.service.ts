@@ -40,7 +40,7 @@ export class PaymentService {
         }
 
         // 2. 检查是否已有支付记录
-        const existingPayment = await this.paymentRepository.findOne({ where: { order: { id: order.id } } });
+        const existingPayment = await this.paymentRepository.findOne({ where: { order: { id: order.id } }, relations: ['order'] });
 
         if (existingPayment) {
             // 如果有未支付的记录，且创建时间在xx分钟内，返回已有记录
@@ -77,7 +77,8 @@ export class PaymentService {
         payment.status = PaymentStatus.PENDING;
         payment.codeUrl = h5payResult.code_url;
 
-        const savedPayment = await this.paymentRepository.save(payment);
+        await this.paymentRepository.save(payment);
+        const savedPayment = await this.paymentRepository.findOne({ where: { id: payment.id }, relations: ['order'] });
 
         return this.toPaymentDto(savedPayment);
     }
@@ -185,7 +186,11 @@ export class PaymentService {
     /**
      * 转换为支付DTO
      */
-    private toPaymentDto (payment: Payment): PaymentDto {
+    private async toPaymentDto (payment: Payment): Promise<PaymentDto> {
+        if (!payment.order) {
+            const pay = await this.paymentRepository.findOne({ where: { id: payment.id }, relations: ['order'] });
+            payment = pay;
+        }
         return {
             id: payment.id,
             orderId: payment.order.id,

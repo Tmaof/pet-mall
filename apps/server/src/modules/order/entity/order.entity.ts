@@ -7,14 +7,12 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from 'typeorm';
 import { OrderStatus, ShippingMethod } from '../enum';
-import { OrderItem } from './order-item.entity';
 import { AddressSnapshotDto } from '../res-dto';
-import { Payment } from '@/modules/payment/payment.entity';
+import { OrderItem } from './order-item.entity';
 
 @Entity('order')
 export class Order {
@@ -134,9 +132,4 @@ export class Order {
 
     @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true })
         orderItems: OrderItem[];
-
-    /** 关联支付 */
-    @OneToOne(() => Payment)
-    @JoinColumn({ name: 'payment_id' })
-        payment: Payment;
 }
