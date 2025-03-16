@@ -248,6 +248,8 @@ export class PaymentService {
                     await queryRunner.manager.save(product);
                 }
             }
+            // 提交事务
+            await queryRunner.commitTransaction();
         } catch (err) {
             // 回滚事务
             await queryRunner.rollbackTransaction();
