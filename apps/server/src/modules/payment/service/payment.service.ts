@@ -1,5 +1,6 @@
 import { Order, } from '@/modules/order/entity/order.entity';
 import { OrderStatus } from '@/modules/order/enum';
+import { Product } from '@/modules/product/product/product.entity';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,6 +18,8 @@ export class PaymentService {
         private paymentRepository: Repository<Payment>,
         @InjectRepository(Order)
         private orderRepository: Repository<Order>,
+        @InjectRepository(Product)
+        private productRepository: Repository<Product>,
         private h5payService: H5payService,
         private dataSource: DataSource,
     ) {}
@@ -217,19 +220,41 @@ export class PaymentService {
                 status: PaymentStatus.PENDING,
                 createdAt: LessThan(fiveMinutesAgo),
             },
-            relations: ['order'],
+            relations: ['order', 'order.orderItems'],
         });
         console.info(`【定时任务】处理超时未支付的支付记录：${timeoutPayments.length}`);
-        // 处理超时未支付的支付记录
-        for (const payment of timeoutPayments) {
-            // 1. 更新支付记录状态为已关闭
-            payment.status = PaymentStatus.CLOSED_NO_PAY;
-            await this.paymentRepository.save(payment);
-            // 2. 更新订单状态为 已关闭(超时未支付)
-            const { order } = payment;
-            order.status = OrderStatus.CLOSED_NO_PAY;
-            // 3. todo 归还库存！！！
-            await this.orderRepository.save(order);
+        if (!timeoutPayments.length) return;
+
+        // 使用事务确保数据一致性
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            // 处理超时未支付的支付记录
+            for (const payment of timeoutPayments) {
+                // 1. 更新支付记录状态为已关闭
+                payment.status = PaymentStatus.CLOSED_NO_PAY;
+                await queryRunner.manager.save(payment);
+                // 2. 更新订单状态为 已关闭(超时未支付)
+                const { order } = payment;
+                order.status = OrderStatus.CLOSED_NO_PAY;
+                await queryRunner.manager.save(order);
+                // 3. 归还库存！！！
+                for (const orderItem of order.orderItems) {
+                    const { quantity, productId } = orderItem;
+                    const product = await queryRunner.manager.findOne(Product, { where: { id: productId } });
+                    product.stock += quantity;
+                    await queryRunner.manager.save(product);
+                }
+            }
+        } catch (err) {
+            // 回滚事务
+            await queryRunner.rollbackTransaction();
+            throw err;
+        } finally {
+            // 释放资源
+            await queryRunner.release();
         }
     }
 }

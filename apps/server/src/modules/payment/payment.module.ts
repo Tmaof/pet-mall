@@ -5,9 +5,10 @@ import { PaymentController } from './payment.controller';
 import { Payment } from './payment.entity';
 import { H5payService } from './service/h5pay.service';
 import { PaymentService } from './service/payment.service';
+import { Product } from '../product/product/product.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Payment, Order])],
+    imports: [TypeOrmModule.forFeature([Payment, Order, Product])],
     controllers: [PaymentController],
     providers: [PaymentService, H5payService],
     exports: [PaymentService],
