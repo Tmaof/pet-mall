@@ -128,7 +128,8 @@ export class PaymentService {
                 where: { outTradeNo: out_trade_no },
                 relations: ['order'],
             });
-            if (payment) {
+            // 如果是待支付状态才更新
+            if (payment && payment.status === PaymentStatus.PENDING) {
                 await this.updatePaymentSuccess(payment.id, in_trade_no, trade_no);
             }
         }
@@ -227,6 +228,7 @@ export class PaymentService {
             // 2. 更新订单状态为 已关闭(超时未支付)
             const { order } = payment;
             order.status = OrderStatus.CLOSED_NO_PAY;
+            // 3. todo 归还库存！！！
             await this.orderRepository.save(order);
         }
     }

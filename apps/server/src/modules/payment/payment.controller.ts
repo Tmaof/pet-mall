@@ -1,11 +1,11 @@
 import { Public, ReqUser } from '@/decorator/index.decorator';
+import { JwtGuard } from '@/guards/jwt.guard';
 import { getCommonRes } from '@/utils';
 import {
     Body, Controller, Get, Param, Post, Query, UseGuards
 } from '@nestjs/common';
 import { CreatePaymentDto, NotifyData } from './req-dto';
 import { PaymentService } from './service/payment.service';
-import { JwtGuard } from '@/guards/jwt.guard';
 
 @Controller('payments')
 @UseGuards(JwtGuard)
@@ -37,7 +37,9 @@ export class PaymentController {
     /** 支付回调 */
     @Public() // 标记为公开接口
     @Post('notify')
-    async paymentNotify (@Body() notifyData: NotifyData) {
-        return await this.paymentService.handlePaymentNotify(notifyData);
+    // async paymentNotify (@Body() notifyData: NotifyData) { // 不需要 ReqValidationPipe 验证，否则会缺少请求参数，导致签名校验失败
+    async paymentNotify (@Body() notifyData:any) {
+        const data = await this.paymentService.handlePaymentNotify(notifyData as NotifyData);
+        return data;
     }
 }

@@ -8,6 +8,7 @@ import { createHash } from 'crypto';
 import { serverConfig } from 'config';
 import { ConfigEnum } from 'config/env/config.enum';
 import { H5payResDto } from '../res-dto';
+import { NotifyData } from '../req-dto';
 
 
 /** 支付配置 */
@@ -112,15 +113,14 @@ export class H5payService {
     }
 
     /** 校验支付回调 https://h5zhifu.com/doc/api/notify.html */
-    async VerifyPaymentNotify (notifyData: any): Promise<{
+    async VerifyPaymentNotify (notifyData: NotifyData): Promise<{
         success: boolean;
         resData: 'fail' | 'success';
     }> {
         // 1. 验证签名
-        const { sign } = notifyData;
-        delete notifyData.sign;
+        const { sign, ...rest } = notifyData;
 
-        const generatedSign = this.generateSign(notifyData);
+        const generatedSign = this.generateSign(rest);
         if (sign !== generatedSign) {
             return { success: false, resData: 'fail' };
         }
