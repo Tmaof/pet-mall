@@ -3,12 +3,12 @@ import { getCommonRes } from '@/utils';
 import {
     Body, Controller, Get, Param, Post, Query, UseGuards
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { CreatePaymentDto, NotifyData } from './req-dto';
 import { PaymentService } from './service/payment.service';
+import { JwtGuard } from '@/guards/jwt.guard';
 
 @Controller('payments')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtGuard)
 export class PaymentController {
     constructor (private readonly paymentService: PaymentService) {}
 
@@ -35,8 +35,8 @@ export class PaymentController {
     }
 
     /** 支付回调 */
-    @Post('notify')
     @Public() // 标记为公开接口
+    @Post('notify')
     async paymentNotify (@Body() notifyData: NotifyData) {
         return await this.paymentService.handlePaymentNotify(notifyData);
     }
