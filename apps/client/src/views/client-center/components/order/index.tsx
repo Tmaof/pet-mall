@@ -11,7 +11,7 @@ import './index.scss';
 
 /** 订单列表 */
 const Order = () => {
-  const { orderList, loading, handleCancelOrder } = useOrderList();
+  const { orderList, loading, handleCancelOrder, handleConfirmReceipt } = useOrderList();
   const navigate = useNavigate();
   const [detailVisible, setDetailVisible] = useState(false);
   const [currentOrder, setCurrentOrder] = useState<OrderDto>();
@@ -41,7 +41,7 @@ const Order = () => {
     // 已发货订单可以确认收货
     if (order.status === OrderStatus.SHIPPED) {
       actions.push(
-        <Button key="confirm" type="primary" onClick={() => navigate(`/order/${order.id}`)}>
+        <Button key="confirm" type="primary" onClick={() => handleConfirmReceipt(order)}>
           确认收货
         </Button>
       );
@@ -71,6 +71,7 @@ const Order = () => {
     setDetailVisible(true);
   };
 
+  /** 点击立即付款 */
   const handlePayment = (order: OrderDto) => {
     showPaymentQRDia({
       order,

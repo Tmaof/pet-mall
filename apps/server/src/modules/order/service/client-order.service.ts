@@ -1,4 +1,5 @@
 import { Address } from '@/modules/client/address/address.entity';
+import { SALE_STATUS } from '@/modules/product/product/enum';
 import { Product } from '@/modules/product/product/product.entity';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,8 +9,7 @@ import { Order } from '../entity/order.entity';
 import { OrderStatus } from '../enum';
 import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto } from '../req-dto';
 import { ClientOrderDto, ClientOrderListDto } from '../res-dto';
-import { validateStatusChange } from '../utils';
-import { SALE_STATUS } from '@/modules/product/product/enum';
+import { validateStatusChangeByClient } from '../utils';
 
 @Injectable()
 export class ClientOrderService {
@@ -196,7 +196,7 @@ export class ClientOrderService {
             }
 
             // 2. 验证状态更新的合法性
-            validateStatusChange(order.status, status);
+            validateStatusChangeByClient(order.status, status);
 
 
             // 如果是取消订单，需要归还库存
@@ -213,6 +213,7 @@ export class ClientOrderService {
                 }
             }
             // 6. 保存更新
+            order.status = status;
             await queryRunner.manager.save(order);
 
             // 提交事务

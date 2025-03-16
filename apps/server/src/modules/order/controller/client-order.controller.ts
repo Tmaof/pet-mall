@@ -11,7 +11,7 @@ import {
     Query,
     UseGuards
 } from '@nestjs/common';
-import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
+import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto } from '../req-dto';
 import { ClientOrderService } from '../service/client-order.service';
 
 @Controller('order')
@@ -62,7 +62,7 @@ export class OrderController {
     async updateStatus (
     @ReqUser('clientId') clientId: number,
         @Param('id') id: string,
-        @Body() updateOrderStatusDto: UpdateOrderStatusDto
+        @Body() updateOrderStatusDto: UpdateOrderStatusByClientDto
     ) {
         const data = await this.orderService.updateStatus(clientId, +id, updateOrderStatusDto);
         return getCommonRes({ data });

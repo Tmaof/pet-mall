@@ -1,1 +1,5 @@
-export { CreateOrderDto, QueryOrderDto } from 'server-mdl/order/req-dto';
+export {
+  CreateOrderDto,
+  QueryOrderDto,
+  UpdateOrderStatusByClientDto,
+} from 'server-mdl/order/req-dto';

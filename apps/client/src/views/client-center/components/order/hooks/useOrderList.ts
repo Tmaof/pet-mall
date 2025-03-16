@@ -1,6 +1,6 @@
-import { cancelOrder, getOrderList } from '@/api/client/order';
+import { cancelOrder, confirmOrder, getOrderList } from '@/api/client/order';
 import { OrderDto } from '@/api/client/order/res.dto';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { useEffect, useState } from 'react';
 
 export function useOrderList() {
@@ -30,6 +30,13 @@ export function useOrderList() {
     });
   };
 
+  /** 点击确认收货 */
+  const handleConfirmReceipt = async (order: OrderDto) => {
+    await confirmOrder(order.id);
+    message.success('收货成功！');
+    loadOrderList();
+  };
+
   useEffect(() => {
     loadOrderList();
   }, []);
@@ -38,5 +45,6 @@ export function useOrderList() {
     orderList,
     loading,
     handleCancelOrder,
+    handleConfirmReceipt,
   };
 }

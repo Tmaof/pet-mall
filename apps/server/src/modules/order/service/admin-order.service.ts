@@ -8,7 +8,7 @@ import { Order } from '../entity/order.entity';
 import { OrderStatus, ShippingMethod } from '../enum';
 import { QueryOrderDto, UpdateOrderStatusDto } from '../req-dto';
 import { AdminOrderDto, AdminOrderListDto } from '../res-dto';
-import { validateStatusChange } from '../utils';
+import { validateStatusChangeByAdmin } from '../utils';
 
 @Injectable()
 export class AdminOrderService {
@@ -104,7 +104,7 @@ export class AdminOrderService {
             }
 
             // 2. 验证状态更新的合法性
-            validateStatusChange(order.status, status);
+            validateStatusChangeByAdmin(order.status, status);
 
             // 3. 更新订单状态
             order.status = status;
