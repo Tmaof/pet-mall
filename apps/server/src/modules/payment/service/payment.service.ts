@@ -125,16 +125,17 @@ export class PaymentService {
      */
     async handlePaymentNotify (notifyData: NotifyData): Promise<string> {
         const { success, resData } = await this.h5payService.VerifyPaymentNotify(notifyData);
-        if (success) {
-            const { out_trade_no, in_trade_no, trade_no } = notifyData;
-            const payment = await this.paymentRepository.findOne({
-                where: { outTradeNo: out_trade_no },
-                relations: ['order'],
-            });
-            // 如果是待支付状态才更新
-            if (payment && payment.status === PaymentStatus.PENDING) {
-                await this.updatePaymentSuccess(payment.id, in_trade_no, trade_no);
-            }
+        if (!success) {
+            throw new BadRequestException('支付回调签名验证失败');
+        }
+        const { out_trade_no, in_trade_no, trade_no } = notifyData;
+        const payment = await this.paymentRepository.findOne({
+            where: { outTradeNo: out_trade_no },
+            relations: ['order'],
+        });
+        // 如果是待支付状态才更新
+        if (payment && payment.status === PaymentStatus.PENDING) {
+            await this.updatePaymentSuccess(payment.id, in_trade_no, trade_no);
         }
         return resData;
     }
