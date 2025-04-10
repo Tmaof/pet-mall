@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { userMenuItems } from './constants';
 import './index.scss';
 import AiSearchImg from '@/assets/svg/ai-search-img.svg';
+import { useAiImgSearch } from '@/components/AiImgSearch/hook';
 
 const Header: FC = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Header: FC = () => {
     navigate(item.path);
   };
 
+  const { showAiImgSearch } = useAiImgSearch();
+
   return (
     <header className="index-header">
       <div className="header-content">
@@ -22,7 +25,12 @@ const Header: FC = () => {
           Mall
         </div>
         <div className="header-right">
-          <img src={AiSearchImg} alt="ai-search" className="icon-btn" />
+          <img
+            src={AiSearchImg}
+            alt="ai-search"
+            className="icon-btn"
+            onClick={() => showAiImgSearch({ open: true })}
+          />
           <Badge count={5} size="small">
             <ShoppingCartOutlined
               className="icon-btn"

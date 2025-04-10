@@ -1,0 +1,61 @@
+.ai-img-search {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--theme-text-primary);
+  }
+
+  &-mode-switch {
+    display: flex;
+    gap: 10px;
+  }
+
+  &-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &-preview {
+    width: 40%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  &-spinner {
+    color: var(--theme-primary);
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+
+  &-error {
+    color: var(--theme-danger);
+    text-align: center;
+    padding: 20px;
+  }
+
+  &-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+}

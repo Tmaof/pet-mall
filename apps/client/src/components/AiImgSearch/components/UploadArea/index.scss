@@ -1,0 +1,32 @@
+.ai-img-search-upload-area {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: #1890ff;
+  }
+
+  &.is-processing {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  &-icon {
+    font-size: 48px;
+    color: #d9d9d9;
+    margin-bottom: 16px;
+  }
+
+  &-text {
+    color: #666;
+    font-size: 14px;
+  }
+}
