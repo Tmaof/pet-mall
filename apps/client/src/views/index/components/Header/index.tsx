@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userMenuItems } from './constants';
 import './index.scss';
+import AiSearchImg from '@/assets/svg/ai-search-img.svg';
 
 const Header: FC = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Header: FC = () => {
           Mall
         </div>
         <div className="header-right">
+          <img src={AiSearchImg} alt="ai-search" className="icon-btn" />
           <Badge count={5} size="small">
             <ShoppingCartOutlined
               className="icon-btn"
