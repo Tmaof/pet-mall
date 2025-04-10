@@ -1,4 +1,4 @@
-import { ShowDialogProvider } from '@/utils/show-dialog';
+import { RootLayout } from '@/layout';
 import { Signin } from '@/views/auth/signin';
 import { Signup } from '@/views/auth/signup';
 import { ClientCenter } from '@/views/client-center';
@@ -6,15 +6,7 @@ import { Details } from '@/views/details';
 import { Index } from '@/views/index';
 import { Payment } from '@/views/payment';
 import { Search } from '@/views/search';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
-
-const RootLayout = () => {
-  return (
-    <ShowDialogProvider>
-      <Outlet />
-    </ShowDialogProvider>
-  );
-};
+import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {

@@ -3,7 +3,6 @@ import { fetchHomeData } from '@/store/modules/index';
 import { FC, useEffect } from 'react';
 import { CategoryNav } from './components/CategoryNav';
 import { Footer } from './components/Footer';
-import { Header } from './components/Header';
 import { ProductModules } from './components/ProductModules';
 import { SearchBar } from './components/SearchBar';
 import './index.scss';
@@ -18,7 +17,6 @@ const Index: FC = () => {
 
   return (
     <div className="index-page">
-      <Header />
       <div className="index-content">
         <CategoryNav />
         <SearchBar />
