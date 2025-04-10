@@ -40,7 +40,7 @@ export class HomePageService {
         const recentDate = new Date(nowDate.getTime() - (HOME_MODULE_CONFIG.NEW_PRODUCTS_DAYS * 24 * 60 * 60 * 1000));
 
         // 查询最新商品
-        const products = await this.productRepository.find({
+        let products = await this.productRepository.find({
             where: {
                 createdAt: MoreThanOrEqual(recentDate),
                 isOnSale: SALE_STATUS.sale,
@@ -51,7 +51,14 @@ export class HomePageService {
         });
 
         // 如果没有商品则不返回此模块
-        if (!products.length) return null;
+        // if (!products.length) return null;
+        // 如果没有商品 则返回最近的前x个商品
+        if (!products.length) {
+            products = await this.productRepository.find({
+                order: { createdAt: 'DESC' },
+                take: 8,
+            });
+        }
 
         return {
             name: HomeModuleType.new.name,
