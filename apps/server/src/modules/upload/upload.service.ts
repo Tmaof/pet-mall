@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { staticPrefix, uploadDir } from 'config';
+import { existsSync, unlink } from 'fs';
 import { join } from 'path';
-import { unlink, existsSync } from 'fs';
 import { promisify } from 'util';
-import { uploadDir, staticPrefix } from 'config';
 import { UploadFilesResDto } from './res-dto/res-dto';
 const unlinkAsync = promisify(unlink);
 
@@ -22,7 +22,7 @@ export class UploadService {
         await Promise.all(files.map(async (file) => {
             try {
                 // 校验
-                const { size, originalname } = file;
+                const { size, originalname, filename } = file;
                 const num = 20;
                 if (size > num * 1024 * 1024) {
                     throw new Error(`文件大小超过${num}MB`);
@@ -32,7 +32,7 @@ export class UploadService {
                 // }
 
                 // 保存成功的文件
-                result.succMap[originalname] = join(staticPrefix, file.filename);
+                result.succMap[originalname] = join(staticPrefix, filename);
             } catch (error) {
                 // 记录失败的文件
                 result.errFiles.push(file.originalname);

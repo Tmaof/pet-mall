@@ -21,6 +21,9 @@ if (!existsSync(uploadDir)) {
             storage: diskStorage({
                 destination: uploadDir,
                 filename: (req, file, cb) => {
+                    // 解码文件原始名称，防止中文乱码
+                    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
+                    /** 保存时的文件名 */
                     const filename = getUploadFilename(file);
                     return cb(null, filename);
                 },

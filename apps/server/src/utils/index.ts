@@ -1,3 +1,4 @@
+import { FILE_NAME_INVALID_CHARS } from '@/constant/index';
 import { ResCodeEnum } from '@/enum';
 
 class CommonResponse<DataT> {
@@ -69,7 +70,7 @@ export function getUploadFilename (file:Express.Multer.File) {
     const date = new Date();
     const filename = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}-${date.getMilliseconds()}_${file.originalname}`;
     // 文件名不能包含特殊字符
-    return filename.replace(/[^a-zA-Z0-9-_.]/g, '');
+    return filename.replace(FILE_NAME_INVALID_CHARS, '');
 }
 
 /**
