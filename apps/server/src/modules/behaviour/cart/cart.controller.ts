@@ -26,7 +26,7 @@ export class CartController {
         @Query('pageSize') pageSize = 10,
     ) {
         const data = await this.cartService.getCartList(clientId, page, pageSize);
-        return getCommonRes(data);
+        return getCommonRes({ data });
     }
 
     /**
