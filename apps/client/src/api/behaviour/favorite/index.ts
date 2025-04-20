@@ -2,10 +2,11 @@ import request from '@/utils/request';
 import { FavoriteListResDto } from './res.dto';
 
 /** 获取收藏列表 */
-export const getFavoriteList = () =>
+export const getFavoriteList = (data: { page: number; pageSize: number }) =>
   request<FavoriteListResDto>({
     url: '/favorite/list',
     method: 'GET',
+    params: data,
   });
 
 /**
@@ -31,6 +32,6 @@ export const cancelCollectGoods = (id: number) =>
  */
 export const fetchIsCollected = (productId: number) =>
   request<boolean>({
-    url: `/favorite/${productId}`,
+    url: `/favorite/item/${productId}`,
     method: 'GET',
   });

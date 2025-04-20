@@ -1,1 +1,1 @@
-export type { FavoriteListResDto } from 'server-mdl/client/favorite/res-dto/index';
+export type { FavoriteItemDto, FavoriteListResDto } from 'server-mdl/client/favorite/res-dto/index';

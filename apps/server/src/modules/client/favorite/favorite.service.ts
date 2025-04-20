@@ -59,7 +59,10 @@ export class FavoriteService {
             relations: ['product'],
         });
         return {
-            items: items.map((item) => toProductDto(item.product)),
+            items: items.map((item) => ({
+                ...toProductDto(item.product),
+                favoriteTime: item.createdAt.toISOString(),
+            })),
             total,
         };
     }
