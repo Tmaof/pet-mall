@@ -28,7 +28,7 @@ export class FavoriteController {
      * 判断当前客户是否收藏了该商品
      * @param productId 商品ID
      */
-    @Get(':productId')
+    @Get('item/:productId')
     async isFavorite (@Req() req, @Param('productId') productId: number,) {
         const { clientId } = getClientInfoOfReq(req);
         const data = await this.favoriteService.isFavored(clientId, productId);
