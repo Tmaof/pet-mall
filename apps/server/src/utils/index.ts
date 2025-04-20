@@ -1,5 +1,7 @@
 import { FILE_NAME_INVALID_CHARS } from '@/constant/index';
 import { ResCodeEnum } from '@/enum';
+import { clientJwtParsed, JwtPayloadParsed, userJwtParsed } from '@/modules/jwt/types';
+import { ForbiddenException } from '@nestjs/common';
 
 class CommonResponse<DataT> {
     data: DataT;
@@ -96,4 +98,42 @@ export function extractMatchContext (
     if (end < text.length) result = `${result}...`;
 
     return result;
+}
+
+
+/**
+ * 从请求req中获取token的原信息。
+ * 如果没有token，抛出异常。
+ *
+ * 是客户登录，且token中没有clientId，抛出异常。
+ * @param req
+ * @returns
+ */
+export function getClientInfoOfReq (request) {
+    const info = request.user as JwtPayloadParsed;
+    if (!info) {
+        throw new ForbiddenException('未登录');
+    }
+    if ('clientId' in info) {
+        return info as clientJwtParsed;
+    }
+    throw new ForbiddenException('非客户登录');
+}
+
+/**
+ * 从请求req中获取token的原信息。
+ * 如果没有token，抛出异常。
+ * 是员工登录，且token中没有userId，抛出异常。
+ * @param req
+ * @returns
+ */
+export function getUserInfoOfReq (request) {
+    const info = request.user as JwtPayloadParsed;
+    if (!info) {
+        throw new ForbiddenException('未登录');
+    }
+    if ('userId' in info) {
+        return info as userJwtParsed;
+    }
+    throw new ForbiddenException('非员工登录');
 }
