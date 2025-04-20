@@ -23,7 +23,7 @@ import { ClientAddressModule } from './modules/client/address/address.module';
 import { OrderModule } from './modules/order/order.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { FavoriteModule } from './modules/client/favorite/favorite.module';
+import { FavoriteModule } from './modules/behaviour/favorite/favorite.module';
 
 
 @Global()
