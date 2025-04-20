@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { fetchClientAddresses } from '@/store/modules/client';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useCollect } from './hooks/useCollect';
 import './index.scss';
 
 interface Props {
@@ -16,11 +17,12 @@ interface Props {
 }
 
 const ProductInfo: FC<Props> = ({ data, loading }) => {
-  const [isCollected, setIsCollected] = useState(false);
   const { clientAddresses } = useAppSelector(state => state.client);
   const dispatch = useAppDispatch();
   const { showBuyDialog } = useBuyDialog();
   const { showPaymentQRDia } = usePaymentQRDia();
+  /** 处理收藏 */
+  const { isCollected, handleCollectToggle } = useCollect(data?.id || 0);
 
   /** 处理添加购物车 */
   const handleAddToCart = () => {
@@ -61,12 +63,6 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
       order,
       onOk: () => {},
     });
-  };
-
-  /** 处理收藏切换 */
-  const handleCollectToggle = () => {
-    setIsCollected(prev => !prev);
-    message.success(isCollected ? '已取消收藏' : '收藏成功');
   };
 
   if (loading) {
