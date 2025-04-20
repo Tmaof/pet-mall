@@ -24,7 +24,7 @@ import { OrderModule } from './modules/order/order.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FavoriteModule } from './modules/behaviour/favorite/favorite.module';
-
+import { CartModule } from './modules/behaviour/cart/cart.module';
 
 @Global()
 @Module({
@@ -86,6 +86,8 @@ import { FavoriteModule } from './modules/behaviour/favorite/favorite.module';
         PaymentModule,
         // 收藏
         FavoriteModule,
+        // 购物车
+        CartModule,
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */

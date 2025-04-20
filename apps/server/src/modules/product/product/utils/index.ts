@@ -1,5 +1,5 @@
 import { Product } from '../product.entity';
-import { ProductDto } from '../res-dto/product.dto';
+import { ProductBriefDto, ProductDto } from '../res-dto/product.dto';
 
 /**
  * 将商品实体转换为DTO
@@ -19,5 +19,25 @@ export function toProductDto (product: Product): ProductDto {
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
         tags: product.tags,
+    };
+}
+
+/**
+ *  将商品实体转换为 简单商品信息 DTO
+ * @param product
+ * @returns
+ */
+export function toProductBriefDto (product: Product): ProductBriefDto {
+    return {
+        id: product.id,
+        title: product.title,
+        categoryId: product.categoryId,
+        categoryName: product.category?.name || '',
+        mainImage: product.mainImage,
+        price: Number(product.price),
+        stock: product.stock,
+        isOnSale: product.isOnSale,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
     };
 }
