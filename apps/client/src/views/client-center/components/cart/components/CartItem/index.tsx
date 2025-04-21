@@ -4,6 +4,7 @@ import { isDisabledOfProduct } from '@/utils';
 import { Card, Image, InputNumber, Space, Tag, Typography } from 'antd';
 import { useMemo } from 'react';
 import './index.scss';
+import dayjs from 'dayjs';
 
 const { Text } = Typography;
 
@@ -16,7 +17,7 @@ interface CartItemProps {
  * 购物车项组件
  */
 export const CartItem = ({ item, onQuantityChange }: CartItemProps) => {
-  const { id, product, count } = item;
+  const { id, product, count, createdAt } = item;
   const { mainImage, title, price, stock, isOnSale } = product;
   const isDisabled = isDisabledOfProduct(product);
 
@@ -58,6 +59,7 @@ export const CartItem = ({ item, onQuantityChange }: CartItemProps) => {
             onChange={value => onQuantityChange(id, value || 1)}
             disabled={isDisabled}
           />
+          <Text type="secondary">加购时间：{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
         </Space>
       </Space>
     </Card>
