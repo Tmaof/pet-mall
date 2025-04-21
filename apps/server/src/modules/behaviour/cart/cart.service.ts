@@ -2,9 +2,9 @@ import { Client } from '@/modules/client/client/client.entity';
 import { Product } from '@/modules/product/product/product.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Cart } from './cart.entity';
-import { AddToCartDto, UpdateCartItemDto } from './req-dto';
+import { AddToCartDto, DeleteCartItemsDto, UpdateCartItemDto } from './req-dto';
 import { CartListDto } from './res-dto';
 import { toCartItemDto } from './utils';
 
@@ -110,6 +110,24 @@ export class CartService {
     async removeCartItem (clientId: Client['id'], cartItemId: number) {
         const res = await this.cartRepository.delete({
             id: cartItemId,
+            client: { id: clientId },
+        });
+
+        if (res.affected === 0) {
+            throw new NotFoundException('购物车项不存在');
+        }
+    }
+
+    /**
+     * 从购物车移除商品 多个
+     * @param client 当前用户
+     * @param dto 移除请求 DTO
+     * @returns 操作结果
+     */
+    async removeCartItems (clientId: Client['id'], dto: DeleteCartItemsDto) {
+        const { cartItemIds } = dto;
+        const res = await this.cartRepository.delete({
+            id: In(cartItemIds),
             client: { id: clientId },
         });
 

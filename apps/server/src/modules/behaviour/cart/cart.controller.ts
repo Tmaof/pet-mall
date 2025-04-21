@@ -1,3 +1,4 @@
+import { DeleteCartItemsDto } from './req-dto/index';
 import { ReqUser } from '@/decorator/index.decorator';
 import { JwtGuard } from '@/guards/jwt.guard';
 import { Client } from '@/modules/client/client/client.entity';
@@ -58,6 +59,16 @@ export class CartController {
         @Param('cartItemId') cartItemId: number,
     ) {
         await this.cartService.removeCartItem(clientId, cartItemId);
+        return getCommonRes();
+    }
+
+    /** 移除购物车商品 多个 */
+    @Delete('items')
+    async removeCartItems (
+    @ReqUser('clientId') clientId: Client['id'],
+        @Body() dto: DeleteCartItemsDto,
+    ) {
+        await this.cartService.removeCartItems(clientId, dto);
         return getCommonRes();
     }
 

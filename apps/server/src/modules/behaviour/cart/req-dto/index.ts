@@ -1,4 +1,5 @@
 import {
+    IsArray,
     IsInt, IsNotEmpty, IsNumber, IsPositive,
     Min
 } from 'class-validator';
@@ -31,4 +32,14 @@ export class UpdateCartItemDto {
     @IsNumber({}, { message: '商品数量必须是数字' })
     @Min(1, { message: '商品数量不能小于1' })
         quantity: number;
+}
+
+/**
+ * 删除购物车项参数
+ */
+export class DeleteCartItemsDto {
+    /** 购物车项ID列表 */
+    @IsNotEmpty({ message: '购物车项ID列表不能为空' })
+    @IsArray()
+        cartItemIds: number[];
 }
