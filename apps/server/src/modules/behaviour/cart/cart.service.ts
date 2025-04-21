@@ -56,7 +56,7 @@ export class CartService {
         let cartItem = await this.cartRepository.findOne({
             where: {
                 client: { id: clientId },
-                product,
+                product: { id: productId },
             },
         });
 
