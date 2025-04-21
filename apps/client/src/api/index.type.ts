@@ -1,4 +1,4 @@
-export type { ProductDto } from 'server-mdl/product/product/res-dto/product.dto';
+export type { ProductDto, ProductBriefDto } from 'server-mdl/product/product/res-dto/product.dto';
 
 /**
  * 公共响应类型

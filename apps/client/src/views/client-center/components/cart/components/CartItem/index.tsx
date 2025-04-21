@@ -1,5 +1,6 @@
 import type { CartItemDto } from '@/api/behaviour/cart/res.dto';
 import { SALE_STATUS } from '@/api/index.type';
+import { isDisabledOfProduct } from '@/utils';
 import { Card, Image, InputNumber, Space, Tag, Typography } from 'antd';
 import { useMemo } from 'react';
 import './index.scss';
@@ -17,7 +18,7 @@ interface CartItemProps {
 export const CartItem = ({ item, onQuantityChange }: CartItemProps) => {
   const { id, product, count } = item;
   const { mainImage, title, price, stock, isOnSale } = product;
-  const isDisabled = isOnSale === SALE_STATUS.stop || stock === 0;
+  const isDisabled = isDisabledOfProduct(product);
 
   const disableText = useMemo(() => {
     if (isOnSale === SALE_STATUS.stop) {

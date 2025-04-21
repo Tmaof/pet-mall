@@ -35,7 +35,12 @@ export const Cart = () => {
    * 处理全选/取消全选
    */
   const handleSelectAll = (checked: boolean) => {
-    setSelectedRowKeys(checked ? cartList.map(item => item.id) : []);
+    if (checked) {
+      const list = cartList.map(item => item.id);
+      setSelectedRowKeys(list);
+      return;
+    }
+    setSelectedRowKeys([]);
   };
 
   /** 处理item选中 */
@@ -64,7 +69,6 @@ export const Cart = () => {
             <div className="cart-header">
               <Checkbox
                 className="check-all-box"
-                checked={selectedRowKeys.length === cartList.length}
                 indeterminate={
                   selectedRowKeys.length > 0 && selectedRowKeys.length < cartList.length
                 }
