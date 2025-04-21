@@ -1,6 +1,6 @@
 import { deleteCartItems, getCartList, updateCartItem } from '@/api/behaviour/cart';
 import { CartListDto } from '@/api/behaviour/cart/res.dto';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import { useCallback, useState } from 'react';
 import { PAGINATION_CONFIG } from '../constants';
 
@@ -52,14 +52,22 @@ export const useCart = () => {
    */
   const handleDeleteItems = useCallback(
     async (cartItemIds: number[]) => {
-      try {
-        await deleteCartItems({ cartItemIds });
-        message.success('删除成功');
-        setSelectedRowKeys([]);
-        fetchCartList();
-      } catch (error) {
-        console.error('删除购物车项失败:', error);
-      }
+      Modal.warning({
+        title: '确定删除选择的购物车项吗',
+        okText: '确定',
+        cancelText: '取消',
+        closable: true,
+        onOk: async () => {
+          try {
+            await deleteCartItems({ cartItemIds });
+            message.success('删除成功');
+            setSelectedRowKeys([]);
+            fetchCartList();
+          } catch (error) {
+            console.error('删除购物车项失败:', error);
+          }
+        },
+      });
     },
     [fetchCartList]
   );
