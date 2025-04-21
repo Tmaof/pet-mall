@@ -1,4 +1,5 @@
 import { CartItemDto } from '@/api/behaviour/cart/res.dto';
+import { useShowSelectClientAddress } from '@/components/SelectClientAddress/hooks';
 import { Checkbox, Empty, Pagination, Spin } from 'antd';
 import { useEffect } from 'react';
 import { ActionBar } from './components/ActionBar';
@@ -11,6 +12,7 @@ import './index.scss';
  * 购物车组件
  */
 export const Cart = () => {
+  const { showSelectClientAddress } = useShowSelectClientAddress();
   const {
     loading,
     cartList,
@@ -55,7 +57,11 @@ export const Cart = () => {
    * 处理购买
    */
   const handleBuy = () => {
-    // TODO: 实现购买逻辑
+    showSelectClientAddress({
+      onSelect: add => {
+        console.log(add);
+      },
+    });
     console.log('购买商品:', selectedRowKeys);
   };
 

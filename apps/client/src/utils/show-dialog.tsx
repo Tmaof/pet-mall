@@ -1,7 +1,11 @@
 import { createContext, FC, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-const showDialogContext = createContext<ReturnType<typeof useShowDialog>['showDialog']>(() => {});
+const showDialogContext = createContext<ReturnType<typeof useShowDialog>['showDialog']>(() => {
+  return {
+    handleDestroy: () => {},
+  };
+});
 
 /**
  * 在子组件中可以使用 useShowDialogFn 来获取 showDialog 函数，来显示对话框组件。
@@ -91,6 +95,11 @@ const useShowDialog = () => {
       };
 
       destroy();
+    };
+
+    return {
+      /** 销毁组件:从渲染的组件列表中移除 */
+      handleDestroy,
     };
   };
 

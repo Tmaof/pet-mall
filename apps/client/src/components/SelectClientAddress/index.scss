@@ -1,0 +1,91 @@
+@use '@/assets/scss/index.scss' as *;
+
+.select-client-address-container {
+    .no-address-tips {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--theme-text-secondary);
+      cursor: pointer;
+      font-size: 14px;
+
+      .tips-icon {
+        font-size: 16px;
+      }
+
+      background: var(--theme-bg-spotlight);
+      border-radius: 8px;
+      padding: 8px 16px;
+
+      &:hover {
+        color: var(--theme-primary);
+      }
+    }
+
+    .address-radio-group {
+      @extend .scroll-bar-normal;
+
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 12px;
+      width: 100%;
+
+      .address-radio-card {
+        display: flex;
+        align-items: center;
+        .ant-radio {
+          align-self: initial;
+          margin-top: 0;
+        }
+
+        .ant-radio-label {
+          flex: 1;
+        }
+
+        .address-card {
+          flex: 1;
+          background: var(--theme-bg-spotlight);
+          border-radius: 8px;
+          padding: 12px 16px;
+          transition: all 0.3s;
+
+          &:hover {
+            background: var(--theme-bg-elevated);
+          }
+
+          .address-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+
+            .contact-name {
+              font-weight: 500;
+              font-size: 16px;
+              color: var(--theme-text-primary);
+            }
+
+            .contact-phone {
+              color: var(--theme-text-secondary);
+            }
+          }
+
+          .address-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: var(--theme-text-secondary);
+
+            .address-icon {
+              color: var(--theme-primary);
+              margin-top: 4px;
+            }
+
+            .address-text {
+              line-height: 1.5;
+            }
+          }
+        }
+      }
+    }
+  }
