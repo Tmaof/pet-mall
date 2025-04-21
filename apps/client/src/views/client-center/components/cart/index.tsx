@@ -96,6 +96,7 @@ export const Cart = () => {
                 pageSizeOptions={PAGINATION_CONFIG.PAGE_SIZE_OPTIONS}
                 showSizeChanger
                 showQuickJumper
+                showTotal={total => `共 ${total} 条`}
               />
             </div>
           </>

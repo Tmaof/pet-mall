@@ -48,3 +48,10 @@ export const addToCart = (data: AddToCartDto) =>
     method: 'post',
     data,
   });
+
+/** 获取当前客户的购物车数量 */
+export const getCartCount = () =>
+  request({
+    url: '/cart/count',
+    method: 'get',
+  });

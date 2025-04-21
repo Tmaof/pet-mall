@@ -5,7 +5,7 @@ import { ProductDto, SALE_STATUS } from '@/api/index.type';
 import { useBuyDialog } from '@/components/BuyDialog/hook';
 import { usePaymentQRDia } from '@/components/PaymentQRDia/hook';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { fetchClientAddresses } from '@/store/modules/client';
+import { fetchCartCount, fetchClientAddresses } from '@/store/modules/client';
 import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Button, Image, Skeleton, Tag, message } from 'antd';
 import { FC } from 'react';
@@ -30,6 +30,8 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
     if (!data) return;
     await addToCart({ productId: data?.id, quantity: 1 });
     message.success('已添加到购物车');
+    // 更新购物车数量
+    dispatch(fetchCartCount());
   };
 
   /** 处理立即购买 */

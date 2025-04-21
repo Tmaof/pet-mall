@@ -3,6 +3,8 @@ import { CartListDto } from '@/api/behaviour/cart/res.dto';
 import { createOrder } from '@/api/client/order';
 import { usePaymentQRDia } from '@/components/PaymentQRDia/hook';
 import { useShowSelectClientAddress } from '@/components/SelectClientAddress/hooks';
+import { useAppDispatch } from '@/store';
+import { setCartCount } from '@/store/modules/client';
 import { isDisabledOfProduct } from '@/utils';
 import { message, Modal } from 'antd';
 import { useCallback, useState } from 'react';
@@ -21,6 +23,7 @@ export const useCart = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
   const { showSelectClientAddress } = useShowSelectClientAddress();
   const { showPaymentQRDia } = usePaymentQRDia();
+  const dispatch = useAppDispatch();
 
   /**
    * 获取购物车列表
@@ -31,6 +34,8 @@ export const useCart = () => {
       const res = await getCartList({ page, pageSize });
       setCartList(res.items);
       setTotal(res.total);
+      // 更新购物车数量
+      dispatch(setCartCount(res.total));
     } catch (error) {
       console.error('获取购物车列表失败:', error);
     } finally {

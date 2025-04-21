@@ -1,3 +1,4 @@
+import { getCartCount } from '@/api/behaviour/cart';
 import { getAddressList, getRegionTree } from '@/api/client/address';
 import { AddressDto, RegionResDto } from '@/api/client/address/res.dto';
 import { getCurrentClient, updateCurrentClient } from '@/api/client/profile';
@@ -20,6 +21,8 @@ const clientSlice = createSlice({
     regionTree: [] as RegionResDto['list'],
     /** 当前客户信息 */
     clientInfo: null as Client | null,
+    /** 购物车中的商品数量 */
+    cartCount: 0,
   },
   /** 同步修改数据方法 */
   reducers: {
@@ -41,11 +44,16 @@ const clientSlice = createSlice({
     setClientInfo: (state, action) => {
       state.clientInfo = action.payload;
     },
+    /** 设置购物车数量 */
+    setCartCount: (state, action) => {
+      state.cartCount = action.payload;
+    },
   },
 });
 
 // 解构出action-Creater函数
-export const { setToken, setClientAddresses, setRegionTree, setClientInfo } = clientSlice.actions;
+export const { setToken, setClientAddresses, setRegionTree, setClientInfo, setCartCount } =
+  clientSlice.actions;
 
 /** 获取客户地址列表 */
 export const fetchClientAddresses = () => {
@@ -81,6 +89,15 @@ export const updateClientInfo = (data: UpdateClientDto) => {
     if (res) {
       dispatch(setClientInfo(res));
     }
+    return res;
+  };
+};
+
+/** 获取当前购物车数量 */
+export const fetchCartCount = () => {
+  return async (dispatch: AppDispatch) => {
+    const res = await getCartCount();
+    dispatch(setCartCount(res));
     return res;
   };
 };
