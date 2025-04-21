@@ -1,3 +1,4 @@
+import { addToCart } from '@/api/behaviour/cart/index';
 import { createOrder } from '@/api/client/order';
 import { CreateOrderDto } from '@/api/client/order/req.dto';
 import { ProductDto, SALE_STATUS } from '@/api/index.type';
@@ -25,7 +26,9 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
   const { isCollected, handleCollectToggle } = useCollect(data?.id || 0);
 
   /** 处理添加购物车 */
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (!data) return;
+    await addToCart({ productId: data?.id, quantity: 1 });
     message.success('已添加到购物车');
   };
 
@@ -121,7 +124,7 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
               size="large"
               icon={<ShoppingCartOutlined />}
               onClick={handleAddToCart}
-              disabled={disableActions}
+              // disabled={disableActions}
               className="action-btn cart-btn"
             >
               加入购物车

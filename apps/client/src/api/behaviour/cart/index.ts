@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { CartListQueryDto, DeleteCartItemsDto, UpdateCartItemDto } from './req.dto';
+import { AddToCartDto, CartListQueryDto, DeleteCartItemsDto, UpdateCartItemDto } from './req.dto';
 import { CartListDto } from './res.dto';
 
 /**
@@ -38,5 +38,13 @@ export const deleteCartItems = (data: DeleteCartItemsDto) =>
   request({
     url: '/cart/items',
     method: 'DELETE',
+    data,
+  });
+
+/** 添加商品到购物车 */
+export const addToCart = (data: AddToCartDto) =>
+  request({
+    url: '/cart',
+    method: 'post',
     data,
   });
