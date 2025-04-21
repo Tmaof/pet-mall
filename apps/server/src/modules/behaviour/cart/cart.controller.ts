@@ -1,4 +1,3 @@
-import { DeleteCartItemsDto } from './req-dto/index';
 import { ReqUser } from '@/decorator/index.decorator';
 import { JwtGuard } from '@/guards/jwt.guard';
 import { Client } from '@/modules/client/client/client.entity';
@@ -9,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddToCartDto, UpdateCartItemDto } from './req-dto';
+import { DeleteCartItemsDto } from './req-dto/index';
 
 
 @Controller('cart')
@@ -27,6 +27,15 @@ export class CartController {
         @Query('pageSize') pageSize = 10,
     ) {
         const data = await this.cartService.getCartList(clientId, page, pageSize);
+        return getCommonRes({ data });
+    }
+
+    /**
+     * 获取购物车列表数量
+     */
+    @Get('count')
+    async getCartCount (@ReqUser('clientId') clientId: Client['id'],) {
+        const data = await this.cartService.getCartCount(clientId);
         return getCommonRes({ data });
     }
 

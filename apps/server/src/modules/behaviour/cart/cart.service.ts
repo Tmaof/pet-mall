@@ -37,6 +37,12 @@ export class CartService {
         };
     }
 
+    /** 获取客户的购物车数量 */
+    async getCartCount (clientId: Client['id'],) {
+        const count = await this.cartRepository.count({ where: { client: { id: clientId } } });
+        return count;
+    }
+
     /**
      * 添加商品到购物车
      * @param client 当前用户
