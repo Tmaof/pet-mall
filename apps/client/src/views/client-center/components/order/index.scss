@@ -5,11 +5,9 @@
 
   .order-item {
     background: var(--theme-bg-elevated);
-    border: 1px solid var(--theme-border-base);
     transition: all 0.3s;
 
     &:hover {
-      border-color: var(--theme-primary);
       box-shadow: var(--theme-shadow-lg);
     }
 
@@ -49,6 +47,7 @@
             height: 80px;
             border-radius: 8px;
             overflow: hidden;
+            object-fit: cover;
           }
 
           .ant-image-mask {
