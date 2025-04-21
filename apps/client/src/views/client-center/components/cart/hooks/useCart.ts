@@ -1,7 +1,12 @@
 import { deleteCartItems, getCartList, updateCartItem } from '@/api/behaviour/cart';
 import { CartListDto } from '@/api/behaviour/cart/res.dto';
+import { createOrder } from '@/api/client/order';
+import { usePaymentQRDia } from '@/components/PaymentQRDia/hook';
+import { useShowSelectClientAddress } from '@/components/SelectClientAddress/hooks';
+import { isDisabledOfProduct } from '@/utils';
 import { message, Modal } from 'antd';
 import { useCallback, useState } from 'react';
+import { CreateOrderDto } from 'server/modules/order/req-dto';
 import { PAGINATION_CONFIG } from '../constants';
 
 /**
@@ -14,6 +19,8 @@ export const useCart = () => {
   const [page, setPage] = useState(PAGINATION_CONFIG.DEFAULT_PAGE);
   const [pageSize, setPageSize] = useState(PAGINATION_CONFIG.DEFAULT_PAGE_SIZE);
   const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
+  const { showSelectClientAddress } = useShowSelectClientAddress();
+  const { showPaymentQRDia } = usePaymentQRDia();
 
   /**
    * 获取购物车列表
@@ -47,8 +54,18 @@ export const useCart = () => {
     [fetchCartList]
   );
 
+  /** 删除购物车项 */
+  const deleteCart = useCallback(
+    async (cartItemIds: number[]) => {
+      await deleteCartItems({ cartItemIds });
+      setSelectedRowKeys([]);
+      fetchCartList();
+    },
+    [fetchCartList]
+  );
+
   /**
-   * 删除购物车项
+   * 处理删除购物车项
    */
   const handleDeleteItems = useCallback(
     async (cartItemIds: number[]) => {
@@ -58,18 +75,12 @@ export const useCart = () => {
         cancelText: '取消',
         closable: true,
         onOk: async () => {
-          try {
-            await deleteCartItems({ cartItemIds });
-            message.success('删除成功');
-            setSelectedRowKeys([]);
-            fetchCartList();
-          } catch (error) {
-            console.error('删除购物车项失败:', error);
-          }
+          await deleteCart(cartItemIds);
+          message.success('删除成功');
         },
       });
     },
-    [fetchCartList]
+    [deleteCart]
   );
 
   /**
@@ -81,6 +92,49 @@ export const useCart = () => {
       return total + (item ? item.product.price * item.count : 0);
     }, 0);
   }, [selectedRowKeys, cartList]);
+
+  /**
+   * 处理购买
+   */
+  const handleBuy = () => {
+    // 选择的cart
+    const selectCarts = cartList.filter(cart => selectedRowKeys.includes(cart.id));
+    // 过滤掉 禁用商品
+    const validCart = selectCarts.filter(cart => !isDisabledOfProduct(cart.product));
+    if (validCart.length !== selectCarts.length) {
+      // 修改选择项，只包含合法cart
+      setSelectedRowKeys(validCart.map(cart => cart.id));
+      message.warning({
+        content: '选择商品中包含不可购买商品，已经为您过滤，请重新确认购买',
+        duration: 5,
+      });
+      return;
+    }
+
+    // 选择地址
+    showSelectClientAddress({
+      onSelect: async address => {
+        if (!address) return;
+        const items = validCart.map(cart => ({
+          productId: cart.product.id,
+          quantity: cart.count,
+        }));
+        const data: CreateOrderDto = {
+          items,
+          addressId: address.id,
+        };
+        // 创建订单
+        const order = await createOrder(data);
+        // 跳转至支付
+        showPaymentQRDia({
+          order,
+          onOk: () => {},
+        });
+        // 创建订单成功，从购物车删除这些商品
+        deleteCart(validCart.map(cart => cart.id));
+      },
+    });
+  };
 
   return {
     loading,
@@ -96,5 +150,6 @@ export const useCart = () => {
     handleUpdateQuantity,
     handleDeleteItems,
     calculateTotalPrice,
+    handleBuy,
   };
 };
