@@ -1,10 +1,5 @@
 <template>
-    <el-table
-        v-loading="loading"
-        :data="tableData"
-        border
-        style="width: 100%"
-    >
+    <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
 
         <el-table-column prop="clientname" label="客户名" min-width="120" />
@@ -12,7 +7,9 @@
         <el-table-column prop="avatar" label="头像" width="80">
             <template #default="{ row }">
                 <el-avatar :size="40" :src="row.avatar">
-                    <el-icon><User /></el-icon>
+                    <el-icon>
+                        <User />
+                    </el-icon>
                 </el-avatar>
             </template>
         </el-table-column>
@@ -37,7 +34,7 @@
             </template>
         </el-table-column>
 
-        <el-table-column prop="openTime" label="开通时间" width="180" >
+        <el-table-column prop="openTime" label="开通时间" width="180">
             <template #default="{ row }">
                 {{ dayjs(row.openTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
@@ -45,22 +42,15 @@
 
         <el-table-column label="操作" width="120" fixed="right">
             <template #default="{ row }">
-                <el-button
-                    v-if="row.status === ClientStatus.ENABLE"
-                    type="danger"
-                    link
-                    @click="handleDisable(row)"
-                >
-                    禁用
-                </el-button>
-                <el-button
-                    v-if="row.status === ClientStatus.DISABLE"
-                    type="primary"
-                    link
-                    @click="handleEnable(row)"
-                >
-                    启用
-                </el-button>
+                <div v-permission="'operate'">
+                    <el-button v-if="row.status === ClientStatus.ENABLE" type="danger" link @click="handleDisable(row)">
+                        禁用
+                    </el-button>
+                    <el-button v-if="row.status === ClientStatus.DISABLE" type="primary" link
+                        @click="handleEnable(row)">
+                        启用
+                    </el-button>
+                </div>
             </template>
         </el-table-column>
     </el-table>

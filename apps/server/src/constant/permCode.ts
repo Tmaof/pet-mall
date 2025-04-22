@@ -95,6 +95,12 @@ export const permTree = {
     clientManage: {
         name: '客户管理',
         code: 'client-management',
+        children: {
+            operate: {
+                name: '操作',
+                code: 'operate',
+            },
+        },
     },
     logManage: {
         name: '日志管理',

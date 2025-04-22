@@ -7,12 +7,16 @@ import {
 } from '@nestjs/common';
 import { QueryClientListDto } from '../req-dto';
 import { AdminClientService } from '../service/admin-client.service';
+import { PermGuard } from '@/guards/perm.guard';
+import { permTree } from '@/constant/permCode';
+import { setNeedPerm } from '@/decorator/index.decorator';
 
 /**
  * 后台客户管理
  */
 @Controller('admin-client')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, PermGuard)
+@setNeedPerm(permTree.clientManage)
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdminClientController {
     constructor (private clientService: AdminClientService) {}
@@ -30,6 +34,7 @@ export class AdminClientController {
      * 禁用客户
      */
     @Post('disable')
+    @setNeedPerm(permTree.clientManage.children.operate)
     async disableClient (@Body('id') id: number) {
         await this.clientService.disableClient(id);
         return getCommonRes();
@@ -39,6 +44,7 @@ export class AdminClientController {
      * 启用客户
      */
     @Post('enable')
+    @setNeedPerm(permTree.clientManage.children.operate)
     async enableClient (@Body('id') id: number) {
         await this.clientService.enableClient(id);
         return getCommonRes();
