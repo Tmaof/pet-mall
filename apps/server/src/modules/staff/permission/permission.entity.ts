@@ -1,6 +1,10 @@
 import { Role } from '@/modules/staff/role/role.entity';
 import {
-    Column, Entity, ManyToMany, PrimaryGeneratedColumn, JoinTable, JoinColumn, ManyToOne, OneToMany
+    Column, Entity,
+    JoinColumn,
+    ManyToMany,
+    ManyToOne, OneToMany,
+    PrimaryGeneratedColumn
 } from 'typeorm';
 
 @Entity('permission')
@@ -23,7 +27,6 @@ export class Permission {
      * 删除一个权限的时候，同时删除它在角色-权限关联表中的记录。
      */
     @ManyToMany(() => Role, (role) => role.permission, { cascade: ['remove'] })
-    @JoinTable({ name: 'role_permission' })
         role: Role[];
 
     /** 一个父权限 可以 有多个子权限 */

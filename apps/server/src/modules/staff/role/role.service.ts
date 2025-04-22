@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { Role } from './role.entity';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { UpdateRolePermissionDto } from './dto/update-role-permission.dto';
 import { Permission } from '../permission/permission.entity';
 import { GetRoleListDto, GetRolePermissionsDto, GetRolePermissionsListItem } from './dto-res/get.dto';
@@ -82,17 +82,9 @@ export class RolesService {
 
         const role = await this.roleRepository.findOne({ where: { id: roleId } });
         if (!role) {
-            return { message: '角色不存在' };
+            throw new Error('角色不存在');
         }
-
-        const queryList = permissionIdList.map(item => {
-            return { id: item };
-        });
-        let permission = [];
-        if (queryList.length) {
-            // queryList 不能为空，否则会报错。
-            permission = await this.permissionRepository.find({ where: queryList });
-        }
+        const permission = await this.permissionRepository.find({ where: { id: In(permissionIdList) } });
         role.permission = permission;
 
         // 联合模型更新，需要使用save方法或者queryBuilder

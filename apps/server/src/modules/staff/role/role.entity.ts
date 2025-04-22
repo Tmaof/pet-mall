@@ -16,7 +16,6 @@ export class Role {
 
     /** 用户-角色关联表 */
     @ManyToMany(() => User, (user) => user.role)
-    @JoinTable({ name: 'user_role' })
         user: User[];
 
     /** 角色-权限关联表 */

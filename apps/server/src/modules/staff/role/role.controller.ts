@@ -48,8 +48,8 @@ export class RolesController {
     @Post('update/permission')
     @setNeedPerm(permTree.permManage.children.roleList.children.assignPerm)
     async updateRolePermission (@Body() dto: UpdateRolePermissionDto) {
-        const data = await this.rolesService.updateRolePermission(dto);
-        return getCommonRes(data);
+        await this.rolesService.updateRolePermission(dto);
+        return getCommonRes();
     }
 
     /** 删除角色 */
