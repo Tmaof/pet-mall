@@ -32,12 +32,12 @@ export function toProductBriefDto (product: Product): ProductBriefDto {
         id: product.id,
         title: product.title,
         categoryId: product.categoryId,
-        categoryName: product.category?.name || '',
         mainImage: product.mainImage,
         price: Number(product.price),
         stock: product.stock,
         isOnSale: product.isOnSale,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
+        tags: product.tags,
     };
 }

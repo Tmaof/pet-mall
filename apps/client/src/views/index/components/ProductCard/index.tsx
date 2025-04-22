@@ -1,4 +1,4 @@
-import { ProductDto, SALE_STATUS } from '@/api/index.type';
+import { ProductBriefDto, SALE_STATUS } from '@/api/index.type';
 import { Image, Tag } from 'antd';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { errImgFallback } from '../../../../constants';
 import './index.scss';
 
 interface Props {
-  data: ProductDto;
+  data: ProductBriefDto;
 }
 
 const ProductCard: FC<Props> = ({ data }) => {
