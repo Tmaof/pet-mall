@@ -1,6 +1,7 @@
 import { Product } from '@/modules/product/product/product.entity';
 import {
     Column,
+    CreateDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
@@ -59,6 +60,12 @@ export class OrderItem {
         comment: '单价快照',
     })
         unitPriceSnapshot: number;
+
+    @CreateDateColumn({
+        name: 'created_at',
+        comment: '创建时间',
+    })
+        createdAt: Date;
 
     // 关联关系
     @ManyToOne(() => Order, (order) => order.orderItems)

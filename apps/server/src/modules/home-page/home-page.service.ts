@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { Cart } from '../behaviour/cart/cart.entity';
+import { OrderItem } from '../order/entity/order-item.entity';
 import { Product } from '../product/product/product.entity';
 import { toProductBriefDto } from '../product/product/utils';
 import { HOME_MODULE_CONFIG, HomeModuleType } from './constants';
@@ -15,6 +16,8 @@ export class HomePageService {
         private productRepository: Repository<Product>,
         @InjectRepository(Cart)
         private cartRepository: Repository<Cart>,
+        @InjectRepository(OrderItem)
+        private orderItemRepository: Repository<OrderItem>,
     ) {}
 
     /**
@@ -24,10 +27,11 @@ export class HomePageService {
         // 1. 获取模块数据
         const newProductsModule = await this.getNewProductsModule();
         const mostFavoriteModule = await this.getMostFavoriteModule();
+        const mostPurchaseModule = await this.getMostPurchaseModule();
 
         // 2. 合并所有模块并按优先级排序
-        const modules = [newProductsModule, mostFavoriteModule]
-            .filter(Boolean)
+        const modules = [newProductsModule, mostFavoriteModule, mostPurchaseModule]
+            .filter(item => item.products.length)
             .sort((aItem, bItem) => {
                 const priorityA = HomeModuleType[aItem.type].priority;
                 const priorityB = HomeModuleType[bItem.type].priority;
@@ -112,6 +116,48 @@ export class HomePageService {
         return {
             name: HomeModuleType.mostCollection.name,
             type: HomeModuleType.mostCollection.type,
+            products: topProducts.map(product => toProductBriefDto(product)),
+        };
+    }
+
+    /**
+     * 获取最多购买模块。
+     * 最近 10000 个订单子项中，购买数量排名前 x 的商品。
+     */
+    private async getMostPurchaseModule (): Promise<HomeModuleItem> {
+        // 获取最近10000个订单
+        const recentOrders = await this.orderItemRepository.find({
+            relations: ['product'],
+            order: { createdAt: 'DESC' },
+            take: 10000,
+        });
+
+        // 统计每个商品的购买数量
+        const productCountMap = new Map<number, {
+            count: number;
+            product: Product;
+        }>();
+        recentOrders.forEach(orderItem => {
+            const record = productCountMap.get(orderItem.product.id);
+            if (record) {
+                record.count += 1;
+            } else {
+                productCountMap.set(orderItem.product.id, {
+                    count: 1,
+                    product: orderItem.product,
+                });
+            }
+        });
+
+        // 获取购买数量排名前x的商品
+        const topProducts = Array.from(productCountMap.entries())
+            .sort((first, second) => second[1].count - first[1].count)
+            .slice(0, HOME_MODULE_CONFIG.MAX_PRODUCTS_PER_MODULE)
+            .map(([, record]) => record.product);
+
+        return {
+            name: HomeModuleType.mostPurchase.name,
+            type: HomeModuleType.mostPurchase.type,
             products: topProducts.map(product => toProductBriefDto(product)),
         };
     }
