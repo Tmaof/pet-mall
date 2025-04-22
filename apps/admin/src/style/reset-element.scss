@@ -1,0 +1,11 @@
+/**
+https://github.com/element-plus/element-plus/issues/15834#issuecomment-1936919229
+组件默认宽度为100%，行内表单会造成组件宽度无法自适应。建议手动设置固定宽度样式，例如：
+*/
+.el-form--inline {
+    .el-form-item {
+      .el-input, .el-cascader, .el-select, .el-autocomplete {
+        width: 120px;
+      }
+    }
+  }

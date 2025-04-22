@@ -1,4 +1,5 @@
 import { Client } from './client.entity';
+export type { Client } from './client.entity';
 
 export class ClientListDto {
     list: Client[];
