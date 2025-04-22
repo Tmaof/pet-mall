@@ -34,4 +34,13 @@ export class AdminClientController {
         await this.clientService.disableClient(id);
         return getCommonRes();
     }
+
+    /**
+     * 启用客户
+     */
+    @Post('enable')
+    async enableClient (@Body('id') id: number) {
+        await this.clientService.enableClient(id);
+        return getCommonRes();
+    }
 }

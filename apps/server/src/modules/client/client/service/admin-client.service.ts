@@ -73,4 +73,18 @@ export class AdminClientService {
         client.status = ClientStatus.DISABLE;
         await this.clientRepository.save(client);
     }
+
+    /**
+     * 启用客户
+     */
+    async enableClient (id: number): Promise<void> {
+        const client = await this.clientRepository.findOne({ where: { id } });
+
+        if (!client) {
+            throw new Error('客户不存在');
+        }
+
+        client.status = ClientStatus.ENABLE;
+        await this.clientRepository.save(client);
+    }
 }
