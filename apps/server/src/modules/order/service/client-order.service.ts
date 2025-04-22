@@ -10,6 +10,8 @@ import { OrderStatus } from '../enum';
 import { CreateOrderDto, QueryOrderDto, UpdateOrderStatusByClientDto } from '../req-dto';
 import { ClientOrderDto, ClientOrderListDto } from '../res-dto';
 import { validateStatusChangeByClient } from '../utils';
+import { Client } from '@/modules/client/client/client.entity';
+import { ClientStatus } from '@/modules/client/client/enum';
 
 @Injectable()
 export class ClientOrderService {
@@ -22,7 +24,9 @@ export class ClientOrderService {
         private productRepository: Repository<Product>,
         @InjectRepository(Address)
         private addressRepository: Repository<Address>,
-        private dataSource: DataSource
+        private dataSource: DataSource,
+        @InjectRepository(Client)
+        private clientRepository: Repository<Client>,
     ) {}
 
     /**
@@ -30,6 +34,12 @@ export class ClientOrderService {
      */
     async create (clientId: number, createOrderDto: CreateOrderDto): Promise<ClientOrderDto> {
         const { items, addressId, remark } = createOrderDto;
+
+        // 判断客户是否被禁用
+        const client = await this.clientRepository.findOne({ where: { id: clientId } });
+        if (client.status === ClientStatus.DISABLE) {
+            throw new BadRequestException('客户已被禁用');
+        }
 
         // 使用事务确保数据一致性
         const queryRunner = this.dataSource.createQueryRunner();

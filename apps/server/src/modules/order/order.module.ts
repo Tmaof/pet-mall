@@ -8,10 +8,11 @@ import { OrderItem } from './entity/order-item.entity';
 import { Order } from './entity/order.entity';
 import { ClientOrderService } from './service/client-order.service';
 import { AdminOrderService } from './service/admin-order.service';
+import { Client } from '@/modules/client/client/client.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Order, OrderItem, Product, Address]),
+        TypeOrmModule.forFeature([Order, OrderItem, Product, Address, Client]),
     ],
     controllers: [OrderController, AdminOrderController],
     providers: [ClientOrderService, AdminOrderService],

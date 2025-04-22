@@ -1,10 +1,11 @@
 import { JwtPayloadParsed } from '@/modules/jwt/types';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as argon2 from 'argon2';
 import { Repository } from 'typeorm';
 import { Client } from '../client.entity';
 import { CreateClientDto, UpdateClientDto, UpdatePasswordDto } from '../req-dto';
+import { ClientStatus } from '../enum';
 
 @Injectable()
 export class ClientService {
@@ -51,6 +52,10 @@ export class ClientService {
         const client = await this.clientRepository.findOne({ where: { id: jwtPayload.clientId } });
         if (!client) {
             throw new Error('客户不存在');
+        }
+        // 判断客户是否被禁用
+        if (client.status === ClientStatus.DISABLE) {
+            throw new BadRequestException('客户已被禁用');
         }
         // 判断客户名是否存在
         if (dto.clientname && dto.clientname !== client.clientname) {
