@@ -6,6 +6,7 @@ import { Product } from '@/modules/product/product/product.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, MoreThanOrEqual, Repository } from 'typeorm';
+import { StockStatus } from './enum';
 import {
     DashboardDataDto,
     HotProductDto,
@@ -13,7 +14,6 @@ import {
     StockWarningProductDto,
     TopStatsDto, TransactionDataPointDto
 } from './res-dto';
-import { StockStatus } from './enum';
 
 @Injectable()
 export class DashboardService {
@@ -79,7 +79,7 @@ export class DashboardService {
             ? ((todaySales.total - yesterdaySales.total) / yesterdaySales.total) * 100 : 0;
 
         // 获取今天待处理订单数
-        const pendingOrders = await this.orderRepository.count({
+        const todayPendingOrders = await this.orderRepository.count({
             where: {
                 status: OrderStatus.PENDING_SHIPMENT,
                 createdAt: MoreThanOrEqual(yesterday),
@@ -97,7 +97,20 @@ export class DashboardService {
         // TODO: 此处的计算方式有问题，需要重新计算
         // 计算待处理订单增长率
         const pendingOrdersGrowthRate = yesterdayPendingOrders
-            ? ((pendingOrders - yesterdayPendingOrders) / yesterdayPendingOrders) * 100 : 0;
+            ? ((todayPendingOrders - yesterdayPendingOrders) / yesterdayPendingOrders) * 100 : 0;
+
+        // 待处理订单
+        const pendingOrders = await this.orderRepository.count({ where: { status: OrderStatus.PENDING_SHIPMENT } });
+
+        /** 今日订单数 */
+        const todayOrders = await this.orderRepository.count({ where: { createdAt: MoreThanOrEqual(today) } });
+
+        /** 昨日订单数 */
+        const yesterdayOrders = await this.orderRepository.count({ where: { createdAt: Between(yesterday, today) } });
+
+        /** 订单增长率 */
+        const orderGrowthRate = yesterdayOrders
+            ? ((todayOrders - yesterdayOrders) / yesterdayOrders) * 100 : 0;
 
         // 获取今日新增用户数
         const newUsers = await this.clientRepository.count({ where: { openTime: MoreThanOrEqual(today) } });
@@ -116,6 +129,8 @@ export class DashboardService {
             pendingOrdersGrowthRate,
             newUsers,
             newUsersGrowthRate,
+            todayOrders,
+            orderGrowthRate,
         };
     }
 

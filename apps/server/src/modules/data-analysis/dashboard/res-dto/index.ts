@@ -21,6 +21,12 @@ export class TopStatsDto {
 
     /** 新增用户环比变化率 */
     newUsersGrowthRate: number;
+
+    /** 今日订单数 */
+    todayOrders: number;
+
+    /** 订单增长率 */
+    orderGrowthRate: number;
 }
 
 /**
