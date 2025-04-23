@@ -144,11 +144,12 @@ export class DashboardService {
     }
 
     /**
-     * 获取热销商品TOP 5
+     * 获取热销商品TOP 5 【最近一个月】
      */
     private async getHotProducts (): Promise<HotProductDto[]> {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        today.setDate(today.getDate() - 30);
 
         const hotProducts = await this.orderItemRepository
             .createQueryBuilder('orderItem')
@@ -205,11 +206,12 @@ export class DashboardService {
     }
 
     /**
-     * 获取销售类别分布
+     * 获取销售类别分布【最近一个月】
      */
     private async getSalesCategories (): Promise<SalesCategoryDto[]> {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        today.setDate(today.getDate() - 30);
 
         const salesByCategory = await this.orderItemRepository
             .createQueryBuilder('orderItem')
