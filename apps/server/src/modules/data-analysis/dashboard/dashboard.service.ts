@@ -64,14 +64,14 @@ export class DashboardService {
         const todaySales = await this.orderRepository
             .createQueryBuilder('order')
             .select('SUM(order.totalAmount)', 'total')
-            .where('order.createdAt >= :today', { today })
+            .where('order.createdAt >= :today AND order.paymentNo IS NOT NULL', { today })
             .getRawOne();
 
         // 获取昨日销售数据
         const yesterdaySales = await this.orderRepository
             .createQueryBuilder('order')
             .select('SUM(order.totalAmount)', 'total')
-            .where('order.createdAt >= :yesterday AND order.createdAt < :today', { yesterday, today })
+            .where('order.createdAt >= :yesterday AND order.createdAt < :today AND order.paymentNo IS NOT NULL', { yesterday, today })
             .getRawOne();
 
         // 计算销售增长率
@@ -146,7 +146,7 @@ export class DashboardService {
                 'SUM(order.totalAmount) as amount',
                 'COUNT(order.id) as orderCount',
             ])
-            .where('order.createdAt >= :startTime', { startTime: new Date(new Date().getTime() - (24 * 60 * 60 * 1000)) })
+            .where('order.createdAt >= :startTime AND order.paymentNo IS NOT NULL', { startTime: new Date(new Date().getTime() - (24 * 60 * 60 * 1000)) })
             .groupBy('time')
             .orderBy('time', 'ASC')
             .getRawMany();
@@ -176,6 +176,7 @@ export class DashboardService {
             .leftJoin('orderItem.product', 'product')
             .leftJoin('orderItem.order', 'order')
             .where('order.createdAt >= :today', { today })
+            // .where('order.createdAt >= :today AND order.paymentNo IS NOT NULL', { today })
             .groupBy('product.id')
             .orderBy('sales', 'DESC')
             .limit(5)
@@ -239,6 +240,7 @@ export class DashboardService {
             .leftJoin('product.category', 'category')
             .leftJoin('orderItem.order', 'order')
             .where('order.createdAt >= :today', { today })
+            // .where('order.createdAt >= :today AND order.paymentNo IS NOT NULL', { today })
             .groupBy('category.id')
             .orderBy('amount', 'DESC')
             .getRawMany();
