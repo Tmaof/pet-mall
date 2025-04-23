@@ -9,4 +9,12 @@ $tagsVeiwHeight: 39px;
 
 // AppMain
 $appMainPadding: 15px;
-$appMainPadding-mobile: 0
+$appMainPadding-mobile: 0px;
+
+
+// 屏幕断点
+$mobile-breakpoint: 375px + 1px;
+//  @media (max-width: $mobile-breakpoint) 小于等于375px
+$pad-breakpoint: 768px + 1px;
+$pc-breakpoint: 1024px + 1px;
+

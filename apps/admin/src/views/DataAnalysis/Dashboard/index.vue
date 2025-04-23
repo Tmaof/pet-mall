@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard-container">
     <!-- 顶部数据卡片 -->
-    <el-row :gutter="20">
-      <el-col :span="6">
+    <div class="top-stats-container">
+      <div>
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -16,8 +16,8 @@
             <div class="amount">¥{{ topStats.totalSales }}</div>
           </div>
         </el-card>
-      </el-col>
-      <el-col :span="6">
+      </div>
+      <div>
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -31,8 +31,8 @@
             <div class="amount">{{ topStats.pendingOrders }}</div>
           </div>
         </el-card>
-      </el-col>
-      <el-col :span="6">
+      </div>
+      <div>
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -46,8 +46,8 @@
             <div class="amount">{{ topStats.todayOrders }}</div>
           </div>
         </el-card>
-      </el-col>
-      <el-col :span="6">
+      </div>
+      <div>
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -61,8 +61,8 @@
             <div class="amount">{{ topStats.newUsers }}</div>
           </div>
         </el-card>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
 
     <!-- 实时交易趋势 -->
     <el-row :gutter="20" class="chart-row">
@@ -78,9 +78,9 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" class="product-row">
+    <div class="product-sales-container">
       <!-- 热销商品TOP 5 -->
-      <el-col :span="12">
+      <div >
         <el-card shadow="hover" style="height: 100%">
           <template #header>
             <div class="card-header">
@@ -92,9 +92,9 @@
             <el-table-column prop="sales" label="销量" width="100" />
           </el-table>
         </el-card>
-      </el-col>
+      </div>
       <!-- 销售分类分布 -->
-      <el-col :span="12">
+      <div >
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
@@ -103,9 +103,9 @@
           </template>
           <div ref="salesCategoryChartRef" class="chart"></div>
         </el-card>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20" class="product-row">
+      </div>
+    </div>
+    <el-row :gutter="20" class="mar-top-20">
       <!-- 库存预警 -->
       <el-col :span="24">
         <el-card shadow="hover">
@@ -178,7 +178,21 @@ watch([transactionTrend, salesCategories], () => {
 </script>
 
 <style lang="scss" scoped>
+@import '@/style/variables.scss';
 .dashboard-container {
+  // 顶部数据卡片
+  .top-stats-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .product-sales-container{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
 
   .card-header {
     display: flex;
@@ -198,12 +212,22 @@ watch([transactionTrend, salesCategories], () => {
     margin-top: 20px;
   }
 
-  .product-row {
+  .mar-top-20{
     margin-top: 20px;
   }
 
   .chart {
     height: 300px;
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    .top-stats-container{
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-sales-container{
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 }
 </style>
