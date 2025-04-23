@@ -22,6 +22,18 @@ export enum OrderStatus {
     CLOSED_NO_PAY = 9,
 }
 
+/** 订单状态映射 */
+export const ORDER_STATUS_MAP = {
+    [OrderStatus.PENDING_PAYMENT]: '待付款',
+    [OrderStatus.PENDING_SHIPMENT]: '待发货',
+    [OrderStatus.SHIPPED]: '已发货',
+    [OrderStatus.COMPLETED]: '已完成',
+    [OrderStatus.CANCELED_BY_CLIENT]: '已取消(买家)',
+    [OrderStatus.CANCELED_BY_ADMIN]: '已取消(卖家)',
+    [OrderStatus.FAILED_NO_STOCK]: '失败(库存不足)',
+    [OrderStatus.CLOSED_NO_PAY]: '已关闭(超时未支付)',
+};
+
 /** 发货方式 */
 export enum ShippingMethod {
     /** 快递 */
