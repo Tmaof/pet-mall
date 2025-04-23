@@ -1,6 +1,6 @@
 import * as echarts from 'echarts'
-import { SVGRenderer, CanvasRenderer } from 'echarts/renderers'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { CanvasRenderer, SVGRenderer } from 'echarts/renderers'
+import { markRaw, onMounted, onUnmounted, ref } from 'vue'
 
 type Options = {
   renderer?: 'svg' | 'canvas';
@@ -28,9 +28,12 @@ export function useECharts(options: Options = {}) {
         // @ts-expect-error
         echarts.use([CanvasRenderer])
       }
-      chartInstance.value = echarts.init(chartContainer.value, null, {
+      const chart = echarts.init(chartContainer.value, null, {
         renderer: renderer || 'svg'
       })
+      //   https://blog.csdn.net/youyudehan/article/details/135222342
+      // 标记这个DOM对象， Vue 不要将其转换为响应式数据。
+      chartInstance.value = markRaw(chart)
     }
   }
 
@@ -39,7 +42,8 @@ export function useECharts(options: Options = {}) {
    */
   const setOption = (option: echarts.EChartsOption) => {
     if (chartInstance.value) {
-      chartInstance.value.setOption(option)
+      // 在 VUE 中如果想实时绘制Echarts的话，需要手动的调用 setOption(option, true)
+      chartInstance.value.setOption(option, true)
     }
   }
 

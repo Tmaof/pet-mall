@@ -15,8 +15,7 @@ export function getTransactionTrendOption(data: TransactionDataPointDto[]): ECha
       }
     },
     legend: {
-      data: ['交易金额', '订单数'],
-      selectedMode: false // 切换图例时报错，暂时禁用图例交互
+      data: ['交易金额', '订单数']
     },
     grid: {
       left: '3%',
