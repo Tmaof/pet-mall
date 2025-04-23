@@ -12,19 +12,18 @@ export const publicRoutes = () => {
     {
       path: '/info',
       component: Layout,
-      redirect: '/info/info',
+      redirect: '/info/dashboard',
       meta: {
         title: i18n.$t('router.routes.817884-0'),
-        icon: 'my-info'
+        icon: 'my-chart'
       },
       children: [
         {
-          path: 'info',
-          name: 'info',
-          component: () => import('@/views/Info'),
+          path: 'dashboard',
+          name: 'dashboard',
+          component: () => import('@/views/DataAnalysis/Dashboard'),
           meta: {
-            title: i18n.$t('router.routes.817884-0'),
-            icon: 'my-info'
+            title: i18n.$t('router.routes.808363-6')
           }
         }
       ]

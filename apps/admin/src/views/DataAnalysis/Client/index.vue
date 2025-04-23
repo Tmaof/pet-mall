@@ -1,5 +1,5 @@
 <template>
-  <div class="info-container">
+  <div class="client-container">
   </div>
 </template>
 
@@ -7,7 +7,7 @@
 </script>
 
 <style scoped>
-.info-container {
+.client-container {
   display: flex;
   justify-content: center;
   align-items: center;
