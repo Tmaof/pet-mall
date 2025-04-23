@@ -2,29 +2,30 @@ import { MyJwtModule } from '@/modules/jwt/jwt.module';
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { entitiesPaths, envFilePathAll } from 'config';
 import { ConfigEnum } from 'config/env/config.enum';
 import { GlobalInterceptor } from './interceptors/global.interceptor';
+import { AddressModule } from './modules/address/address.module';
+import { CartModule } from './modules/behaviour/cart/cart.module';
+import { FavoriteModule } from './modules/behaviour/favorite/favorite.module';
+import { ClientAddressModule } from './modules/client/address/address.module';
 import { ClientAuthModule } from './modules/client/auth/auth.module';
+import { DashboardModule } from './modules/data-analysis/dashboard/dashboard.module';
+import { HomePageModule } from './modules/home-page/home-page.module';
+import { OrderModule } from './modules/order/order.module';
+import { PaymentModule } from './modules/payment/payment.module';
 import { CategoryModule } from './modules/product/category/category.module';
 import { ProductModule } from './modules/product/product/product.module';
 import { TagModule } from './modules/product/tag/tag.module';
+import { SearchModule } from './modules/search/search.module';
 import { UserAuthModule } from './modules/staff/auth/auth.module';
 import { PermissionModule } from './modules/staff/permission/permission.module';
 import { RolesModule } from './modules/staff/role/role.module';
 import { UserLogModule } from './modules/staff/user-log/user-log.module';
 import { UserModule } from './modules/staff/user/user.module';
 import { UploadModule } from './modules/upload/upload.module';
-import { SearchModule } from './modules/search/search.module';
-import { HomePageModule } from './modules/home-page/home-page.module';
-import { AddressModule } from './modules/address/address.module';
-import { ClientAddressModule } from './modules/client/address/address.module';
-import { OrderModule } from './modules/order/order.module';
-import { PaymentModule } from './modules/payment/payment.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { FavoriteModule } from './modules/behaviour/favorite/favorite.module';
-import { CartModule } from './modules/behaviour/cart/cart.module';
 
 @Global()
 @Module({
@@ -88,6 +89,8 @@ import { CartModule } from './modules/behaviour/cart/cart.module';
         FavoriteModule,
         // 购物车
         CartModule,
+        // 数据分析模块,
+        DashboardModule, // 仪表盘
     ],
     controllers: [],
     /** 可选的提供者列表，这些提供者将由 Nest 注入器实例化，并且至少可以在此模块之间共享。 */
