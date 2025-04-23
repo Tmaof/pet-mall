@@ -1,6 +1,9 @@
 import * as echarts from 'echarts'
 import { CanvasRenderer, SVGRenderer } from 'echarts/renderers'
 import { markRaw, onMounted, onUnmounted, ref } from 'vue'
+import { registerChinaMap } from '@/assets/js/china'
+// 注册中国地图
+registerChinaMap(echarts)
 
 type Options = {
   renderer?: 'svg' | 'canvas';

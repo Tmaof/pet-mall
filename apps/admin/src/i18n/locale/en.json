@@ -285,13 +285,14 @@
 			"808363-3": "Employee List",
 			"808363-4": "Role List",
 			"808363-5": "Permission List",
+			"808363-6": "Dashboard",
+			"808363-7": "Sales Analysis",
 			"817884-0": "Data analysis",
 			"817884-1": "customer management",
 			"817884-2": "Permission management",
 			"817884-3": "Employee List",
 			"817884-4": "Role List",
-			"817884-5": "Permission List",
-			"817884-6": "Dashboard"
+			"817884-5": "Permission List"
 		}
 	},
 	"src": {

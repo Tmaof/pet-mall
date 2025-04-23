@@ -25,6 +25,14 @@ export const publicRoutes = () => {
           meta: {
             title: i18n.$t('router.routes.808363-6')
           }
+        },
+        {
+          path: 'sales',
+          name: 'sales',
+          component: () => import('@/views/DataAnalysis/Sales'),
+          meta: {
+            title: i18n.$t('router.routes.808363-7')
+          }
         }
       ]
     },
