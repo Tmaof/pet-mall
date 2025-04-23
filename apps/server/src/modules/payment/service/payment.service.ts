@@ -168,6 +168,7 @@ export class PaymentService {
             await queryRunner.manager.save(payment);
 
             // 3. 更新订单状态
+            // 备注：只有支付成功后才添加 paymentNo 字段，在数据看板中，统计销售数据时，需要使用 paymentNo 字段 判断订单是否已经支付
             const { order } = payment;
             order.status = OrderStatus.PENDING_SHIPMENT;// 待发货
             order.paymentTime = payment.paidAt;
