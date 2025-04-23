@@ -4,7 +4,7 @@
 export interface CoreMetricsDto {
     /** 总销售额 */
     totalSales: number;
-    /** 订单总量 */
+    /** 已支付订单 */
     totalOrders: number;
     /** 客单价 */
     averageOrderValue: number;

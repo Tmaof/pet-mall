@@ -34,7 +34,7 @@
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
-              <span>订单总量</span>
+              <span>已支付订单</span>
             </div>
           </template>
           <div class="card-body">
