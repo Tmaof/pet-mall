@@ -31,7 +31,7 @@ export const ReqUser = createParamDecorator((key: JwtPayloadParsedKey, ctx: Exec
     if (!key) return;
     const request = ctx.switchToHttp().getRequest();
     const user = request.user as JwtPayloadParsed;
-    if (!user) throw new Error('用户信息不存在');
+    if (!user || user[key] === undefined) throw new Error('用户信息不存在');
     return user[key];
 },);
 
