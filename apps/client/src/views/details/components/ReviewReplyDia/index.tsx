@@ -1,5 +1,5 @@
 import { ReviewReplyListDto } from '@/api/behaviour/review/res-dto';
-import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { DownOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { Avatar, Modal } from 'antd';
 import dayjs from 'dayjs';
 import { ReplyObj } from '../ProductReview';
@@ -37,11 +37,24 @@ export interface ReviewReplyDiaProps {
   onShowReply?: (item: ReviewReplyListDto['list'][number]) => void;
   /** 发送回复 */
   onSendReply?: (replyObj: ReplyObj) => void;
+  /** 是否展示加载更多 */
+  showLoadMore?: boolean;
+  /** 加载更多 */
+  onLoadMore?: () => void;
 }
 
 /** 评论的回复列表 */
 export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
-  const { open, parentReview, replyList, onShowReply, onBack, onCloseAll } = props;
+  const {
+    open,
+    parentReview,
+    replyList,
+    onShowReply,
+    onBack,
+    onCloseAll,
+    showLoadMore,
+    onLoadMore,
+  } = props;
   const {
     openRely,
     replyItem,
@@ -117,6 +130,11 @@ export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
               </div>
             </div>
           ))}
+          {showLoadMore && (
+            <div className="load-more" onClick={onLoadMore}>
+              <DownOutlined />
+            </div>
+          )}
         </div>
 
         {/* 回复输入框 */}

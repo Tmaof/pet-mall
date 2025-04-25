@@ -2,7 +2,7 @@ import { getProductReviewList, getReviewReplyList, replyReview } from '@/api/beh
 import { ProductReviewListDto, ReviewReplyListDto } from '@/api/behaviour/review/res-dto';
 import { Drawer, message } from 'antd';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ProductReview, ReplyObj } from '../ProductReview';
 import { ParentReview, ReviewReplyDia } from '../ReviewReplyDia';
 import './index.scss';
@@ -18,6 +18,7 @@ interface ReplyListStack {
   replyList: ReviewReplyListDto['list'];
   page: number;
   pageSize: number;
+  total: number;
 }
 
 /** 商品评价抽屉 */
@@ -27,27 +28,45 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
   const [openRely, setOpenRely] = useState(false);
   //   回复列表的栈
   const [replyListStack, setReplyListStack] = useState<ReplyListStack[]>([]);
+  //   商品评价列表的 分页
+  const page = useRef(1);
+  const pageSize = useRef(10);
+  const total = useRef(Infinity);
 
   //   当前展示的回复列表
   const currentReplyProp = useMemo(() => {
     return replyListStack[replyListStack.length - 1];
   }, [replyListStack]);
 
-  const fetchReviewList = useCallback((productId?: number) => {
+  /** 刷新 or 加载更多 【商品评价】列表 */
+  const fetchReviewList = (productId?: number, type: 'refresh' | 'loadMore' = 'refresh') => {
     if (!productId) return;
+    let currentPage = page.current;
+    if (type === 'refresh') {
+      currentPage = 1;
+    } else {
+      currentPage += 1;
+    }
     getProductReviewList({
       productId,
-      page: 1,
-      pageSize: 10,
+      page: currentPage,
+      pageSize: pageSize.current,
     }).then(res => {
-      setReviewList(res.list);
+      page.current = res.page;
+      pageSize.current = res.pageSize;
+      total.current = res.total;
+      if (type === 'refresh') {
+        setReviewList(res.list);
+      } else {
+        setReviewList([...reviewList, ...res.list]);
+      }
     });
-  }, []);
+  };
 
   // 获取【商品评价】列表
   useEffect(() => {
     fetchReviewList(productId);
-  }, [productId, fetchReviewList]);
+  }, [productId]);
 
   /** 展示 【商品评论】和【回复评论】的 回复列表 */
   async function handleShowReviewReplyDia(
@@ -87,6 +106,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
       replyList: res.list,
       page: res.page,
       pageSize: res.pageSize,
+      total: res.total,
     });
     setReplyListStack(stack);
 
@@ -104,7 +124,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
     if (type === 'refresh') {
       currentPage = 1;
     } else {
-      currentPage += currentReplyProp.pageSize;
+      currentPage += 1;
     }
     const res = await getReviewReplyList({
       rootReviewId: currentReplyProp.parentReview.rootReviewId,
@@ -118,6 +138,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
     if (!curReplyProp) return;
     curReplyProp.page = res.page;
     curReplyProp.pageSize = res.pageSize;
+    curReplyProp.total = res.total;
     if (type === 'refresh') {
       curReplyProp.replyList = res.list;
     } else {
@@ -174,6 +195,8 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
         reviewList={reviewList}
         onShowRelyList={handleShowReviewReplyDia}
         onSendReply={handleReply}
+        showLoadMore={total.current > reviewList.length}
+        onLoadMore={() => fetchReviewList(productId, 'loadMore')}
       />
       {/* 评论的回复列表 */}
       <ReviewReplyDia
@@ -184,6 +207,8 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
         onBack={() => handleBackReviewReplyDia()}
         onCloseAll={() => handleCloseReviewReplyDia()}
         onSendReply={handleReply}
+        showLoadMore={currentReplyProp?.total > currentReplyProp?.replyList.length}
+        onLoadMore={() => fetchReplyList('loadMore')}
       />
     </Drawer>
   );

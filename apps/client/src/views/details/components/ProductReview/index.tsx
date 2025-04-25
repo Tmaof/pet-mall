@@ -1,5 +1,5 @@
 import { ProductReviewListDto } from '@/api/behaviour/review/res-dto';
-import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { DownOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { Avatar, Image, Rate } from 'antd';
 import dayjs from 'dayjs';
 import { ReplyInput } from '../ReplyInput';
@@ -18,11 +18,15 @@ interface ProductReviewProps {
   onShowRelyList?: (item: ProductReviewListDto['list'][number]) => void;
   /** 发送回复 */
   onSendReply?: (replyObj: ReplyObj) => void;
+  /** 加载更多 */
+  onLoadMore?: () => void;
+  /** 是否展示加载更多 */
+  showLoadMore?: boolean;
 }
 
 /** 商品评论展示组件 */
 export const ProductReview = (props: ProductReviewProps) => {
-  const { reviewList, onShowRelyList } = props;
+  const { reviewList, onShowRelyList, onLoadMore, showLoadMore = false } = props;
   const {
     openRely,
     replyItem,
@@ -81,6 +85,12 @@ export const ProductReview = (props: ProductReviewProps) => {
           </div>
         </div>
       ))}
+      {/* 加载更多 */}
+      {showLoadMore && (
+        <div className="load-more" onClick={onLoadMore}>
+          <DownOutlined />
+        </div>
+      )}
       {/* 回复输入框 */}
       {replyInputWrapRef.current && (
         <ReplyInput
