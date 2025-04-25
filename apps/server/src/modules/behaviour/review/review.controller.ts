@@ -78,8 +78,8 @@ export class ReviewController {
      * 获取商品评论列表
      */
     @Get('product')
-    async getProductReviews (@Query() dto: GetProductReviewsDto) {
-        const data = await this.reviewService.getProductReviews(dto);
+    async getProductReviews (@ReqUser('clientId') clientId: number, @Query() dto: GetProductReviewsDto) {
+        const data = await this.reviewService.getProductReviews(clientId, dto);
         return getCommonRes({ data });
     }
 
@@ -87,8 +87,8 @@ export class ReviewController {
      * 获取评论回复列表
      */
     @Get('reply')
-    async getReviewReplies (@Query() dto: GetReviewRepliesDto) {
-        const data = await this.reviewService.getReviewReplies(dto);
+    async getReviewReplies (@ReqUser('clientId') clientId: number, @Query() dto: GetReviewRepliesDto) {
+        const data = await this.reviewService.getReviewReplies(clientId, dto);
         return getCommonRes({ data });
     }
 }

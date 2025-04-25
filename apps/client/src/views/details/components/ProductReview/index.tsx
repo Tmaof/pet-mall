@@ -1,6 +1,7 @@
 import { ProductReviewListDto } from '@/api/behaviour/review/res-dto';
 import { DownOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { Avatar, Image, Rate } from 'antd';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { ReplyInput } from '../ReplyInput';
 import { useReplyInput } from '../ReplyInput/hooks/useReplyInput';
@@ -22,11 +23,13 @@ interface ProductReviewProps {
   onLoadMore?: () => void;
   /** 是否展示加载更多 */
   showLoadMore?: boolean;
+  /** 点赞 */
+  onLike?: (item: ProductReviewListDto['list'][number]) => void;
 }
 
 /** 商品评论展示组件 */
 export const ProductReview = (props: ProductReviewProps) => {
-  const { reviewList, onShowRelyList, onLoadMore, showLoadMore = false } = props;
+  const { reviewList, onShowRelyList, onLoadMore, showLoadMore = false, onLike } = props;
   const {
     openRely,
     replyItem,
@@ -68,7 +71,13 @@ export const ProductReview = (props: ProductReviewProps) => {
           <div className="card-footer">
             <div className="card-footer-like">
               {/* 点赞 */}
-              <div className="card-footer-like-icon">
+              <div
+                className={classNames({
+                  'card-footer-like-icon': true,
+                  liked: item.liked,
+                })}
+                onClick={() => onLike?.(item)}
+              >
                 <div className="like-count">{item.likeCount}</div>
                 <LikeOutlined />
               </div>

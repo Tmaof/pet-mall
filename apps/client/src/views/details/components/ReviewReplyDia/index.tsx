@@ -6,6 +6,7 @@ import { ReplyObj } from '../ProductReview';
 import { ReplyInput } from '../ReplyInput';
 import { useReplyInput } from '../ReplyInput/hooks/useReplyInput';
 import './index.scss';
+import classNames from 'classnames';
 
 export interface ParentReview {
   /** 根评论ID */
@@ -41,6 +42,8 @@ export interface ReviewReplyDiaProps {
   showLoadMore?: boolean;
   /** 加载更多 */
   onLoadMore?: () => void;
+  /** 点赞 */
+  onLike?: (item: ReviewReplyListDto['list'][number]) => void;
 }
 
 /** 评论的回复列表 */
@@ -54,6 +57,7 @@ export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
     onCloseAll,
     showLoadMore,
     onLoadMore,
+    onLike,
   } = props;
   const {
     openRely,
@@ -116,7 +120,13 @@ export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
               </div>
               <div className="reply-item-content">{item.content}</div>
               <div className="reply-item-footer">
-                <div className="action-btn">
+                <div
+                  className={classNames({
+                    'action-btn like-btn': true,
+                    liked: item.liked,
+                  })}
+                  onClick={() => onLike?.(item)}
+                >
                   <span className="like-count">{item.likeCount}</span>
                   <LikeOutlined />
                 </div>

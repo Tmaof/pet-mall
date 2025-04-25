@@ -19,6 +19,12 @@ export class BaseReviewDto {
 
     /** 创建时间 */
     createdAt: Date;
+
+    /** 回复数量 */
+    replyCount: number;
+
+    /** 是否点赞 */
+    liked: boolean;
 }
 
 /**
@@ -36,9 +42,6 @@ export class ProductReviewDto extends BaseReviewDto {
 
     /** 图片URL数组 */
     images?: string[];
-
-    /** 回复数量 */
-    replyCount: number;
 }
 
 /**
@@ -59,9 +62,6 @@ export class ReviewReplyDto extends BaseReviewDto {
 
     /** 被回复的用户昵称 */
     replyToClientname?: string;
-
-    /** 回复数量 */
-    replyCount: number;
 }
 
 /**

@@ -1,4 +1,11 @@
-import { getProductReviewList, getReviewReplyList, replyReview } from '@/api/behaviour/review';
+import {
+  cancelLikeReview,
+  getProductReviewList,
+  getReviewReplyList,
+  likeReview,
+  replyReview,
+} from '@/api/behaviour/review';
+import { ReviewType } from '@/api/behaviour/review/enum';
 import { ProductReviewListDto, ReviewReplyListDto } from '@/api/behaviour/review/res-dto';
 import { Drawer, message } from 'antd';
 import dayjs from 'dayjs';
@@ -181,6 +188,72 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
     }
   }
 
+  /** 点赞 【商品评论】*/
+  async function handleLike(item: ProductReviewListDto['list'][number]) {
+    if (item.liked) {
+      // 取消点赞
+      await cancelLikeReview({
+        reviewId: item.productReviewId,
+        type: ReviewType.PRODUCT,
+      });
+      // 前端直接更新数量
+      updateCount(-1);
+    } else {
+      // 点赞
+      await likeReview({
+        reviewId: item.productReviewId,
+        type: ReviewType.PRODUCT,
+      });
+      // 前端直接更新数量
+      updateCount(1);
+    }
+
+    function updateCount(count: number) {
+      setReviewList(
+        reviewList.map(review => {
+          if (review.productReviewId === item.productReviewId) {
+            review.likeCount += count;
+            review.liked = count > 0;
+          }
+          return review;
+        })
+      );
+    }
+  }
+
+  /** 点赞 【回复评论】*/
+  async function handleLikeReply(item: ReviewReplyListDto['list'][number]) {
+    if (item.liked) {
+      // 取消点赞
+      await cancelLikeReview({
+        reviewId: item.replyId,
+        type: ReviewType.REPLY,
+      });
+      // 前端直接更新数量
+      updateCount(-1);
+    } else {
+      // 点赞
+      await likeReview({
+        reviewId: item.replyId,
+        type: ReviewType.REPLY,
+      });
+      // 前端直接更新数量
+      updateCount(1);
+    }
+
+    function updateCount(count: number) {
+      const currentReplyProp = replyListStack[replyListStack.length - 1];
+      if (!currentReplyProp) return;
+      currentReplyProp.replyList = currentReplyProp.replyList.map(reply => {
+        if (reply.replyId === item.replyId) {
+          reply.likeCount += count;
+          reply.liked = count > 0;
+        }
+        return reply;
+      });
+      setReplyListStack([...replyListStack]);
+    }
+  }
   return (
     <Drawer
       rootClassName="product-review-drawer"
@@ -197,6 +270,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
         onSendReply={handleReply}
         showLoadMore={total.current > reviewList.length}
         onLoadMore={() => fetchReviewList(productId, 'loadMore')}
+        onLike={handleLike}
       />
       {/* 评论的回复列表 */}
       <ReviewReplyDia
@@ -209,6 +283,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
         onSendReply={handleReply}
         showLoadMore={currentReplyProp?.total > currentReplyProp?.replyList.length}
         onLoadMore={() => fetchReplyList('loadMore')}
+        onLike={handleLikeReply}
       />
     </Drawer>
   );

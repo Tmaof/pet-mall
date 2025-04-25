@@ -204,7 +204,7 @@ export class ReviewService {
     /**
      * 获取商品评论列表
      */
-    async getProductReviews (dto: GetProductReviewsDto): Promise<ProductReviewListDto> {
+    async getProductReviews (clientId: number, dto: GetProductReviewsDto): Promise<ProductReviewListDto> {
         const queryBuilder = this.productReviewsRepository
             .createQueryBuilder('review')
             .leftJoinAndSelect('review.client', 'client')
@@ -226,8 +226,13 @@ export class ReviewService {
             .take(pageSize)
             .getManyAndCount();
 
+        const likedList = await Promise.all(list.map(async review => {
+            const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.PRODUCT } });
+            return count > 0;
+        }));
+
         return {
-            list: list.map(review => ({
+            list: list.map((review, index) => ({
                 productReviewId: review.id,
                 productId: review.productId,
                 clientId: review.clientId,
@@ -239,6 +244,7 @@ export class ReviewService {
                 replyCount: review.replies.length,
                 likeCount: review.likeCount,
                 createdAt: review.createdAt,
+                liked: likedList[index],
             })),
             total,
             page,
@@ -249,7 +255,7 @@ export class ReviewService {
     /**
      * 获取评论回复列表
      */
-    async getReviewReplies (dto: GetReviewRepliesDto): Promise<ReviewReplyListDto> {
+    async getReviewReplies (clientId: number, dto: GetReviewRepliesDto): Promise<ReviewReplyListDto> {
         const queryBuilder = this.reviewRepliesRepository
             .createQueryBuilder('reply')
             .leftJoinAndSelect('reply.client', 'client')
@@ -278,8 +284,14 @@ export class ReviewService {
             .take(pageSize)
             .getManyAndCount();
 
+        // 客户是否点赞了该评论
+        const likedList = await Promise.all(list.map(async review => {
+            const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.REPLY } });
+            return count > 0;
+        }));
+
         return {
-            list: list.map(reply => ({
+            list: list.map((reply, index) => ({
                 replyId: reply.id,
                 rootReviewId: reply.rootReviewId,
                 parentId: reply.parentId,
@@ -292,6 +304,7 @@ export class ReviewService {
                 likeCount: reply.likeCount,
                 createdAt: reply.createdAt,
                 replyCount: reply.children.length,
+                liked: likedList[index],
             })),
             total,
             page,
