@@ -311,4 +311,9 @@ export class ReviewService {
             pageSize,
         };
     }
+
+    /** 获取一个商品的【商品评论】数 */
+    async getProductReviewCount (productId: number): Promise<number> {
+        return await this.productReviewsRepository.count({ where: { productId } });
+    }
 }

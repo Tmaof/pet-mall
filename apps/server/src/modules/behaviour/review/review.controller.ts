@@ -91,4 +91,11 @@ export class ReviewController {
         const data = await this.reviewService.getReviewReplies(clientId, dto);
         return getCommonRes({ data });
     }
+
+    /** 获取一个商品的【商品评论】数 */
+    @Get('product/count/:id')
+    async getProductReviewCount (@Param('id') id: string) {
+        const data = await this.reviewService.getProductReviewCount(Number(id));
+        return getCommonRes({ data });
+    }
 }

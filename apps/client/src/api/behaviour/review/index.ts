@@ -41,3 +41,10 @@ export const cancelLikeReview = (data: LikeReviewDto) =>
     method: 'DELETE',
     data,
   });
+
+/** 获取一个商品的【商品评论】数 */
+export const getProductReviewCount = (id: number) =>
+  request<number>({
+    url: `reviews/product/count/${id}`,
+    method: 'GET',
+  });

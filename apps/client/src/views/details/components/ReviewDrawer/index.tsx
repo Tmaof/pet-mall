@@ -258,6 +258,7 @@ export const ReviewDrawer = (props: ReviewDrawerProps) => {
     <Drawer
       rootClassName="product-review-drawer"
       title="商品评价"
+      width={400}
       placement="left"
       closable={false}
       onClose={onClose}
