@@ -5,9 +5,11 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { Order } from './order.entity';
+import { ProductReviews } from '@/modules/behaviour/review/entity/product_reviews.entity';
 
 @Entity('order_item')
 export class OrderItem {
@@ -75,4 +77,11 @@ export class OrderItem {
     @ManyToOne(() => Product)
     @JoinColumn({ name: 'product_id' })
         product: Product;
+
+    /**
+     * 一个订单项只能有一条商品评论，一个商品评论属于一个订单项
+     */
+    @OneToOne(() => ProductReviews)
+    @JoinColumn({ name: 'product_reviews_id' })
+        productReviews: ProductReviews;
 }

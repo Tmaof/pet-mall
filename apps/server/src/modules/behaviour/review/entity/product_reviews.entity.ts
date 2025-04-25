@@ -2,7 +2,7 @@ import { Client } from '@/modules/client/client/client.entity';
 import { OrderItem } from '@/modules/order/entity/order-item.entity';
 import { Product } from '@/modules/product/product/product.entity';
 import {
-    Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn
+    Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn
 } from 'typeorm';
 import { ReviewReplies } from './review_replies.entity';
 
@@ -49,9 +49,9 @@ export class ProductReviews {
         product: Product;
 
     /**
-     * 一条商品评论属于一个订单项，一个订单项可以有多条评论
+     * 一条商品评论属于一个订单项，一个订单项只能有一条商品评论
      */
-    @ManyToOne(() => OrderItem)
+    @OneToOne(() => OrderItem)
     @JoinColumn({ name: 'order_item_id' })
         orderItem: OrderItem;
 
