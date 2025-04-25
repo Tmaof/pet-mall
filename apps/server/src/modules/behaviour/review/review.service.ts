@@ -7,8 +7,10 @@ import { ProductReviews } from './entity/product_reviews.entity';
 import { ReviewLikes } from './entity/review_likes.entity';
 import { ReviewReplies } from './entity/review_replies.entity';
 import { ReviewSortType, ReviewType } from './enum';
-import { CreateProductReviewDto, CreateReviewReplyDto, GetProductReviewsDto, GetReviewRepliesDto, LikeReviewDto } from './req-dto';
-import { ProductReviewListDto, ReviewReplyListDto } from './res-dto';
+import {
+    CreateProductReviewDto, CreateReviewReplyDto, GetPendingReviewsDto, GetProductReviewsDto, GetReviewRepliesDto, LikeReviewDto
+} from './req-dto';
+import { PendingReviewProductsDto, ProductReviewListDto, ReviewReplyListDto } from './res-dto';
 
 @Injectable()
 export class ReviewService {
@@ -315,5 +317,46 @@ export class ReviewService {
     /** 获取一个商品的【商品评论】数 */
     async getProductReviewCount (productId: number): Promise<number> {
         return await this.productReviewsRepository.count({ where: { productId } });
+    }
+
+    /**
+     * 获取当前客户的待评价商品列表
+     */
+    async getPendingReviewProducts (clientId: number, dto: GetPendingReviewsDto): Promise<PendingReviewProductsDto> {
+        const queryBuilder = this.orderItemRepository.createQueryBuilder('orderItem')
+            .leftJoinAndSelect('orderItem.product', 'product')
+            .leftJoinAndSelect('orderItem.order', 'order')
+            .where('order.clientId = :clientId', { clientId })
+            .andWhere('order.status = :status', { status: OrderStatus.COMPLETED })
+            .andWhere('orderItem.productReviews IS NULL'); // 未评论
+
+        // 分页
+        const page = dto.page ?? 1;
+        const pageSize = dto.pageSize ?? 10;
+        const [list, total] = await queryBuilder
+            .skip((page - 1) * pageSize)
+            .take(pageSize)
+            .getManyAndCount();
+
+        return {
+            list: list.map(orderItem => ({
+                orderItemId: orderItem.id,
+                productId: orderItem.productId,
+                id: orderItem.product.id,
+                categoryId: orderItem.product.categoryId,
+                title: orderItem.product.title,
+                mainImage: orderItem.product.mainImage,
+                quantity: orderItem.quantity,
+                price: orderItem.product.price,
+                stock: orderItem.product.stock,
+                isOnSale: orderItem.product.isOnSale,
+                createdAt: orderItem.product.createdAt,
+                updatedAt: orderItem.product.updatedAt,
+                tags: orderItem.product.tags,
+            })),
+            total,
+            page,
+            pageSize,
+        };
     }
 }

@@ -50,10 +50,11 @@ export class ProductReviews {
         product: Product;
 
     /**
-     * TODO:
-     * 一条商品评论属于一个订单项，一个订单项只能有一条商品评论
+     * TODO: one-to-one 为啥报错？？
+     * 一条商品评论属于一个订单项，一个订单项只能有一条商品评论。
+     * 当添加商品评论时，级联添加订单项的商品评论ID。
      */
-    @ManyToOne(() => OrderItem)
+    @ManyToOne(() => OrderItem, { cascade: ['insert', 'update'] })
     @JoinColumn({ name: 'order_item_id' })
         orderItem: OrderItem;
 

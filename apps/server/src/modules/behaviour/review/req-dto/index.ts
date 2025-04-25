@@ -135,3 +135,22 @@ export class LikeReviewDto {
     @IsNotEmpty()
         type: ReviewType;
 }
+
+/**
+ * 获取待评价商品列表请求DTO
+ */
+export class GetPendingReviewsDto {
+    /** 页码 */
+    @IsInt()
+    @Min(1)
+    @Type(() => Number)
+    @IsOptional()
+        page? = 1;
+
+    /** 每页数量 */
+    @IsInt()
+    @Min(1)
+    @IsOptional()
+    @Type(() => Number)
+        pageSize? = 10;
+}
