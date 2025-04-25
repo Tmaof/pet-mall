@@ -4,6 +4,7 @@ import { Avatar, Image, Rate } from 'antd';
 import dayjs from 'dayjs';
 import { ReplyInput } from '../ReplyInput';
 import { useReplyInput } from '../ReplyInput/hooks/useReplyInput';
+import './index.scss';
 
 export type ReplyObj = {
   content: string;
@@ -52,8 +53,12 @@ export const ProductReview = (props: ProductReviewProps) => {
           {/* 内容 */}
           <div className="card-content">{item.content}</div>
           {/* 图片 */}
-          <div className="img-contianer">
-            {item?.images?.map(image => <Image key={image} src={image} alt="商品图片" />)}
+          <div className="img-container">
+            <Image.PreviewGroup>
+              {item?.images?.map((image, index) => (
+                <Image key={index} src={image} alt="商品图片" />
+              ))}
+            </Image.PreviewGroup>
           </div>
           {/* 底部 */}
           <div className="card-footer">
@@ -81,7 +86,10 @@ export const ProductReview = (props: ProductReviewProps) => {
         <ReplyInput
           title={`回复 ${replyItem?.clientname}`}
           open={openRely}
-          onClose={() => setOpenRely(false)}
+          onClose={() => {
+            setOpenRely(false);
+            setContent('');
+          }}
           containerDom={replyInputWrapRef.current}
           content={content}
           onChange={setContent}

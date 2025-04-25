@@ -1,4 +1,6 @@
+@use './index.scss' as *;
 * {
+  @extend .scroll-bar-normal;
   box-sizing: border-box;
 }
 

@@ -42,6 +42,13 @@ html {
   --theme-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05); // 小阴影
   --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1); // 中阴影
   --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1); // 大阴影
+
+  // 评论相关
+  --theme-comment-bg: #f5f5f5;
+  --theme-comment-hover: #f0f0f0;
+  --theme-comment-border: #e8e8e8;
+  --theme-comment-action: #595959;
+  --theme-comment-action-hover: var(--theme-primary);
 }
 
 // 暗色主题
@@ -88,4 +95,11 @@ html.theme-dark {
   --theme-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3); // 暗色小阴影
   --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4); // 暗色中阴影
   --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5); // 暗色大阴影
+
+  // 评论相关
+  --theme-comment-bg: #1f1f1f;
+  --theme-comment-hover: #262626;
+  --theme-comment-border: #303030;
+  --theme-comment-action: #8c8c8c;
+  --theme-comment-action-hover: var(--theme-primary);
 }

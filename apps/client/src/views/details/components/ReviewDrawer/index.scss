@@ -1,6 +1,7 @@
 .product-review-drawer {
     // 解决 内部抽屉打开时，内容区域会向左偏移的问题
     & > .ant-drawer-content-wrapper{
-        transform: translateX(0) !important;
+        // 有bug，内层评论回复输入框，不用抽屉了
+        // transform: translateX(0) !important;
     }
 }

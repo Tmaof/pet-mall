@@ -1,0 +1,135 @@
+.reply-input-drawer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+
+
+  // 遮罩层
+  .reply-input-drawer-mask {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  .reply-input-drawer-content {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+
+    background: var(--theme-bg-container);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -4px 16px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--theme-divider);
+    border-left: 1px solid var(--theme-divider);
+    border-right: 1px solid var(--theme-divider);
+
+    // 标题
+    .drawer-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--theme-text-primary);
+      margin-bottom: 16px;
+    }
+
+    .ant-input-textarea {
+      textarea {
+        background: var(--theme-bg-container);
+        border-color: var(--theme-comment-border);
+        color: var(--theme-text-primary);
+        resize: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+
+        &:hover,
+        &:focus {
+          border-color: var(--theme-primary);
+          box-shadow: 0 0 0 2px var(--theme-primary-outline);
+        }
+      }
+    }
+
+    .ant-btn {
+      align-self: flex-end;
+      height: 30px;
+      padding: 0 16px;
+      border-radius: 18px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 28px;
+
+      &:not(:disabled):hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+.reply-input-drawer-open {
+
+  @keyframes show-mask {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes show-content {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  .reply-input-drawer-mask {
+    animation: show-mask 0.2s linear forwards;
+  }
+  .reply-input-drawer-content {
+    animation: show-content 0.2s linear forwards;
+  }
+}
+
+.reply-input-drawer-close {
+  @keyframes hide-mask {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hide-content {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+  .reply-input-drawer-mask {
+    animation: hide-mask 0.2s linear forwards;
+  }
+  .reply-input-drawer-content {
+    animation: hide-content 0.2s linear forwards;
+  }
+}

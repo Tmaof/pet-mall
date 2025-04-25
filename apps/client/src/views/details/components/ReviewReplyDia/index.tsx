@@ -1,9 +1,11 @@
 import { ReviewReplyListDto } from '@/api/behaviour/review/res-dto';
 import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import { Avatar, Modal } from 'antd';
+import dayjs from 'dayjs';
 import { ReplyObj } from '../ProductReview';
 import { ReplyInput } from '../ReplyInput';
 import { useReplyInput } from '../ReplyInput/hooks/useReplyInput';
+import './index.scss';
 
 export interface ParentReview {
   /** 根评论ID */
@@ -37,9 +39,9 @@ export interface ReviewReplyDiaProps {
   onSendReply?: (replyObj: ReplyObj) => void;
 }
 
-/** 展示 评论的回复列表 的弹框 */
+/** 评论的回复列表 */
 export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
-  const { open, parentReview, replyList, onShowReply } = props;
+  const { open, parentReview, replyList, onShowReply, onBack, onCloseAll } = props;
   const {
     openRely,
     replyItem,
@@ -51,67 +53,86 @@ export const ReviewReplyDia = (props: ReviewReplyDiaProps) => {
     replyInputWrapRef,
   } = useReplyInput(props.onSendReply);
 
-  if (!parentReview || !replyList) return null;
+  if (!open) return null;
 
   return (
     <Modal
       open={open}
-      onOk={props?.onBack}
-      onCancel={props?.onCloseAll}
+      onOk={onBack}
+      onCancel={onCloseAll}
       okText="返回上级"
       cancelText="关闭全部"
       title="回复列表"
       destroyOnClose={true}
+      width={600}
+      wrapClassName="review-reply-dialog"
     >
-      <div className="review-reply-list" ref={replyInputWrapRef}>
-        {/* 引用 父评论 */}
+      <div ref={replyInputWrapRef}>
+        {/* 父评论 */}
         <div className="parent-review">
-          <div className="parent-review-avatar">
-            <Avatar src={parentReview.clientAvatar} />
-            <div className="parent-review-info">
-              <div className="parent-review-info-name">{parentReview.clientName}</div>
-              <div className="parent-review-info-time">{parentReview.createdAt}</div>
+          <div className="parent-review-header">
+            <Avatar src={parentReview?.clientAvatar} />
+            <div className="parent-review-header-info">
+              <div className="parent-review-header-info-name">{parentReview?.clientName}</div>
+              <div className="parent-review-header-info-time">{parentReview?.createdAt}</div>
             </div>
           </div>
-          <div className="parent-review-content">{parentReview.content}</div>
+          <div className="parent-review-content">{parentReview?.content}</div>
         </div>
-        {/* 子评论列表 */}
+
+        {/* 回复列表 */}
         <div className="reply-list">
-          {replyList.map(item => (
-            <div className="reply-item-card" key={item.replyId}>
-              <div className="reply-item-avatar">
+          {replyList?.map(item => (
+            <div key={item.replyId} className="reply-item">
+              <div className="reply-item-header">
                 <Avatar src={item.clientAvatar} />
+                <div className="reply-item-header-info">
+                  <div className="reply-item-header-info-name">
+                    {item.clientname}
+                    {item.replyToClientname && (
+                      <>
+                        <span className="reply-to">回复</span>
+                        {item.replyToClientname}
+                      </>
+                    )}
+                  </div>
+                  <div className="reply-item-header-info-time">
+                    {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                  </div>
+                </div>
               </div>
               <div className="reply-item-content">{item.content}</div>
-              <div className="footer">
-                {/* 点赞 */}
-                <div className="footer-like">
-                  <div className="like-count">{item.likeCount}</div>
+              <div className="reply-item-footer">
+                <div className="action-btn">
+                  <span className="like-count">{item.likeCount}</span>
                   <LikeOutlined />
                 </div>
-                {/* 回复 */}
-                <div className="footer-reply" onClick={() => onShowReply?.(item)}>
-                  <div className="reply-count">{item.replyCount}</div>
+                <div className="action-btn" onClick={() => onShowReply?.(item)}>
+                  <span>{item.replyCount}</span>
                   <MessageOutlined />
                 </div>
-                {/* 回复 */}
-                <div className="footer-reply-btn" onClick={() => handleClickRely(item)}>
+                <div className="action-btn" onClick={() => handleClickRely(item)}>
                   回复ta
                 </div>
               </div>
             </div>
           ))}
         </div>
+
         {/* 回复输入框 */}
         {replyInputWrapRef.current && (
           <ReplyInput
             title={`回复 ${replyItem?.clientname}`}
             open={openRely}
-            onClose={() => setOpenRely(false)}
+            onClose={() => {
+              setOpenRely(false);
+              setContent('');
+            }}
             containerDom={replyInputWrapRef.current}
             content={content}
             onChange={setContent}
             onSendReply={handleSendReply}
+            height=""
           />
         )}
       </div>

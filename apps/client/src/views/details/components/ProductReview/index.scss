@@ -1,0 +1,118 @@
+@use '@/assets/scss/index.scss' as *;
+
+.product-review {
+  height: 100%;
+  .product-review-item-card {
+    padding: 16px;
+    margin-bottom: 16px;
+    background: var(--theme-bg-container);
+    border: 1px solid var(--theme-comment-border);
+    border-radius: 8px;
+    transition: all 0.3s;
+
+    &:hover {
+      background: var(--theme-comment-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--theme-shadow-sm);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .ant-avatar {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+      }
+
+      &-info {
+        flex: 1;
+
+        &-name {
+          font-size: 16px;
+          font-weight: 500;
+          color: var(--theme-text-primary);
+          margin-bottom: 4px;
+        }
+
+        &-rating {
+          margin-bottom: 4px;
+        }
+
+        &-time {
+          font-size: 12px;
+          color: var(--theme-text-secondary);
+        }
+      }
+    }
+
+    .card-content {
+      color: var(--theme-text-primary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .img-container {
+      @extend .scroll-bar-normal;
+      display: flex;
+      overflow: auto;
+      gap: 8px;
+      margin-bottom: 12px;
+
+      .ant-image {
+        flex-shrink: 0;
+        width: 80px;
+        height: 80px;
+        border-radius: 4px;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      &-like {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        &-icon,
+        .card-footer-reply {
+          display: flex;
+          align-items: center;
+          color: var(--theme-comment-action);
+          cursor: pointer;
+          transition: all 0.3s;
+
+          &:hover {
+            color: var(--theme-comment-action-hover);
+          }
+
+          .anticon {
+            margin-left: 4px;
+          }
+        }
+
+        &-btn {
+          color: var(--theme-primary);
+          cursor: pointer;
+          transition: all 0.3s;
+
+          &:hover {
+            color: var(--theme-primary-hover);
+          }
+        }
+      }
+    }
+  }
+}
