@@ -38,9 +38,10 @@ export class ReviewReplies {
         updatedAt: Date;
 
     /**
-     * 一条回复属于一条商品评论，一个商品评论可以有多条回复
+     * 一条回复属于一条商品评论，一个商品评论可以有多条回复。
+     * 在商品评论删除时，级联删除回复
      */
-    @ManyToOne(() => ProductReviews)
+    @ManyToOne(() => ProductReviews, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'root_review_id' })
         rootReview: ProductReviews;
 
