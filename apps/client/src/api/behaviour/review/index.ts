@@ -1,0 +1,27 @@
+import request from '@/utils/request';
+import { ProductReviewListDto, ReviewReplyListDto } from './res-dto';
+import { CreateReviewReplyDto, GetProductReviewsDto, GetReviewRepliesDto } from './req-dto';
+
+/** 获取商品评论列表 */
+export const getProductReviewList = (params: GetProductReviewsDto) =>
+  request<ProductReviewListDto>({
+    url: 'reviews/product',
+    method: 'GET',
+    params,
+  });
+
+/** 获取评论的回复列表 */
+export const getReviewReplyList = (params: GetReviewRepliesDto) =>
+  request<ReviewReplyListDto>({
+    url: 'reviews/reply',
+    method: 'GET',
+    params,
+  });
+
+/** 回复评论 */
+export const replyReview = (data: CreateReviewReplyDto) =>
+  request({
+    url: 'reviews/reply',
+    method: 'POST',
+    data,
+  });
