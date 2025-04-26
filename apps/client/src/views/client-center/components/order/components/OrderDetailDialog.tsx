@@ -48,6 +48,8 @@ const OrderDetailDialog: React.FC<OrderDetailDialogProps> = ({ open, order, onCl
     },
   ];
 
+  if (!order) return null;
+
   return (
     <Modal title="订单详情" open={open} onCancel={onClose} footer={null} width={800}>
       <Descriptions column={2} bordered>
@@ -88,7 +90,7 @@ const OrderDetailDialog: React.FC<OrderDetailDialogProps> = ({ open, order, onCl
         </Descriptions.Item>
 
         {/* 物流信息 */}
-        {order?.status === OrderStatus.SHIPPED && (
+        {[OrderStatus.SHIPPED, OrderStatus.COMPLETED].includes(order.status) && (
           <>
             <Descriptions.Item label="物流公司">{order.shippingCompany}</Descriptions.Item>
             <Descriptions.Item label="物流单号">{order.trackingNumber}</Descriptions.Item>
