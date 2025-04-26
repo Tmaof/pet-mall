@@ -32,7 +32,7 @@ export class UploadService {
                 // }
 
                 // 保存成功的文件
-                result.succMap[originalname] = join(staticPrefix, filename);
+                result.succMap[originalname] = `${staticPrefix}/${filename}`;
             } catch (error) {
                 // 记录失败的文件
                 result.errFiles.push(file.originalname);
@@ -49,7 +49,7 @@ export class UploadService {
      * @param url 文件URL
      */
     async deleteFile (url: string): Promise<void> {
-        const filename = url.split('/').pop();
+        const filename = url.split(/[/\\]/).pop();
         if (!filename) {
             throw new Error('无效的文件URL');
         }
