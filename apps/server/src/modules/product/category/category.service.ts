@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Product } from '../product/product.entity';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './req-dto/create-category.dto';
 import { GetCategoryTreeResDto } from './res-dto';
-import { Product } from '../product/product.entity';
 
 @Injectable()
 export class CategoryService {
@@ -33,9 +33,11 @@ export class CategoryService {
         await this.categoryRepository.save(category);
     }
 
-    /** 获取分类树 */
-    async getCategoryTree () {
-        const categories = await this.categoryRepository.find({ relations: ['parent'] });
+    /** 获取分类树
+     * @param isVisible 是否只返回可见的分类
+     */
+    async getCategoryTree (isNeedVisible = false) {
+        const categories = await this.categoryRepository.find({ relations: ['parent'], where: { isVisible: isNeedVisible ? true : undefined } });
 
         /** 格式化分类 */
         function formatCategory (category: Category): GetCategoryTreeResDto {

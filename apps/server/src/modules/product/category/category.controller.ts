@@ -1,18 +1,18 @@
+import { Public } from '@/decorator/index.decorator';
+import { JwtGuard } from '@/guards/jwt.guard';
+import { getCommonRes } from '@/utils';
 import {
+    Body,
     Controller,
+    Delete,
     Get,
+    Param,
     Post,
     Put,
-    Delete,
-    Body,
-    Param,
     UseGuards
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './req-dto/create-category.dto';
-import { JwtGuard } from '@/guards/jwt.guard';
-import { getCommonRes } from '@/utils';
-import { Public } from '@/decorator/index.decorator';
 
 @Controller('category')
 @UseGuards(JwtGuard)
@@ -26,11 +26,19 @@ export class CategoryController {
         return getCommonRes(res);
     }
 
-    /** 获取分类树 */
+    /** 获取分类树 - 后台 */
     @Get('tree')
     @Public()
     async getCategoryTree () {
-        const data = await this.categoryService.getCategoryTree();
+        const data = await this.categoryService.getCategoryTree(false);
+        return getCommonRes({ data });
+    }
+
+    /** 获取分类树 - 前台： 只返回可见的分类 */
+    @Get('tree/client')
+    @Public()
+    async getCategoryTreeClient () {
+        const data = await this.categoryService.getCategoryTree(true);
         return getCommonRes({ data });
     }
 

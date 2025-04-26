@@ -20,6 +20,6 @@ export const getHomePageData = () =>
 /** 获取所有分类(树形结构) */
 export const getCategoryTree = () =>
   request<GetCategoryTreeResDto[]>({
-    url: '/category/tree',
+    url: '/category/tree/client',
     method: 'GET',
   });
