@@ -97,6 +97,8 @@ export class ReviewReplyListDto extends ReviewListDto<ReviewReplyDto> {}
  * 待评价商品DTO
  */
 export class PendingReviewProductDto extends ProductBriefDto {
+    /** 订单id */
+    orderId: number;
     /** 订单项ID */
     orderItemId: number;
 }

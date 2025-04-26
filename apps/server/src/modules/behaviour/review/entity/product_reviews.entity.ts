@@ -2,7 +2,10 @@ import { Client } from '@/modules/client/client/client.entity';
 import { OrderItem } from '@/modules/order/entity/order-item.entity';
 import { Product } from '@/modules/product/product/product.entity';
 import {
-    Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, OneToMany,
+    Column, CreateDateColumn, Entity,
+    Index,
+    JoinColumn, ManyToOne, OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn, UpdateDateColumn
 } from 'typeorm';
 import { ReviewReplies } from './review_replies.entity';
@@ -16,8 +19,8 @@ export class ProductReviews {
     @Index()
         productId: number;
 
-    @Column({ name: 'order_item_id', comment: '订单项ID，用于验证购买记录' })
-    @Index()
+    /** 一个商品评论 对于一个 订单项 */
+    @Column({ name: 'order_item_id', unique: true, comment: '订单项ID，用于验证购买记录' })
         orderItemId: number;
 
     @Column({ name: 'client_id', comment: '评论用户ID' })
@@ -50,11 +53,9 @@ export class ProductReviews {
         product: Product;
 
     /**
-     * TODO: one-to-one 为啥报错？？
      * 一条商品评论属于一个订单项，一个订单项只能有一条商品评论。
-     * 当添加商品评论时，级联添加订单项的商品评论ID。
      */
-    @ManyToOne(() => OrderItem, { cascade: ['insert', 'update'] })
+    @OneToOne(() => OrderItem, (orderItem) => orderItem.id)
     @JoinColumn({ name: 'order_item_id' })
         orderItem: OrderItem;
 

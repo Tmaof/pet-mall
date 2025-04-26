@@ -326,9 +326,10 @@ export class ReviewService {
         const queryBuilder = this.orderItemRepository.createQueryBuilder('orderItem')
             .leftJoinAndSelect('orderItem.product', 'product')
             .leftJoinAndSelect('orderItem.order', 'order')
+            .leftJoin(ProductReviews, 'review', 'review.orderItemId = orderItem.id')
             .where('order.clientId = :clientId', { clientId })
             .andWhere('order.status = :status', { status: OrderStatus.COMPLETED })
-            .andWhere('orderItem.productReviews IS NULL'); // 未评论
+            .andWhere('review.id IS NULL'); // 未评论
 
         // 分页
         const page = dto.page ?? 1;
@@ -340,9 +341,9 @@ export class ReviewService {
 
         return {
             list: list.map(orderItem => ({
+                orderId: orderItem.orderId,
                 orderItemId: orderItem.id,
-                productId: orderItem.productId,
-                id: orderItem.product.id,
+                id: orderItem.productId,
                 categoryId: orderItem.product.categoryId,
                 title: orderItem.product.title,
                 mainImage: orderItem.product.mainImage,
