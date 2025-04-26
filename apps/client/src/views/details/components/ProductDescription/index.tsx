@@ -10,36 +10,13 @@ interface Props {
 }
 
 const ProductDescription: FC<Props> = ({ description, loading }) => {
-  const vditorRef = useRef<Vditor>();
   const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!description || !domRef.current) return;
-
-    const initVditor = async () => {
-      if (!vditorRef.current) {
-        vditorRef.current = new Vditor('vditor-preview', {
-          mode: 'wysiwyg',
-          preview: {
-            mode: 'both',
-          },
-          toolbar: [],
-          after: () => {
-            vditorRef.current?.setValue(description);
-            vditorRef.current?.disabled();
-          },
-        });
-      } else {
-        vditorRef.current.setValue(description);
-      }
-    };
-
-    initVditor();
-
-    return () => {
-      vditorRef.current?.destroy();
-      vditorRef.current = undefined;
-    };
+    Vditor.preview(domRef.current, description, {
+      mode: 'light',
+    });
   }, [description]);
 
   if (loading) {
@@ -52,7 +29,7 @@ const ProductDescription: FC<Props> = ({ description, loading }) => {
 
   return (
     <div className="product-description">
-      <div id="vditor-preview" ref={domRef} />
+      <div ref={domRef} />
     </div>
   );
 };
