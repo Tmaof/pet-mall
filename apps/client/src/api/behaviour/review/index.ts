@@ -1,6 +1,13 @@
 import request from '@/utils/request';
-import { ProductReviewListDto, ReviewReplyListDto } from './res-dto';
-import { CreateReviewReplyDto, GetProductReviewsDto, GetReviewRepliesDto, LikeReviewDto } from './req-dto';
+import {
+  CreateProductReviewDto,
+  CreateReviewReplyDto,
+  GetPendingReviewsDto,
+  GetProductReviewsDto,
+  GetReviewRepliesDto,
+  LikeReviewDto,
+} from './req-dto';
+import { PendingReviewProductsDto, ProductReviewListDto, ReviewReplyListDto } from './res-dto';
 
 /** 获取商品评论列表 */
 export const getProductReviewList = (params: GetProductReviewsDto) =>
@@ -47,4 +54,20 @@ export const getProductReviewCount = (id: number) =>
   request<number>({
     url: `reviews/product/count/${id}`,
     method: 'GET',
+  });
+
+/** 获取待评价商品列表 */
+export const getPendingReviewProducts = (dto: GetPendingReviewsDto) =>
+  request<PendingReviewProductsDto>({
+    url: '/reviews/product/pending',
+    method: 'GET',
+    params: dto,
+  });
+
+/** 发布商品评价 */
+export const publishProductReview = (dto: CreateProductReviewDto) =>
+  request({
+    url: '/reviews/product',
+    method: 'POST',
+    data: dto,
   });

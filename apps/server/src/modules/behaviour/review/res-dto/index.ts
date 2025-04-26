@@ -1,4 +1,3 @@
-import { ProductBriefDto } from '@/modules/product/product/res-dto/product.dto';
 
 /**
  * 评论基础信息DTO
@@ -96,11 +95,25 @@ export class ReviewReplyListDto extends ReviewListDto<ReviewReplyDto> {}
 /**
  * 待评价商品DTO
  */
-export class PendingReviewProductDto extends ProductBriefDto {
+export class PendingReviewProductDto {
     /** 订单id */
     orderId: number;
     /** 订单项ID */
     orderItemId: number;
+    /** 商品ID */
+    id: number;
+    /** 分类ID */
+    categoryId: number;
+    /** 商品标题 */
+    title: string;
+    mainImage: string;
+    /** 购买数量 */
+    quantity: number;
+    price: number;
+    stock: number;
+    isOnSale: number;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 /**

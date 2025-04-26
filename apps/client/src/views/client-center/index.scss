@@ -98,10 +98,10 @@
       border-radius: 12px;
       overflow: hidden;
 
-      .ant-tabs {
+      &>.ant-tabs {
         height: 100%;
 
-        .ant-tabs-nav {
+        &>.ant-tabs-nav {
           background: var(--theme-bg-spotlight);
           padding: 16px 0;
           border-right: 1px solid var(--theme-divider);
@@ -136,9 +136,9 @@
           }
         }
 
-        .ant-tabs-content {
+        &>.ant-tabs-content-holder>.ant-tabs-content {
           height: 100%;
-          padding: 24px;
+          padding: 12px;
 
           .tab-content {
             background: var(--theme-bg-container);

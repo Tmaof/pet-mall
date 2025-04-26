@@ -1,0 +1,23 @@
+.review-product-dialog {
+  .ant-form-item {
+    margin-bottom: 24px;
+  }
+
+  .upload-tip {
+    color: var(--theme-text-secondary);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  .ant-upload-list-picture-card {
+    .ant-upload-list-item {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .ant-upload.ant-upload-select {
+    width: 100px;
+    height: 100px;
+  }
+}

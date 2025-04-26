@@ -1,7 +1,7 @@
 import { Address } from './components/address';
 import { Cart } from './components/cart';
 import { Collect } from './components/collect';
-import { Comment } from './components/comment';
+import { Comment } from './components/review';
 import { Order } from './components/order';
 import { Profile } from './components/profile';
 import {
