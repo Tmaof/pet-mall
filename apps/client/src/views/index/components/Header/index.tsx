@@ -6,7 +6,7 @@ import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Badge, Dropdown } from 'antd';
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userMenuItems } from './constants';
+import { useUserMenuItems } from './hooks/useUserMenuItems';
 import './index.scss';
 
 const Header: FC = () => {
@@ -14,10 +14,17 @@ const Header: FC = () => {
   const cartCount = useAppSelector(state => state.client.cartCount);
   const dispatch = useAppDispatch();
 
+  const userMenuItems = useUserMenuItems();
+
   const handleMenuClick = ({ key }: { key: string }) => {
     const item = userMenuItems.find(item => item.key === key);
     if (!item) return;
-    navigate(item.path);
+    if (item.path) {
+      navigate(item.path);
+    }
+    if (item.onClick) {
+      item.onClick();
+    }
   };
 
   // 初始化 购物车数量
