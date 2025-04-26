@@ -21,7 +21,7 @@ const CategoryNav: FC = () => {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const className = (e.target as HTMLElement).className;
-      if (className.includes('ant-cascader')) {
+      if (!className || className.includes('ant-cascader')) {
         return;
       }
       setOpenAllCategory(false);
