@@ -1,10 +1,11 @@
-.product-card {
+.normal-product-card {
   position: relative;
   background: var(--theme-bg-elevated);
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 1px solid var(--theme-border);
 
   &:hover {
     transform: translateY(-4px);
@@ -18,7 +19,7 @@
   .product-image {
     position: relative;
     width: 100%;
-    padding-top: 100%;
+    padding-top: 70%;
     overflow: hidden;
 
     .ant-image {
@@ -53,6 +54,7 @@
 
   .product-info {
     padding: 16px;
+    border-top: 1px solid var(--theme-divider);
 
     .product-title {
       margin: 0 0 12px;

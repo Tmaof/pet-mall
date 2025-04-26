@@ -15,7 +15,7 @@ const ProductCard: FC<Props> = ({ data }) => {
   if (data.isOnSale === SALE_STATUS.stop) return null;
 
   return (
-    <div className="product-card" onClick={() => navigate(`/details/${data.id}`)}>
+    <div className="normal-product-card" onClick={() => navigate(`/details/${data.id}`)}>
       <div className="product-image">
         <Image fallback={errImgFallback} preview={false} src={data.mainImage} alt={data.title} />
         {data.stock <= 0 && <div className="sold-out">已售罄</div>}
