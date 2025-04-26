@@ -56,6 +56,14 @@ export const Collect = () => {
     setPagination({ current: page, pageSize });
   }, []);
 
+  if (!data || !data.items) {
+    return (
+      <div className="collect-container">
+        <Empty description="暂无收藏商品" />
+      </div>
+    );
+  }
+
   return (
     <div className="collect-container">
       {data.items.length > 0 ? (

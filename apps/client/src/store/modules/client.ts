@@ -59,7 +59,7 @@ export const { setToken, setClientAddresses, setRegionTree, setClientInfo, setCa
 export const fetchClientAddresses = () => {
   return async (dispatch: AppDispatch) => {
     const { list } = await getAddressList();
-    dispatch(setClientAddresses(list));
+    dispatch(setClientAddresses(list ?? []));
     return list;
   };
 };

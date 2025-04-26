@@ -1,6 +1,6 @@
 import { getPendingReviewProducts, publishProductReview } from '@/api/behaviour/review';
 import { PendingReviewProductsDto } from '@/api/behaviour/review/res-dto';
-import { Button, Card, Image, message, Pagination, Typography } from 'antd';
+import { Button, Card, Empty, Image, message, Pagination, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useReviewProductDia } from '../ReviewProductDia/hook';
@@ -55,6 +55,14 @@ export const ToReviewList = () => {
   const handlePageChange = (page: number, pageSize: number) => {
     fetchData(page, pageSize);
   };
+
+  if (!data || !data.list) {
+    return (
+      <div className="to-review-list">
+        <Empty description="暂无待评价商品" />
+      </div>
+    );
+  }
 
   return (
     <div className="to-review-list">
