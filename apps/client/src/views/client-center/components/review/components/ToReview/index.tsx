@@ -73,6 +73,7 @@ export const ToReviewList = () => {
             <div className="product-detail">
               <Text strong>{item.title}</Text>
               <div className="product-meta">
+                <Text type="secondary">商品ID：{item.id}</Text>
                 <Text type="secondary">订单号：{item.orderId}</Text>
                 <Text type="secondary">购买数量：{item.quantity}</Text>
                 <Text type="secondary">

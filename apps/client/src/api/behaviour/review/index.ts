@@ -4,10 +4,16 @@ import {
   CreateReviewReplyDto,
   GetPendingReviewsDto,
   GetProductReviewsDto,
+  GetReviewedProductDto,
   GetReviewRepliesDto,
   LikeReviewDto,
 } from './req-dto';
-import { PendingReviewProductsDto, ProductReviewListDto, ReviewReplyListDto } from './res-dto';
+import {
+  PendingReviewProductsDto,
+  ProductReviewListDto,
+  ReviewedProductsDto,
+  ReviewReplyListDto,
+} from './res-dto';
 
 /** 获取商品评论列表 */
 export const getProductReviewList = (params: GetProductReviewsDto) =>
@@ -70,4 +76,12 @@ export const publishProductReview = (dto: CreateProductReviewDto) =>
     url: '/reviews/product',
     method: 'POST',
     data: dto,
+  });
+
+/** 获取已评价商品列表 */
+export const getReviewedProducts = (dto: GetReviewedProductDto) =>
+  request<ReviewedProductsDto>({
+    url: '/reviews/product/reviewed',
+    method: 'GET',
+    params: dto,
   });
