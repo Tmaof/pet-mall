@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ReviewType } from './enum';
 import {
-    CreateProductReviewDto, CreateReviewReplyDto, GetPendingReviewsDto, GetProductReviewsDto, GetReviewRepliesDto, LikeReviewDto
+    CreateProductReviewDto, CreateReviewReplyDto, GetPendingReviewsDto, GetProductReviewsDto, GetReviewedProductDto, GetReviewRepliesDto, LikeReviewDto
 } from './req-dto';
 import { ReviewService } from './review.service';
 
@@ -107,6 +107,13 @@ export class ReviewController {
     @Get('/product/pending')
     async getPendingReviewProducts (@ReqUser('clientId') clientId: number, @Query() dto: GetPendingReviewsDto) {
         const data = await this.reviewService.getPendingReviewProducts(clientId, dto);
+        return getCommonRes({ data });
+    }
+
+    /** 获取当前客户的已评价商品列表 */
+    @Get('/product/reviewed')
+    async getReviewedProductList (@ReqUser('clientId') clientId: number, @Query() dto:GetReviewedProductDto) {
+        const data = await this.reviewService.getReviewedProductList(clientId, dto);
         return getCommonRes({ data });
     }
 }

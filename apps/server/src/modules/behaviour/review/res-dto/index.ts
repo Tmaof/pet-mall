@@ -120,3 +120,35 @@ export class PendingReviewProductDto {
  * 待评价商品列表响应DTO
  */
 export class PendingReviewProductsDto extends ReviewListDto<PendingReviewProductDto> {}
+
+
+/**
+ * 已评价商品DTO
+ */
+export class ReviewedProductDto {
+    /** 订单id */
+    orderId: number;
+    /** 订单项ID */
+    orderItemId: number;
+    /** 商品ID */
+    id: number;
+    /** 分类ID */
+    categoryId: number;
+    /** 商品标题 */
+    title: string;
+    mainImage: string;
+    /** 购买数量 */
+    quantity: number;
+    price: number;
+    stock: number;
+    isOnSale: number;
+    /** 评价时间 */
+    reviewTime: Date;
+    /** 评分 */
+    rating: number;
+    /** 内容 */
+    content: string;
+}
+
+/** 已评价商品列表的响应 */
+export class ReviewedProductsDto extends ReviewListDto<ReviewedProductDto> {}

@@ -10,7 +10,7 @@ import { ReviewSortType, ReviewType } from './enum';
 import {
     CreateProductReviewDto, CreateReviewReplyDto, GetPendingReviewsDto, GetProductReviewsDto, GetReviewRepliesDto, LikeReviewDto
 } from './req-dto';
-import { PendingReviewProductsDto, ProductReviewListDto, ReviewReplyListDto } from './res-dto';
+import { PendingReviewProductsDto, ProductReviewListDto, ReviewedProductsDto, ReviewReplyListDto } from './res-dto';
 
 @Injectable()
 export class ReviewService {
@@ -354,6 +354,43 @@ export class ReviewService {
                 createdAt: orderItem.product.createdAt,
                 updatedAt: orderItem.product.updatedAt,
                 tags: orderItem.product.tags,
+            })),
+            total,
+            page,
+            pageSize,
+        };
+    }
+
+    /** 获取客户的已评价商品列表 */
+    async getReviewedProductList (clientId: number, dto: GetPendingReviewsDto): Promise<ReviewedProductsDto> {
+        const queryBuilder = this.productReviewsRepository.createQueryBuilder('productReview')
+            .leftJoinAndSelect('productReview.product', 'product')
+            .leftJoinAndSelect('productReview.orderItem', 'orderItem')
+            .where('productReview.clientId = :clientId', { clientId });
+
+        // 分页
+        const page = dto.page ?? 1;
+        const pageSize = dto.pageSize ?? 10;
+        const [list, total] = await queryBuilder
+            .skip((page - 1) * pageSize)
+            .take(pageSize)
+            .getManyAndCount();
+
+        return {
+            list: list.map(productReview => ({
+                orderId: productReview.orderItem.orderId,
+                orderItemId: productReview.orderItem.id,
+                id: productReview.productId,
+                categoryId: productReview.product.categoryId,
+                title: productReview.product.title,
+                mainImage: productReview.product.mainImage,
+                quantity: productReview.orderItem.quantity,
+                price: productReview.product.price,
+                stock: productReview.product.stock,
+                isOnSale: productReview.product.isOnSale,
+                reviewTime: productReview.createdAt,
+                rating: productReview.rating,
+                content: productReview.content,
             })),
             total,
             page,

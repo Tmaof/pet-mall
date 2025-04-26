@@ -136,10 +136,7 @@ export class LikeReviewDto {
         type: ReviewType;
 }
 
-/**
- * 获取待评价商品列表请求DTO
- */
-export class GetPendingReviewsDto {
+export class PaginationDto {
     /** 页码 */
     @IsInt()
     @Min(1)
@@ -153,4 +150,18 @@ export class GetPendingReviewsDto {
     @IsOptional()
     @Type(() => Number)
         pageSize? = 10;
+}
+
+/**
+ * 获取待评价商品列表请求DTO
+ */
+export class GetPendingReviewsDto extends PaginationDto{
+
+}
+
+/**
+ * 获取已评价商品列表请求DTO
+ */
+export class GetReviewedProductDto extends PaginationDto{
+
 }
