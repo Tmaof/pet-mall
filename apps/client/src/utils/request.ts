@@ -1,8 +1,9 @@
 import type { ResType } from '@/api/index.type';
 import store from '@/store';
 import { message as Message } from 'antd';
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
+import { eventBus } from './event-bus';
 
 const serve = axios.create({
   baseURL: import.meta.env.VITE_APP_baseUrl,
@@ -45,6 +46,10 @@ serve.interceptors.response.use(
   error => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    if (error.status === 401) {
+      eventBus.emit('api-unauthorized', error as AxiosError);
+      return;
+    }
     const { message } = error.response.data;
     Message.error(message || error.message);
     return Promise.reject(error);
