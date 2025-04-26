@@ -91,7 +91,7 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
 
   return (
     <>
-      <div className="product-info">
+      <div className="product-info-container">
         <div className="product-image">
           <Image src={data.mainImage} alt={data.title} />
           {isOutOfStock && <div className="sold-out">已售罄</div>}

@@ -1,4 +1,5 @@
 import { cancelOrder, confirmOrder, getOrderList } from '@/api/client/order';
+import { QueryOrderDto } from '@/api/client/order/req.dto';
 import { OrderDto } from '@/api/client/order/res.dto';
 import { Modal, message } from 'antd';
 import { useEffect, useState } from 'react';
@@ -6,13 +7,15 @@ import { useEffect, useState } from 'react';
 export function useOrderList() {
   const [orderList, setOrderList] = useState<OrderDto[]>([]);
   const [loading, setLoading] = useState(false);
+  const [orderTotal, setOrderTotal] = useState(0);
 
   /** 加载订单列表 */
-  const loadOrderList = async () => {
+  const loadOrderList = async (dto?: QueryOrderDto) => {
     setLoading(true);
     try {
-      const { list } = await getOrderList();
+      const { list, total } = await getOrderList(dto);
       setOrderList(list);
+      setOrderTotal(total);
     } finally {
       setLoading(false);
     }
@@ -43,8 +46,11 @@ export function useOrderList() {
 
   return {
     orderList,
+    /** 总订单数 */
+    orderTotal,
     loading,
     handleCancelOrder,
     handleConfirmReceipt,
+    loadOrderList,
   };
 }
