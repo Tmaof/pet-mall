@@ -97,7 +97,7 @@ const AiImgSearch: FC<AiImgSearchProps> = ({ open, onCancel }) => {
     >
       <div className="ai-img-search-container">
         <div className="ai-img-search-header">
-          <div className="ai-img-search-title">选择识别方式</div>
+          {/* <div className="ai-img-search-title"></div> */}
           <Radio.Group
             value={mode}
             onChange={handleModeChange}
