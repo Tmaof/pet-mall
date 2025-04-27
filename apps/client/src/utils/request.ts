@@ -48,7 +48,7 @@ serve.interceptors.response.use(
     // 对响应错误做点什么
     if (error.status === 401) {
       eventBus.emit('api-unauthorized', error as AxiosError);
-      return;
+      return Promise.reject(error);
     }
     const { message } = error.response.data;
     Message.error(message || error.message);
