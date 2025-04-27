@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Like, Repository } from 'typeorm';
 import { Category } from '../product/category/category.entity';
+import { SALE_STATUS } from '../product/product/enum';
 import { Product } from '../product/product/product.entity';
 import { toProductDto } from '../product/product/utils';
 import { Tag } from '../product/tag/tag.entity';
@@ -180,6 +181,7 @@ export class SearchService {
     private async searchProductsByKeyword (keyword: string) {
         const products = await this.productRepository.find({
             where: [
+                { isOnSale: SALE_STATUS.sale },
                 { title: Like(`%${keyword}%`) },
                 { description: Like(`%${keyword}%`) },
             ],
@@ -222,7 +224,7 @@ export class SearchService {
 
         // 3. 查找这些分类下的商品
         const products = await this.productRepository.find({
-            where: { categoryId: In(leafCategoryIds) },
+            where: { categoryId: In(leafCategoryIds), isOnSale: SALE_STATUS.sale },
             relations: ['category', 'tags'],
         });
 
@@ -250,7 +252,7 @@ export class SearchService {
         return products.map(product => ({
             ...product,
             weight: SEARCH_PRODUCT_WEIGHTS.TAG_MATCH,
-        }));
+        })).filter((item) => item.isOnSale === SALE_STATUS.sale);
     }
 
     /**
@@ -284,6 +286,7 @@ export class SearchService {
         const { page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
 
         const [products, total] = await this.productRepository.findAndCount({
+            where: { isOnSale: SALE_STATUS.sale },
             skip: (page - 1) * pageSize,
             take: pageSize,
             order: { createdAt: 'DESC' },
@@ -304,7 +307,7 @@ export class SearchService {
         const { id, page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
         const leafCategories = await this.findLeafCategories(id);
         const [products, total] = await this.productRepository.findAndCount({
-            where: { categoryId: In(leafCategories.map(item => item.id)) },
+            where: { categoryId: In(leafCategories.map(item => item.id)), isOnSale: SALE_STATUS.sale },
             relations: ['category', 'tags'],
             skip: (page - 1) * pageSize,
             take: pageSize,
@@ -322,7 +325,7 @@ export class SearchService {
     async findTagProducts (dto: { id: number, page: number, pageSize: number }): Promise<SearchProductResDto> {
         const { id, page = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE, pageSize = SEARCH_PRODUCT_CONFIG.DEFAULT_PAGE_SIZE } = dto;
         const [products, total] = await this.productRepository.findAndCount({
-            where: { tags: { id } },
+            where: { tags: { id }, isOnSale: SALE_STATUS.sale },
             relations: ['category', 'tags'],
             skip: (page - 1) * pageSize,
             take: pageSize,
