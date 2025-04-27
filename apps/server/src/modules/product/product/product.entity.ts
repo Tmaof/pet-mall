@@ -1,17 +1,17 @@
 import {
     Column,
-    Entity,
-    PrimaryGeneratedColumn,
     CreateDateColumn,
-    UpdateDateColumn,
-    ManyToOne,
+    Entity,
     JoinColumn,
     JoinTable,
-    ManyToMany
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from 'typeorm';
 import { Category } from '../category/category.entity';
-import { SALE_STATUS } from './enum';
 import { Tag } from '../tag/tag.entity';
+import { SALE_STATUS } from './enum';
 
 @Entity('product')
 export class Product {
@@ -70,6 +70,14 @@ export class Product {
         comment: '是否上架',
     })
         isOnSale: number;
+
+    @Column({
+        name: 'is_delete',
+        type: 'boolean',
+        default: false,
+        comment: '是否删除',
+    })
+        isDelete: boolean;
 
     @CreateDateColumn({
         name: 'created_at',

@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, Like } from 'typeorm';
-import { Product } from './product.entity';
-import { CreateProductDto } from './req-dto/create-product.dto';
-import { UpdateProductDto } from './req-dto/update-product.dto';
-import { QueryProductDto, ProductOrderBy, OrderDirection } from './req-dto/query-product.dto';
-import { ProductDto, ProductListDto } from './res-dto/product.dto';
+import { Between, Like, Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
 import { TagService } from '../tag/tag.service';
+import { Product } from './product.entity';
+import { CreateProductDto } from './req-dto/create-product.dto';
+import { OrderDirection, ProductOrderBy, QueryProductDto } from './req-dto/query-product.dto';
+import { UpdateProductDto } from './req-dto/update-product.dto';
+import { ProductDto, ProductListDto } from './res-dto/product.dto';
 import { toProductDto } from './utils';
+import { SALE_STATUS } from './enum';
 
 @Injectable()
 export class ProductService {
@@ -146,6 +147,14 @@ export class ProductService {
             throw new Error('商品不存在');
         }
 
-        await this.productRepository.remove(product);
+        /**
+         * 目前逻辑删除：
+         * 1. 商品下架
+         * 2. 商品删除 isDelete = true
+         */
+        product.isDelete = true;
+        product.isOnSale = SALE_STATUS.stop;
+
+        await this.productRepository.save(product);
     }
 }
