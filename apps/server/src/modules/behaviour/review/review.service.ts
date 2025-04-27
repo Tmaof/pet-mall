@@ -206,7 +206,7 @@ export class ReviewService {
     /**
      * 获取商品评论列表
      */
-    async getProductReviews (clientId: number, dto: GetProductReviewsDto): Promise<ProductReviewListDto> {
+    async getProductReviews (clientId: number | undefined, dto: GetProductReviewsDto): Promise<ProductReviewListDto> {
         const queryBuilder = this.productReviewsRepository
             .createQueryBuilder('review')
             .leftJoinAndSelect('review.client', 'client')
@@ -228,10 +228,13 @@ export class ReviewService {
             .take(pageSize)
             .getManyAndCount();
 
-        const likedList = await Promise.all(list.map(async review => {
-            const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.PRODUCT } });
-            return count > 0;
-        }));
+        let likedList = [];
+        if (clientId) {
+            likedList = await Promise.all(list.map(async review => {
+                const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.PRODUCT } });
+                return count > 0;
+            }));
+        }
 
         return {
             list: list.map((review, index) => ({
@@ -246,7 +249,7 @@ export class ReviewService {
                 replyCount: review.replies.length,
                 likeCount: review.likeCount,
                 createdAt: review.createdAt,
-                liked: likedList[index],
+                liked: likedList[index] ?? false,
             })),
             total,
             page,
@@ -257,7 +260,7 @@ export class ReviewService {
     /**
      * 获取评论回复列表
      */
-    async getReviewReplies (clientId: number, dto: GetReviewRepliesDto): Promise<ReviewReplyListDto> {
+    async getReviewReplies (clientId: number | undefined, dto: GetReviewRepliesDto): Promise<ReviewReplyListDto> {
         const queryBuilder = this.reviewRepliesRepository
             .createQueryBuilder('reply')
             .leftJoinAndSelect('reply.client', 'client')
@@ -287,10 +290,13 @@ export class ReviewService {
             .getManyAndCount();
 
         // 客户是否点赞了该评论
-        const likedList = await Promise.all(list.map(async review => {
-            const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.REPLY } });
-            return count > 0;
-        }));
+        let likedList = [];
+        if (clientId) {
+            likedList = await Promise.all(list.map(async review => {
+                const count = await this.reviewLikesRepository.count({ where: { clientId, targetId: review.id, targetType: ReviewType.REPLY } });
+                return count > 0;
+            }));
+        }
 
         return {
             list: list.map((reply, index) => ({
@@ -306,7 +312,7 @@ export class ReviewService {
                 likeCount: reply.likeCount,
                 createdAt: reply.createdAt,
                 replyCount: reply.children.length,
-                liked: likedList[index],
+                liked: likedList[index] ?? false,
             })),
             total,
             page,

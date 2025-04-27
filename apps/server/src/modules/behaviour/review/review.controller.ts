@@ -1,5 +1,5 @@
 import { ReqUser } from '@/decorator/index.decorator';
-import { JwtGuard } from '@/guards/jwt.guard';
+import { JwtGuardLoose } from '@/guards/jwt.guard';
 import { getCommonRes } from '@/utils';
 import {
     Body, Controller, Delete, Get, Param, Post, Query, UseGuards
@@ -11,7 +11,9 @@ import {
 import { ReviewService } from './review.service';
 
 @Controller('reviews')
-@UseGuards(JwtGuard)
+// @UseGuards(JwtGuard)
+// 当请求中没有token时 不抛出401的错误
+@UseGuards(JwtGuardLoose)
 export class ReviewController {
     constructor (private readonly reviewService: ReviewService) {}
 
@@ -80,7 +82,7 @@ export class ReviewController {
      * 获取商品评论列表
      */
     @Get('product')
-    async getProductReviews (@ReqUser('clientId') clientId: number, @Query() dto: GetProductReviewsDto) {
+    async getProductReviews (@ReqUser({ key: 'clientId', isThrow: false }) clientId: number, @Query() dto: GetProductReviewsDto) {
         const data = await this.reviewService.getProductReviews(clientId, dto);
         return getCommonRes({ data });
     }
@@ -89,7 +91,7 @@ export class ReviewController {
      * 获取评论回复列表
      */
     @Get('reply')
-    async getReviewReplies (@ReqUser('clientId') clientId: number, @Query() dto: GetReviewRepliesDto) {
+    async getReviewReplies (@ReqUser({ key: 'clientId', isThrow: false }) clientId: number, @Query() dto: GetReviewRepliesDto) {
         const data = await this.reviewService.getReviewReplies(clientId, dto);
         return getCommonRes({ data });
     }
