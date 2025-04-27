@@ -43,7 +43,10 @@ export const useUserMenuItems = () => {
       label: '退出登录',
       onClick: () => {
         dispatch(setToken(''));
-        navigate('/');
+        // message.success('退出成功');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       },
     },
   ];
