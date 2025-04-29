@@ -64,6 +64,7 @@ export class PaymentService {
 
         // 3. 创建支付参数
         const outTradeNo = `${orderId}-${Date.now()}`;
+        //  4. 调用微信支付服务，获取二维码
         const h5payResult = await this.h5payService.createPayment({
             outTradeNo,
             description: `订单${orderId}支付`,
@@ -71,7 +72,7 @@ export class PaymentService {
             amount: Math.round(order.totalAmount * 100), // 转换为分
         });
 
-        // 4. 创建支付记录
+        // 5. 创建支付记录
         const payment = new Payment();
         payment.order = order;
         payment.paymentMethod = payMethod;

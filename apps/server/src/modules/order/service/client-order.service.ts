@@ -108,6 +108,9 @@ export class ClientOrderService {
 
                 // 扣减库存
                 product.stock -= quantity;
+                if (product.stock < 0) {
+                    throw new BadRequestException(`商品 ${product.title} 库存不足`);
+                }
                 await queryRunner.manager.save(product);
             }
 
