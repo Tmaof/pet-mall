@@ -45,6 +45,18 @@ function getServerConfig () {
             ...getEnv(path),
         };
     }
+    /** 获取命令行中的环境变量 */
+    // 支付配置
+    if (process.env.H5PAY_APP_ID) {
+        config = {
+            ...config,
+            H5PAY_APP_ID: process.env.H5PAY_APP_ID,
+            H5PAY_APP_KEY: process.env.H5PAY_APP_KEY,
+            H5PAY_API_URL: process.env.H5PAY_API_URL,
+            H5PAY_NOTIFY_URL: process.env.H5PAY_NOTIFY_URL,
+            H5PAY_EXPIRE_TIME: process.env.H5PAY_EXPIRE_TIME,
+        };
+    }
     return config;
 }
 
