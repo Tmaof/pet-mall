@@ -1,4 +1,5 @@
-import { ProductBriefDto } from '@/modules/product/product/res-dto/product.dto';
+// import { ProductBriefDto } from '@/modules/product/product/res-dto/product.dto';
+import { ProductBriefDto } from '../../../modules/product/product/res-dto/product.dto';
 import { HomeModuleType } from '../constants';
 
 /** 首页模块项 */

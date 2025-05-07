@@ -181,29 +181,33 @@ const Order = () => {
               <div className="order-content">
                 {/* 商品列表 */}
                 <div className="product-list">
-                  {order.orderItems.map(item => (
-                    <div key={item.id} className="product-item">
-                      <Image
-                        className="product-image"
-                        width={80}
-                        height={80}
-                        src={item.mainImageSnapshot}
-                        alt={item.titleSnapshot}
-                      />
-                      <div className="product-info">
-                        <Typography.Title level={5} ellipsis={{ rows: 2 }}>
-                          {item.titleSnapshot}
-                        </Typography.Title>
-                        <div className="price-quantity">
-                          <span className="price">
-                            <span className="currency">¥</span>
-                            <span className="amount">{item.unitPriceSnapshot}</span>
-                          </span>
-                          <span className="quantity">x{item.quantity}</span>
+                  {/* TODO */}
+                  {order.orderItems.map(
+                    // @ts-expect-error 类型不匹配报错
+                    item => (
+                      <div key={item.id} className="product-item">
+                        <Image
+                          className="product-image"
+                          width={80}
+                          height={80}
+                          src={item.mainImageSnapshot}
+                          alt={item.titleSnapshot}
+                        />
+                        <div className="product-info">
+                          <Typography.Title level={5} ellipsis={{ rows: 2 }}>
+                            {item.titleSnapshot}
+                          </Typography.Title>
+                          <div className="price-quantity">
+                            <span className="price">
+                              <span className="currency">¥</span>
+                              <span className="amount">{item.unitPriceSnapshot}</span>
+                            </span>
+                            <span className="quantity">x{item.quantity}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
 
                 {/* 物流信息 */}
