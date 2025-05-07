@@ -1,12 +1,12 @@
+import { staticPrefix, uploadDir } from '@/config';
+import { getUploadFilename } from '@/utils';
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { UploadController } from './upload.controller';
-import { UploadService } from './upload.service';
-import { staticPrefix, uploadDir } from 'config';
-import { diskStorage } from 'multer';
-import { getUploadFilename } from '@/utils';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { existsSync, mkdirSync } from 'fs';
+import { diskStorage } from 'multer';
+import { UploadController } from './upload.controller';
+import { UploadService } from './upload.service';
 
 // 确保上传目录存在
 if (!existsSync(uploadDir)) {

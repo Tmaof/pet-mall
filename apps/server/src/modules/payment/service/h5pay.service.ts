@@ -2,13 +2,13 @@
  * 「H5支付」 再小的个体，也有自己的舞台
  * https://h5zhifu.com/
  */
+import { serverConfig } from '@/config';
+import { ConfigEnum } from '@/config/env/config.enum';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { createHash } from 'crypto';
-import { serverConfig } from 'config';
-import { ConfigEnum } from 'config/env/config.enum';
-import { H5payResDto } from '../res-dto';
 import { NotifyData } from '../req-dto';
+import { H5payResDto } from '../res-dto';
 
 
 /** 支付配置 */

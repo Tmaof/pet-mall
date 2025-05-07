@@ -1,9 +1,9 @@
+import { ConfigEnum } from '@/config/env/config.enum';
 import { ClientAuthService } from '@/modules/client/auth/auth.service';
 import { UserAuthService } from '@/modules/staff/auth/auth.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ConfigEnum } from 'config/env/config.enum';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayloadInfo, JwtPayloadParsed } from './types';
 

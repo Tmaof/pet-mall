@@ -1,5 +1,5 @@
+import { staticPrefix, uploadDir } from '@/config';
 import { Injectable } from '@nestjs/common';
-import { staticPrefix, uploadDir } from 'config';
 import { existsSync, unlink } from 'fs';
 import { join } from 'path';
 import { promisify } from 'util';

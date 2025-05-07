@@ -1,9 +1,9 @@
+import { ConfigEnum } from '@/config/env/config.enum';
 import { ClientAuthModule } from '@/modules/client/auth/auth.module';
 import { UserAuthModule } from '@/modules/staff/auth/auth.module';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigEnum } from 'config/env/config.enum';
 import { MyJwtService } from './jwt.service';
 import { JwtStrategy } from './jwt.strategy';
 

@@ -1,10 +1,10 @@
+import { globalPrefix, serverConfig } from '@/config';
+import { ConfigEnum } from '@/config/env/config.enum';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { ReqValidationPipe } from './pipes/validation.pipe';
 import { AllExceptionFilter } from './filters/all-exception.filter';
-import { serverConfig, globalPrefix } from 'config';
-import { ConfigEnum } from 'config/env/config.enum';
+import { ReqValidationPipe } from './pipes/validation.pipe';
 
 /** */
 async function bootstrap () {
