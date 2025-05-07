@@ -12,7 +12,8 @@
     "build:server": "pnpm --filter server build",
     "debug:server": "pnpm --filter server start:debug",
     "start": "concurrently \"pnpm start:server\" \"pnpm start:admin\" \"pnpm start:client\"",
-    "debug": "concurrently \"pnpm debug:server\" \"pnpm start:admin\" \"pnpm start:client\" "
+    "debug": "concurrently \"pnpm debug:server\" \"pnpm start:admin\" \"pnpm start:client\" ",
+    "start:server-prod": "pnpm --filter server start:prod"
   },
   "keywords": [],
   "author": "TianMaoFu",
