@@ -22,5 +22,5 @@ jobs:
                     pnpm build:admin
                 # 服务端之前启动api项目的pm2的命令： 
                 # pm2 start npx --name pet-mall-api -- cross-env NODE_ENV=production H5PAY_APP_ID=支付appID H5PAY_APP_KEY=支付appKey node ./apps/server/dist/main
-                # 记得 配置nginx 代理
+                # 记得 配置nginx 代理 
 
