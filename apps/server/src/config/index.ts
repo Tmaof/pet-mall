@@ -20,7 +20,7 @@ export const envFilePathAll = [commonEnvFilePath, envFilePath, envFileLocalPath]
 export const entitiesPaths = [path.join(srcPath, '/modules', '/**/*.entity{.ts,.js}')];
 
 /** 上传文件路径 */
-export const uploadDir = path.resolve('config', '../', 'uploads');
+export const uploadDir = path.join(srcPath, '../', 'uploads');
 
 /** 全局前缀 */
 export const globalPrefix = '/api/v1';
