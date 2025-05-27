@@ -9,8 +9,8 @@
         <el-select v-model="searchForm.status" style="min-width: 200px" :placeholder="$t('List.index.963864-3')" clearable>
           <el-option
             v-for="item in orderStatusOptions"
-            :key="item.label"
-            :label="item.label"
+            :key="item.label.value"
+            :label="item.label.value"
             :value="item.value"
           />
         </el-select>
