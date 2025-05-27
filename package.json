@@ -2,8 +2,14 @@
   "name": "pet-mall",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.11.0",
   "description": "宠物商城",
+  "engines": {
+    "node": ">=18.16.1",
+    "pnpm": ">=10.11.0"
+  },
   "scripts": {
+    "preinstall": "corepack enable && corepack enable npm",
     "start:admin": "pnpm --filter admin start",
     "build:admin": "pnpm --filter admin build",
     "start:client": "pnpm --filter client start",
