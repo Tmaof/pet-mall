@@ -246,9 +246,13 @@ export class PaymentService {
                 // 3. 归还库存！！！
                 for (const orderItem of order.orderItems) {
                     const { quantity, productId } = orderItem;
-                    const product = await queryRunner.manager.findOne(Product, { where: { id: productId } });
-                    product.stock += quantity;
-                    await queryRunner.manager.save(product);
+                    // const product = await queryRunner.manager.findOne(Product, { where: { id: productId } });
+                    // product.stock += quantity; // 并发下，可能不是最新的库存，会造成数据覆盖
+                    await queryRunner.manager.createQueryBuilder()
+                        .update(Product)
+                        .set({ stock: () => 'stock + :quantity' })
+                        .where('id = :id', { id: productId, quantity })
+                        .execute();
                 }
             }
             // 提交事务
