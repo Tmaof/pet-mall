@@ -96,6 +96,9 @@ export class ClientOrderService {
                         if (lockedProduct.stock < quantity) {
                             throw new BadRequestException(`商品 ${lockedProduct.title} 库存不足`);
                         }
+
+                        // 将锁定的商品信息赋值给detail.product
+                        detail.product = lockedProduct;
                     }
 
                     // 2. 创建订单
