@@ -34,7 +34,7 @@ export class ClientOrderService {
      */
     async create (clientId: number, createOrderDto: CreateOrderDto): Promise<ClientOrderDto> {
         const { items, addressId, remark } = createOrderDto;
-        const maxRetries = 9999; // 最大重试次数
+        const maxRetries = 20; // 最大重试次数
         let retryCount = 0;
 
         // 前置合法性判断
@@ -80,12 +80,25 @@ export class ClientOrderService {
                 await queryRunner.startTransaction();
 
                 try {
-                    // 1. 使用 SELECT FOR UPDATE 锁定商品记录
+                    // 创建订单
+                    const order = new Order();
+                    order.clientId = clientId;
+                    order.totalAmount = totalAmount;
+                    order.status = OrderStatus.PENDING_PAYMENT;
+                    order.addressSnapshot = { ...address };
+                    order.remark = remark;
+
+                    const savedOrder = await queryRunner.manager.save(order);
+
+                    // 判断库存是否充足
+                    // 创建订单项并扣减库存
                     for (const detail of productDetails) {
                         const { product, quantity } = detail;
+
+                        //  使用 SELECT FOR UPDATE 锁定商品记录
                         const lockedProduct = await queryRunner.manager
                             .createQueryBuilder(Product, 'product')
-                            .setLock('pessimistic_write')
+                            .setLock('pessimistic_write') // 悲观锁-排他锁（写锁）；不能使用读锁，否则在并非情况下会死锁
                             .where('product.id = :id', { id: product.id })
                             .getOne();
 
@@ -97,23 +110,13 @@ export class ClientOrderService {
                             throw new BadRequestException(`商品 ${lockedProduct.title} 库存不足`);
                         }
 
-                        // 将锁定的商品信息赋值给detail.product
-                        detail.product = lockedProduct;
-                    }
-
-                    // 2. 创建订单
-                    const order = new Order();
-                    order.clientId = clientId;
-                    order.totalAmount = totalAmount;
-                    order.status = OrderStatus.PENDING_PAYMENT;
-                    order.addressSnapshot = { ...address };
-                    order.remark = remark;
-
-                    const savedOrder = await queryRunner.manager.save(order);
-
-                    // 3. 创建订单项并扣减库存
-                    for (const detail of productDetails) {
-                        const { product, quantity } = detail;
+                        // 扣减库存
+                        await queryRunner.manager
+                            .createQueryBuilder()
+                            .update(Product)
+                            .set({ stock: () => "stock - :quantity" })
+                            .where("id = :id", { id: product.id, quantity })
+                            .execute();
 
                         // 创建订单项
                         const orderItem = new OrderItem();
@@ -125,10 +128,6 @@ export class ClientOrderService {
                         orderItem.unitPriceSnapshot = product.price;
 
                         await queryRunner.manager.save(orderItem);
-
-                        // 扣减库存
-                        product.stock -= quantity;
-                        await queryRunner.manager.save(product);
                     }
 
                     // 提交事务
