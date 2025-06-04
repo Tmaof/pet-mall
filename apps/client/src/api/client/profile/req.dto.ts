@@ -1,1 +1,1 @@
-export { UpdateClientDto, UpdatePasswordDto } from 'server-mdl/client/client/req-dto';
+export type { UpdateClientDto, UpdatePasswordDto } from 'server-types';

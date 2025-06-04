@@ -1,8 +1,4 @@
-export type {
-  AddToCartDto,
-  DeleteCartItemsDto,
-  UpdateCartItemDto,
-} from 'server-mdl/behaviour/cart/req-dto';
+export type { AddToCartDto, DeleteCartItemsDto, UpdateCartItemDto } from 'server-types';
 
 /**
  * 购物车分页查询参数

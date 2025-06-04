@@ -1,1 +1,1 @@
-export { UploadFilesResDto } from 'server-mdl/upload/res-dto/res-dto'
+export type { UploadFilesResDto } from 'server-types'

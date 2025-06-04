@@ -1,1 +1,1 @@
-export * from 'server-mdl/data-analysis/sales/res-dto'
+export * from 'server-types'

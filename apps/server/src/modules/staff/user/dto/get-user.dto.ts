@@ -1,16 +1,18 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+export * from 'server-types'
 
-export class GetUserAllPagingDto {
-    @IsNumber()
-        page: number;
+// import { IsNotEmpty, IsNumber } from 'class-validator';
 
-    @IsNumber()
-        size?: number;
-}
+// export class GetUserAllPagingDto {
+//     @IsNumber()
+//         page: number;
+
+//     @IsNumber()
+//         size?: number;
+// }
 
 
-export class GetUserRoleDto {
-    @IsNumber()
-    @IsNotEmpty()
-        userId: number;
-}
+// export class GetUserRoleDto {
+//     @IsNumber()
+//     @IsNotEmpty()
+//         userId: number;
+// }

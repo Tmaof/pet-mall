@@ -1,25 +1,25 @@
+export * from 'server-types'
+// import { ProductBriefDto } from '@/modules/product/product/res-dto/product.dto';
 
-import { ProductBriefDto } from '@/modules/product/product/res-dto/product.dto';
+// /**
+//  * 购物车项响应 DTO
+//  */
+// export class CartItemDto {
+//     id: number;
 
-/**
- * 购物车项响应 DTO
- */
-export class CartItemDto {
-    id: number;
+//     product: ProductBriefDto;
 
-    product: ProductBriefDto;
+//     count: number;
 
-    count: number;
+//     createdAt: Date;
+// }
 
-    createdAt: Date;
-}
+// /**
+//  * 购物车列表响应 DTO
+//  */
+// export class CartListDto {
+//     items: CartItemDto[];
 
-/**
- * 购物车列表响应 DTO
- */
-export class CartListDto {
-    items: CartItemDto[];
-
-    total: number;
-}
+//     total: number;
+// }
 

@@ -1,49 +1,51 @@
-import { IS_DEFAULT } from '../enum';
+export * from 'server-types';
 
-/** 地址信息响应DTO */
-export class AddressDto {
-    /** 地址ID */
-    id: number;
+// import { IS_DEFAULT } from '../enum';
 
-    /** 客户ID */
-    clientId: number;
+// /** 地址信息响应DTO */
+// export class AddressDto {
+//     /** 地址ID */
+//     id: number;
 
-    /** 收货人姓名 */
-    consignee: string;
+//     /** 客户ID */
+//     clientId: number;
 
-    /** 联系电话 */
-    phone: string;
+//     /** 收货人姓名 */
+//     consignee: string;
 
-    /** 省份 */
-    province: string;
+//     /** 联系电话 */
+//     phone: string;
 
-    /** 省份编码 */
-    provinceCode: string;
+//     /** 省份 */
+//     province: string;
 
-    /** 城市 */
-    city: string;
+//     /** 省份编码 */
+//     provinceCode: string;
 
-    /** 城市编码 */
-    cityCode: string;
+//     /** 城市 */
+//     city: string;
 
-    /** 区县 */
-    district: string;
+//     /** 城市编码 */
+//     cityCode: string;
 
-    /** 区县编码 */
-    districtCode: string;
+//     /** 区县 */
+//     district: string;
 
-    /** 详细地址 */
-    detail: string;
+//     /** 区县编码 */
+//     districtCode: string;
 
-    /** 是否默认地址 */
-    isDefault: IS_DEFAULT;
+//     /** 详细地址 */
+//     detail: string;
 
-    /** 创建时间 */
-    createdAt: Date;
-}
+//     /** 是否默认地址 */
+//     isDefault: IS_DEFAULT;
 
-/** 地址列表响应DTO */
-export class AddressListDto {
-    /** 地址列表 */
-    list: AddressDto[];
-}
+//     /** 创建时间 */
+//     createdAt: Date;
+// }
+
+// /** 地址列表响应DTO */
+// export class AddressListDto {
+//     /** 地址列表 */
+//     list: AddressDto[];
+// }

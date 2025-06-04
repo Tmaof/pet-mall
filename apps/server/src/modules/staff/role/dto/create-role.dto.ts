@@ -1,10 +1,12 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+export * from 'server-types'
 
-export class CreateRoleDto {
-    @IsString()
-    @IsNotEmpty()
-        name: string;
+// import { IsString, IsNotEmpty } from 'class-validator';
 
-    @IsString()
-        describe?: string;
-}
+// export class CreateRoleDto {
+//     @IsString()
+//     @IsNotEmpty()
+//         name: string;
+
+//     @IsString()
+//         describe?: string;
+// }

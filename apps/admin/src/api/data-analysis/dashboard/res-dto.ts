@@ -1,1 +1,1 @@
-export * from 'server-mdl/data-analysis/dashboard/res-dto'
+export * from 'server-types'

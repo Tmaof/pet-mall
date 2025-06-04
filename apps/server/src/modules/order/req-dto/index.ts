@@ -1,89 +1,91 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { OrderStatus } from '../enum';
+export * from 'server-types';
 
-/** 创建订单 */
-export class CreateOrderDto {
-    /** 订单商品列表 */
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => OrderItemDto)
-        items: OrderItemDto[];
+// import { Type } from 'class-transformer';
+// import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+// import { OrderStatus } from '../enum';
 
-    /** 收货地址ID */
-    @IsNumber()
-        addressId: number;
+// /** 创建订单 */
+// export class CreateOrderDto {
+//     /** 订单商品列表 */
+//     @IsArray()
+//     @ValidateNested({ each: true })
+//     @Type(() => OrderItemDto)
+//         items: OrderItemDto[];
 
-    /** 备注 */
-    @IsString()
-    @IsOptional()
-        remark?: string;
-}
+//     /** 收货地址ID */
+//     @IsNumber()
+//         addressId: number;
 
-/** 订单商品项 */
-export class OrderItemDto {
-    /** 商品ID */
-    @IsNumber()
-        productId: number;
+//     /** 备注 */
+//     @IsString()
+//     @IsOptional()
+//         remark?: string;
+// }
 
-    /** 购买数量 */
-    @IsNumber()
-        quantity: number;
-}
+// /** 订单商品项 */
+// export class OrderItemDto {
+//     /** 商品ID */
+//     @IsNumber()
+//         productId: number;
 
-/** 【管理员】 更新订单状态 */
-export class UpdateOrderStatusDto {
-    /** 订单状态 */
-    @IsNumber()
-        status: OrderStatus;
+//     /** 购买数量 */
+//     @IsNumber()
+//         quantity: number;
+// }
 
-    /** 物流单号 */
-    @IsString()
-    @IsOptional()
-        trackingNumber?: string;
+// /** 【管理员】 更新订单状态 */
+// export class UpdateOrderStatusDto {
+//     /** 订单状态 */
+//     @IsNumber()
+//         status: OrderStatus;
 
-    /** 物流公司 */
-    @IsString()
-    @IsOptional()
-        shippingCompany?: string;
-}
+//     /** 物流单号 */
+//     @IsString()
+//     @IsOptional()
+//         trackingNumber?: string;
 
-/** 【客户】 更新订单状态 */
-export class UpdateOrderStatusByClientDto {
-    /** 订单状态 */
-    @IsNumber()
-        status: OrderStatus;
-}
+//     /** 物流公司 */
+//     @IsString()
+//     @IsOptional()
+//         shippingCompany?: string;
+// }
 
-/** 查询订单 */
-export class QueryOrderDto {
-    /** 订单ID */
-    @IsNumber()
-    @IsOptional()
-        id?: number;
+// /** 【客户】 更新订单状态 */
+// export class UpdateOrderStatusByClientDto {
+//     /** 订单状态 */
+//     @IsNumber()
+//         status: OrderStatus;
+// }
 
-    /** 订单状态 */
-    @IsNumber()
-    @IsOptional()
-        status?: OrderStatus;
+// /** 查询订单 */
+// export class QueryOrderDto {
+//     /** 订单ID */
+//     @IsNumber()
+//     @IsOptional()
+//         id?: number;
 
-    /** 开始日期 */
-    @IsString()
-    @IsOptional()
-        startDate?: string;
+//     /** 订单状态 */
+//     @IsNumber()
+//     @IsOptional()
+//         status?: OrderStatus;
 
-    /** 结束日期 */
-    @IsString()
-    @IsOptional()
-        endDate?: string;
+//     /** 开始日期 */
+//     @IsString()
+//     @IsOptional()
+//         startDate?: string;
 
-    /** 页码 */
-    @IsNumber()
-    @IsOptional()
-        page?: number;
+//     /** 结束日期 */
+//     @IsString()
+//     @IsOptional()
+//         endDate?: string;
 
-    /** 每页条数 */
-    @IsNumber()
-    @IsOptional()
-        pageSize?: number;
-}
+//     /** 页码 */
+//     @IsNumber()
+//     @IsOptional()
+//         page?: number;
+
+//     /** 每页条数 */
+//     @IsNumber()
+//     @IsOptional()
+//         pageSize?: number;
+// }

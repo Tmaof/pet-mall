@@ -1,0 +1,47 @@
+{
+    "name": "server-types",
+    "version": "1.0.0",
+    "private": true,
+    "description": "项目公共的ts类型",
+    "author": "TianMaoFu",
+    "license": "MIT",
+    "main": "dist/lib/packages/types/index.js",
+    "module": "dist/es/packages/types/index.js",
+    "types": "dist/es/packages/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/es/packages/types/index.d.ts",
+            "require": "./dist/lib/packages/types/index.js",
+            "import": "./dist/es/packages/types/index.js"
+        },
+        "./enum": {
+            "types": "./dist/es/packages/types/src/enum/index.d.ts",
+            "require": "./dist/lib/packages/types/src/enum/index.js",
+            "import": "./dist/es/packages/types/src/enum/index.js"
+        },
+        "./constants": {
+            "types": "./dist/es/packages/types/src/constants/index.d.ts",
+            "require": "./dist/lib/packages/types/src/constants/index.js",
+            "import": "./dist/es/packages/types/src/constants/index.js"
+        },
+        "./*": "./dist/lib/packages/types/*"
+    },
+    "scripts": {
+        "clean": "rimraf dist/es && rimraf dist/lib",
+        "build:es": "tsc --project tsconfig.es.json && tsc-alias -p tsconfig.es.json",
+        "build:lib": "tsc && tsc-alias",
+        "build": "pnpm clean && pnpm build:lib && pnpm build:es",
+        "dev": "nodemon --config nodemon.json --exec \"pnpm build || exit 1 \""
+    },
+    "dependencies": {
+        "class-transformer": "^0.5.1",
+        "class-validator": "0.13.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10",
+        "rimraf": "^6.0.1",
+        "tsc-alias": "^1.8.16",
+        "typescript": "catalog:",
+        "@nestjs/mapped-types": "^1.2.2"
+    }
+}
