@@ -1,21 +1,20 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import type { UserLog } from 'server-modules/staff/user-log/user-log.entity'
+import { IsNotEmpty, IsString } from 'class-validator';
+import type { UserLog } from 'server-modules/staff/user-log/user-log.entity';
 
 export class DeleteUserLogByTimeRangeDto {
     @IsNotEmpty()
     @IsString()
-        startDateStr: string;
+      startDateStr: string;
 
     @IsNotEmpty()
     @IsString()
-        endDateStr:string;
+      endDateStr:string;
 }
-
 
 
 /** 创建 用户日志 dto */
 export class CreateUserLogDto {
-    userId: number;
+  userId: number;
 
-    logInfo: Partial<UserLog>;
+  logInfo: Partial<UserLog>;
 }

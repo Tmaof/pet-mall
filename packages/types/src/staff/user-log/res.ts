@@ -1,31 +1,31 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class GetUserLogAllPagingDto {
     @IsNotEmpty()
     @IsNumber()
-        page: number;
+      page: number;
 
     @IsNumber()
     @IsOptional()
-        size?: number;
+      size?: number;
 
     @IsNumber()
     @IsOptional()
-        userId?: number;
+      userId?: number;
 
     @IsOptional()
     @IsString()
-        startDateStr?: string;
+      startDateStr?: string;
 
     @IsOptional()
     @IsString()
-        endDateStr?: string;
+      endDateStr?: string;
 
     @IsOptional()
     @IsString()
-        sortBy?: string;
+      sortBy?: string;
 
     @IsOptional()
     @IsString()
-        sortOrder?: string;
+      sortOrder?: string;
 }

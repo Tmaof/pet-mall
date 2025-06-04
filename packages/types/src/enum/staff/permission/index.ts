@@ -1,6 +1,5 @@
 
 
-
 /** 权限类型 */
 export enum PermissionTypeEnum {
     /** 页面权限 */

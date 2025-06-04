@@ -1,17 +1,17 @@
 
 
 export class FindAllExcelItemDto {
-    id:number;
+  id:number;
 
-    username:string;
+  username:string;
 
-    openTime:string;
+  openTime:string;
 
-    avatar:string;
+  avatar:string;
 
-    role:string;
+  role:string;
 }
 
 export class FindAllExcelResDto {
-    list:FindAllExcelItemDto[];
+  list:FindAllExcelItemDto[];
 }

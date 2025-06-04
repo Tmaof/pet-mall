@@ -12,7 +12,7 @@ export class SalesAnalysisReqDto {
     @IsOptional()
     @IsDate()
     @Type(() => Date)
-        startTime?: Date;
+      startTime?: Date;
 
     /**
      * 结束时间
@@ -21,5 +21,5 @@ export class SalesAnalysisReqDto {
     @IsOptional()
     @IsDate()
     @Type(() => Date)
-        endTime?: Date;
+      endTime?: Date;
 }

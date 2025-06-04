@@ -3,18 +3,18 @@ import { IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 export class CreateRoleDto {
     @IsString()
     @IsNotEmpty()
-        name: string;
+      name: string;
 
     @IsString()
-        describe?: string;
+      describe?: string;
 }
 
 export class UpdateRolePermissionDto {
     @IsNumber()
     @IsNotEmpty()
-        roleId: number;
+      roleId: number;
 
     @IsArray()
     @IsNotEmpty()
-        permissionIdList: number[];
+      permissionIdList: number[];
 }
