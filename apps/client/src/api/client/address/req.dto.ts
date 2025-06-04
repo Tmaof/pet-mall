@@ -1,1 +1,1 @@
-export { CreateAddressDto, UpdateAddressDto } from 'server-mdl/client/address/req-dto';
+export { CreateAddressDto, UpdateAddressDto } from 'server-types';

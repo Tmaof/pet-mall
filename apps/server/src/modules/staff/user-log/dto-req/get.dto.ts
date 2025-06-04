@@ -1,31 +1,33 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+export * from 'server-types'
 
-export class GetUserLogAllPagingDto {
-    @IsNotEmpty()
-    @IsNumber()
-        page: number;
+// import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-    @IsNumber()
-    @IsOptional()
-        size?: number;
+// export class GetUserLogAllPagingDto {
+//     @IsNotEmpty()
+//     @IsNumber()
+//         page: number;
 
-    @IsNumber()
-    @IsOptional()
-        userId?: number;
+//     @IsNumber()
+//     @IsOptional()
+//         size?: number;
 
-    @IsOptional()
-    @IsString()
-        startDateStr?: string;
+//     @IsNumber()
+//     @IsOptional()
+//         userId?: number;
 
-    @IsOptional()
-    @IsString()
-        endDateStr?: string;
+//     @IsOptional()
+//     @IsString()
+//         startDateStr?: string;
 
-    @IsOptional()
-    @IsString()
-        sortBy?: string;
+//     @IsOptional()
+//     @IsString()
+//         endDateStr?: string;
 
-    @IsOptional()
-    @IsString()
-        sortOrder?: string;
-}
+//     @IsOptional()
+//     @IsString()
+//         sortBy?: string;
+
+//     @IsOptional()
+//     @IsString()
+//         sortOrder?: string;
+// }

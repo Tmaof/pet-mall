@@ -1,13 +1,15 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+export * from 'server-types'
+
+// import { IsNotEmpty, IsString } from 'class-validator';
 
 
-export class DeleteUserLogByTimeRangeDto {
-    @IsNotEmpty()
-    @IsString()
-        startDateStr: string;
+// export class DeleteUserLogByTimeRangeDto {
+//     @IsNotEmpty()
+//     @IsString()
+//         startDateStr: string;
 
-    @IsNotEmpty()
-    @IsString()
-        endDateStr:string;
-}
+//     @IsNotEmpty()
+//     @IsString()
+//         endDateStr:string;
+// }
 

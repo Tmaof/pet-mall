@@ -1,6 +1,8 @@
-import { IsString } from 'class-validator';
+export * from 'server-types';
 
-export class SearchSuggestReqDto {
-    @IsString({ message: '搜索关键词必须是字符串' })
-        keyword: string;
-}
+// import { IsString } from 'class-validator';
+
+// export class SearchSuggestReqDto {
+//     @IsString({ message: '搜索关键词必须是字符串' })
+//         keyword: string;
+// }

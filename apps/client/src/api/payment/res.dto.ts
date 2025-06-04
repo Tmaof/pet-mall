@@ -1,4 +1,1 @@
-// TODO:
-// export { PaymentDto } from 'server-mdl/payment/res-dto';
-
-export type PaymentDto = any;
+export type { PaymentDto } from 'server-types';

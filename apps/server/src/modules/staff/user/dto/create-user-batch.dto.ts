@@ -1,24 +1,26 @@
-import { IsArray, IsNotEmpty, IsString, Length } from 'class-validator';
+export * from 'server-types'
 
-class CreateUserBatchArg {
-    @IsString()
-    @IsNotEmpty()
-    @Length(4, 20)
-        username: string;
+// import { IsArray, IsNotEmpty, IsString, Length } from 'class-validator';
 
-    @IsString()
-    @IsNotEmpty()
-    @Length(6, 64)
-        password: string;
+// class CreateUserBatchArg {
+//     @IsString()
+//     @IsNotEmpty()
+//     @Length(4, 20)
+//         username: string;
 
-    @IsString()
-        openTime?: Date;
+//     @IsString()
+//     @IsNotEmpty()
+//     @Length(6, 64)
+//         password: string;
 
-    @IsString()
-        role?: string;
-}
+//     @IsString()
+//         openTime?: Date;
 
-export class CreateUserBatchDto {
-    @IsArray()
-        payload: CreateUserBatchArg[];
-}
+//     @IsString()
+//         role?: string;
+// }
+
+// export class CreateUserBatchDto {
+//     @IsArray()
+//         payload: CreateUserBatchArg[];
+// }

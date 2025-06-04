@@ -1,4 +1,15 @@
 packages:
-  - "docs"
-  - 'apps/*'
-  - 'packages/*'
+  - docs
+  - apps/*
+  - packages/*
+catalog:
+  axios: ^1.3.5
+  vditor: ^3.10.9
+  cross-env: ^7.0.3
+  dayjs: ^1.11.7
+  typescript: ~5.7.2
+catalogs:
+  eslint8:
+    eslint: ^8.57.1
+onlyBuiltDependencies:
+  - vue-demi

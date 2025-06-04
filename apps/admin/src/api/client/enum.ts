@@ -1,13 +1,7 @@
 import i18n from '@/i18n'
 import { Ref } from 'vue'
-
-/** 客户状态 */
-export enum ClientStatus {
-    /** 禁用 */
-    DISABLE = 0,
-    /** 启用 */
-    ENABLE = 1,
-}
+import { ClientStatus } from 'server-types/enum'
+export { ClientStatus }
 
 /** 客户状态映射 */
 export const clientStatusMap: Record<ClientStatus, Ref<string>> = {

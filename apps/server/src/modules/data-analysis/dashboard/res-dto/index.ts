@@ -1,112 +1,114 @@
-import { StockStatus } from '../enum';
+export * from 'server-types';
 
-/**
- * 顶部数据卡片响应DTO
- */
-export class TopStatsDto {
-    /** 今日销售总额 */
-    totalSales: number;
+// import { StockStatus } from '../enum';
 
-    /** 销售总额环比变化率 */
-    salesGrowthRate: number;
+// /**
+//  * 顶部数据卡片响应DTO
+//  */
+// export class TopStatsDto {
+//     /** 今日销售总额 */
+//     totalSales: number;
 
-    /** 今日待处理订单数 */
-    pendingOrders: number;
+//     /** 销售总额环比变化率 */
+//     salesGrowthRate: number;
 
-    /** 待处理订单环比变化率 */
-    pendingOrdersGrowthRate: number;
+//     /** 今日待处理订单数 */
+//     pendingOrders: number;
 
-    /** 今日新增用户数 */
-    newUsers: number;
+//     /** 待处理订单环比变化率 */
+//     pendingOrdersGrowthRate: number;
 
-    /** 新增用户环比变化率 */
-    newUsersGrowthRate: number;
+//     /** 今日新增用户数 */
+//     newUsers: number;
 
-    /** 今日订单数 */
-    todayOrders: number;
+//     /** 新增用户环比变化率 */
+//     newUsersGrowthRate: number;
 
-    /** 订单增长率 */
-    orderGrowthRate: number;
-}
+//     /** 今日订单数 */
+//     todayOrders: number;
 
-/**
- * 实时交易数据点DTO
- */
-export class TransactionDataPointDto {
-    /** 时间点 */
-    time: string;
+//     /** 订单增长率 */
+//     orderGrowthRate: number;
+// }
 
-    /** 交易金额 */
-    amount: number;
+// /**
+//  * 实时交易数据点DTO
+//  */
+// export class TransactionDataPointDto {
+//     /** 时间点 */
+//     time: string;
 
-    /** 订单数量 */
-    orderCount: number;
-}
+//     /** 交易金额 */
+//     amount: number;
 
-/**
- * 热销商品DTO
- */
-export class HotProductDto {
-    /** 商品ID */
-    id: number;
+//     /** 订单数量 */
+//     orderCount: number;
+// }
 
-    /** 商品名称 */
-    name: string;
+// /**
+//  * 热销商品DTO
+//  */
+// export class HotProductDto {
+//     /** 商品ID */
+//     id: number;
 
-    /** 销量 */
-    sales: number;
-}
+//     /** 商品名称 */
+//     name: string;
 
-/**
- * 库存预警商品DTO
- */
-export class StockWarningProductDto {
-    /** 商品ID */
-    id: number;
+//     /** 销量 */
+//     sales: number;
+// }
 
-    /** 商品名称 */
-    name: string;
+// /**
+//  * 库存预警商品DTO
+//  */
+// export class StockWarningProductDto {
+//     /** 商品ID */
+//     id: number;
 
-    /** 当前库存 */
-    stock: number;
+//     /** 商品名称 */
+//     name: string;
 
-    /** 库存状态 */
-    status: StockStatus;
-}
+//     /** 当前库存 */
+//     stock: number;
 
-/**
- * 销售类别分布DTO
- */
-export class SalesCategoryDto {
-    /** 类别ID */
-    id: number;
+//     /** 库存状态 */
+//     status: StockStatus;
+// }
 
-    /** 类别名称 */
-    name: string;
+// /**
+//  * 销售类别分布DTO
+//  */
+// export class SalesCategoryDto {
+//     /** 类别ID */
+//     id: number;
 
-    /** 销售额 */
-    amount: number;
+//     /** 类别名称 */
+//     name: string;
 
-    /** 占比 */
-    percentage: number;
-}
+//     /** 销售额 */
+//     amount: number;
 
-/**
- * 仪表盘数据响应DTO
- */
-export class DashboardDataDto {
-    /** 顶部数据卡片 */
-    topStats: TopStatsDto;
+//     /** 占比 */
+//     percentage: number;
+// }
 
-    /** 实时交易趋势数据 */
-    transactionTrend: TransactionDataPointDto[];
+// /**
+//  * 仪表盘数据响应DTO
+//  */
+// export class DashboardDataDto {
+//     /** 顶部数据卡片 */
+//     topStats: TopStatsDto;
 
-    /** 热销商品TOP 5 */
-    hotProducts: HotProductDto[];
+//     /** 实时交易趋势数据 */
+//     transactionTrend: TransactionDataPointDto[];
 
-    /** 库存预警商品 */
-    stockWarnings: StockWarningProductDto[];
+//     /** 热销商品TOP 5 */
+//     hotProducts: HotProductDto[];
 
-    /** 销售类别分布 */
-    salesCategories: SalesCategoryDto[];
-}
+//     /** 库存预警商品 */
+//     stockWarnings: StockWarningProductDto[];
+
+//     /** 销售类别分布 */
+//     salesCategories: SalesCategoryDto[];
+// }

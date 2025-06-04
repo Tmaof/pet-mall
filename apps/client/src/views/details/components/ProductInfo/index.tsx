@@ -114,15 +114,11 @@ const ProductInfo: FC<Props> = ({ data, loading }) => {
             </div>
           </div>
           <div className="product-tags">
-            {/** TODO: 类型不匹配报错 */}
-            {data.tags?.map(
-              // @ts-expect-error 类型不匹配报错
-              tag => (
-                <Tag key={tag.id} color="var(--theme-primary)">
-                  {tag.name}
-                </Tag>
-              )
-            )}
+            {data.tags?.map(tag => (
+              <Tag key={tag.id} color="var(--theme-primary)">
+                {tag.name}
+              </Tag>
+            ))}
           </div>
           <div className="product-actions">
             <Button

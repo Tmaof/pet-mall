@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+        "target": "es2017", // 目标版本
+        "module": "commonjs", // 模块类型
+        "declaration": true, // 生成声明文件
+        "outDir": "./dist/lib", // 输出目录
+        "strict": true, // 启用所有严格类型检查
+        "esModuleInterop": true, // 启用ES模块互操作
+        "skipLibCheck": true, // 跳过库检查
+        "strictPropertyInitialization": false, // 关闭类属性的初始化检查
+        "experimentalDecorators": true, // 启用装饰器
+        "emitDecoratorMetadata": true, // 启用装饰器元数据
+        "allowSyntheticDefaultImports": true, // 允许合成默认导入
+        "sourceMap": true, // 生成source map
+        "incremental": true, // 增量编译
+        "strictNullChecks": false, // 严格空检查
+        "noImplicitAny": false, // 禁止隐式的any类型
+        "strictBindCallApply": false, // 严格绑定和调用
+        "forceConsistentCasingInFileNames": false, // 强制一致的文件名大小写
+        "noFallthroughCasesInSwitch": false, // 禁止switch语句中的fallthrough
+        "baseUrl": ".", // 添加基础URL配置
+        "paths": { // 添加路径别名
+            "~/*": [
+                "./src/*"
+            ],
+            // 需要使用到 server 项目中的一些类型，比如:实体entity，所以需要添加路径别名
+            "server-modules/*": [
+                "../../apps/server/src/modules/*"
+            ],
+            // 为了能将server项目中的文件中的路径别名 正常解析，例如：apps\server\src\modules\staff\user-log\user-log.entity.ts
+            // 中的：import { User } from '@/modules/staff/user/user.entity';
+            "@/*":[
+                "../../apps/server/src/*"
+            ]
+        },
+    },
+    "include": [
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

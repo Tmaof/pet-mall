@@ -1,1 +1,1 @@
-export * from 'server-mdl/behaviour/review/res-dto/index';
+export type * from 'server-types';

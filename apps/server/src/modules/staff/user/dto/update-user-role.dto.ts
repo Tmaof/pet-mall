@@ -1,21 +1,23 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+export * from 'server-types'
 
-class UpdateUserRoleArg {
-    @IsString()
-    @IsNotEmpty()
-        name: string;
+// import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-    @IsNumber()
-    @IsNotEmpty()
-        id: number;
-}
+// class UpdateUserRoleArg {
+//     @IsString()
+//     @IsNotEmpty()
+//         name: string;
 
-export class UpdateUserRoleDto {
-    @IsNumber()
-    @IsNotEmpty()
-        userId: number;
+//     @IsNumber()
+//     @IsNotEmpty()
+//         id: number;
+// }
 
-    @IsArray()
-    @IsNotEmpty()
-        payload: UpdateUserRoleArg[];
-}
+// export class UpdateUserRoleDto {
+//     @IsNumber()
+//     @IsNotEmpty()
+//         userId: number;
+
+//     @IsArray()
+//     @IsNotEmpty()
+//         payload: UpdateUserRoleArg[];
+// }

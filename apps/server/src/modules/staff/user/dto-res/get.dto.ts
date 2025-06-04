@@ -1,17 +1,17 @@
+export * from 'server-types'
 
+// export class FindAllExcelItemDto {
+//     id:number;
 
-export class FindAllExcelItemDto {
-    id:number;
+//     username:string;
 
-    username:string;
+//     openTime:string;
 
-    openTime:string;
+//     avatar:string;
 
-    avatar:string;
+//     role:string;
+// }
 
-    role:string;
-}
-
-export class FindAllExcelResDto {
-    list:FindAllExcelItemDto[];
-}
+// export class FindAllExcelResDto {
+//     list:FindAllExcelItemDto[];
+// }

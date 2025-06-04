@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "esnext",
+        "declaration": true,
+        "outDir": "./dist/es",
+        // 模块解析策略，解决  error TS2792: Cannot find module 'class-transformer'. Did you mean to set the 'moduleResolution' option to 'nodenext', or to add aliases to the 'paths' option?
+        // error TS2834: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Consider adding an extension to the import path.
+        "moduleResolution": "node", 
+    },
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules", "dist"]
+}

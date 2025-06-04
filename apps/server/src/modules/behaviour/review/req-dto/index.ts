@@ -1,167 +1,169 @@
-import { Type } from 'class-transformer';
-import {
-    IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min, MinLength
-} from 'class-validator';
-import { ReviewSortType, ReviewType } from '../enum';
+export * from 'server-types';
 
-/**
- * 发布商品评论请求DTO
- */
-export class CreateProductReviewDto {
-    /** 商品ID */
-    @IsInt()
-    @IsNotEmpty()
-        productId: number;
+// import { Type } from 'class-transformer';
+// import {
+//     IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min, MinLength
+// } from 'class-validator';
+// import { ReviewSortType, ReviewType } from '../enum';
 
-    /** 订单项ID */
-    @IsInt()
-    @IsNotEmpty()
-        orderItemId: number;
+// /**
+//  * 发布商品评论请求DTO
+//  */
+// export class CreateProductReviewDto {
+//     /** 商品ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         productId: number;
 
-    /** 评分(1-5) */
-    @IsInt()
-    @Min(1)
-    @Max(5)
-        rating: number;
+//     /** 订单项ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         orderItemId: number;
 
-    /** 评论内容 */
-    @IsString()
-    @MinLength(1)
-    @MaxLength(500)
-        content: string;
+//     /** 评分(1-5) */
+//     @IsInt()
+//     @Min(1)
+//     @Max(5)
+//         rating: number;
 
-    /** 图片URL数组 */
-    @IsOptional()
-    @IsArray()
-    @IsString({ each: true })
-        images?: string[];
-}
+//     /** 评论内容 */
+//     @IsString()
+//     @MinLength(1)
+//     @MaxLength(500)
+//         content: string;
 
-/**
- * 发布回复评论请求DTO
- */
-export class CreateReviewReplyDto {
-    /** 根评论ID */
-    @IsInt()
-    @IsNotEmpty()
-        rootReviewId: number;
+//     /** 图片URL数组 */
+//     @IsOptional()
+//     @IsArray()
+//     @IsString({ each: true })
+//         images?: string[];
+// }
 
-    /** 父评论ID */
-    @IsOptional()
-    @IsInt()
-        parentId?: number;
+// /**
+//  * 发布回复评论请求DTO
+//  */
+// export class CreateReviewReplyDto {
+//     /** 根评论ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         rootReviewId: number;
 
-    /** 回复内容 */
-    @IsString()
-    @MinLength(1)
-    @MaxLength(500)
-        content: string;
-}
+//     /** 父评论ID */
+//     @IsOptional()
+//     @IsInt()
+//         parentId?: number;
 
-/**
- * 获取商品评论列表请求DTO
- */
-export class GetProductReviewsDto {
-    /** 商品ID */
-    @IsInt()
-    @IsNotEmpty()
-        productId: number;
+//     /** 回复内容 */
+//     @IsString()
+//     @MinLength(1)
+//     @MaxLength(500)
+//         content: string;
+// }
 
-    /** 页码 */
-    @IsInt()
-    @Min(1)
-    @Type(() => Number)
-    @IsOptional()
-        page? = 1;
+// /**
+//  * 获取商品评论列表请求DTO
+//  */
+// export class GetProductReviewsDto {
+//     /** 商品ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         productId: number;
 
-    /** 每页数量 */
-    @IsInt()
-    @Min(1)
-    @IsOptional()
-    @Type(() => Number)
-        pageSize? = 10;
+//     /** 页码 */
+//     @IsInt()
+//     @Min(1)
+//     @Type(() => Number)
+//     @IsOptional()
+//         page? = 1;
 
-    /** 排序方式 */
-    @IsEnum(ReviewSortType)
-    @IsOptional()
-        sortType?: ReviewSortType = ReviewSortType.LATEST;
-}
+//     /** 每页数量 */
+//     @IsInt()
+//     @Min(1)
+//     @IsOptional()
+//     @Type(() => Number)
+//         pageSize? = 10;
 
-/**
- * 获取评论回复列表请求DTO
- */
-export class GetReviewRepliesDto {
-    /** 根评论ID */
-    @IsInt()
-    @IsNotEmpty()
-        rootReviewId: number;
+//     /** 排序方式 */
+//     @IsEnum(ReviewSortType)
+//     @IsOptional()
+//         sortType?: ReviewSortType = ReviewSortType.LATEST;
+// }
 
-    /** 父评论ID */
-    @IsOptional()
-    @IsInt()
-        parentId?: number;
+// /**
+//  * 获取评论回复列表请求DTO
+//  */
+// export class GetReviewRepliesDto {
+//     /** 根评论ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         rootReviewId: number;
 
-    /** 页码 */
-    @IsInt()
-    @Min(1)
-    @Type(() => Number)
-    @IsOptional()
-        page? = 1;
+//     /** 父评论ID */
+//     @IsOptional()
+//     @IsInt()
+//         parentId?: number;
 
-    /** 每页数量 */
-    @IsInt()
-    @Min(1)
-    @IsOptional()
-    @Type(() => Number)
-        pageSize? = 10;
+//     /** 页码 */
+//     @IsInt()
+//     @Min(1)
+//     @Type(() => Number)
+//     @IsOptional()
+//         page? = 1;
 
-    /** 排序方式 */
-    @IsEnum(ReviewSortType)
-    @IsOptional()
-        sortType?: ReviewSortType = ReviewSortType.LATEST;
-}
+//     /** 每页数量 */
+//     @IsInt()
+//     @Min(1)
+//     @IsOptional()
+//     @Type(() => Number)
+//         pageSize? = 10;
 
-/**
- * 点赞评论请求DTO
- */
-export class LikeReviewDto {
-    /** 评论ID */
-    @IsInt()
-    @IsNotEmpty()
-        reviewId: number;
+//     /** 排序方式 */
+//     @IsEnum(ReviewSortType)
+//     @IsOptional()
+//         sortType?: ReviewSortType = ReviewSortType.LATEST;
+// }
 
-    /** 评论类型 */
-    @IsEnum(ReviewType)
-    @IsNotEmpty()
-        type: ReviewType;
-}
+// /**
+//  * 点赞评论请求DTO
+//  */
+// export class LikeReviewDto {
+//     /** 评论ID */
+//     @IsInt()
+//     @IsNotEmpty()
+//         reviewId: number;
 
-export class PaginationDto {
-    /** 页码 */
-    @IsInt()
-    @Min(1)
-    @Type(() => Number)
-    @IsOptional()
-        page? = 1;
+//     /** 评论类型 */
+//     @IsEnum(ReviewType)
+//     @IsNotEmpty()
+//         type: ReviewType;
+// }
 
-    /** 每页数量 */
-    @IsInt()
-    @Min(1)
-    @IsOptional()
-    @Type(() => Number)
-        pageSize? = 10;
-}
+// export class PaginationDto {
+//     /** 页码 */
+//     @IsInt()
+//     @Min(1)
+//     @Type(() => Number)
+//     @IsOptional()
+//         page? = 1;
 
-/**
- * 获取待评价商品列表请求DTO
- */
-export class GetPendingReviewsDto extends PaginationDto{
+//     /** 每页数量 */
+//     @IsInt()
+//     @Min(1)
+//     @IsOptional()
+//     @Type(() => Number)
+//         pageSize? = 10;
+// }
 
-}
+// /**
+//  * 获取待评价商品列表请求DTO
+//  */
+// export class GetPendingReviewsDto extends PaginationDto{
 
-/**
- * 获取已评价商品列表请求DTO
- */
-export class GetReviewedProductDto extends PaginationDto{
+// }
 
-}
+// /**
+//  * 获取已评价商品列表请求DTO
+//  */
+// export class GetReviewedProductDto extends PaginationDto{
+
+// }

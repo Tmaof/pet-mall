@@ -1,1 +1,1 @@
-export { CreatePaymentDto } from 'server-mdl/payment/req-dto';
+export { CreatePaymentDto } from 'server-types';

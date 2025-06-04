@@ -1,18 +1,20 @@
-import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
+export * from 'server-types';
 
-export class CreateCategoryDto {
-    @IsString()
-        name: string;
+// import { IsString, IsNumber, IsOptional, IsBoolean } from 'class-validator';
 
-    @IsOptional()
-    @IsNumber()
-        parentId?: number;
+// export class CreateCategoryDto {
+//     @IsString()
+//         name: string;
 
-    @IsOptional()
-    @IsNumber()
-        sortOrder?: number;
+//     @IsOptional()
+//     @IsNumber()
+//         parentId?: number;
 
-    @IsOptional()
-    @IsBoolean()
-        isVisible?: boolean;
-}
+//     @IsOptional()
+//     @IsNumber()
+//         sortOrder?: number;
+
+//     @IsOptional()
+//     @IsBoolean()
+//         isVisible?: boolean;
+// }

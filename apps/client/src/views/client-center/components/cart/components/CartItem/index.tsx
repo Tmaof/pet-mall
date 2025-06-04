@@ -22,8 +22,6 @@ export const CartItem = ({ item, onQuantityChange }: CartItemProps) => {
   const isDisabled = isDisabledOfProduct(product);
 
   const disableText = useMemo(() => {
-    // TODO: 类型不匹配报错
-    // @ts-expect-error 类型不匹配报错
     if (isOnSale === SALE_STATUS.stop) {
       return '商品已下架';
     }

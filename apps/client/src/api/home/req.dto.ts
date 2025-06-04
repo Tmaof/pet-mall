@@ -1,1 +1,1 @@
-export { SearchSuggestReqDto } from 'server-mdl/search/req-dto';
+export { SearchSuggestReqDto } from 'server-types';
