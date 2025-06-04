@@ -17,7 +17,9 @@
     "start:server": "pnpm --filter server start",
     "build:server": "pnpm --filter server build",
     "debug:server": "pnpm --filter server start:debug",
-    "start": "concurrently \"pnpm start:server\" \"pnpm start:admin\" \"pnpm start:client\"",
+    "start:types": "pnpm -C packages/types dev",
+    "build:types": "pnpm -C packages/types build",
+    "start": "concurrently \"pnpm start:server\" \"pnpm start:admin\" \"pnpm start:client\" \"pnpm start:types\"",
     "debug": "concurrently \"pnpm debug:server\" \"pnpm start:admin\" \"pnpm start:client\" ",
     "start:server-prod": "pnpm --filter server start:prod"
   },
