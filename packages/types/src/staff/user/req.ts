@@ -4,57 +4,57 @@ class CreateUserBatchArg {
     @IsString()
     @IsNotEmpty()
     @Length(4, 20)
-        username: string;
+      username: string;
 
     @IsString()
     @IsNotEmpty()
     @Length(6, 64)
-        password: string;
+      password: string;
 
     @IsString()
-        openTime?: Date;
+      openTime?: Date;
 
     @IsString()
-        role?: string;
+      role?: string;
 }
 
 export class CreateUserBatchDto {
     @IsArray()
-        payload: CreateUserBatchArg[];
+      payload: CreateUserBatchArg[];
 }
 
 
 export class GetUserAllPagingDto {
     @IsNumber()
-        page: number;
+      page: number;
 
     @IsNumber()
-        size?: number;
+      size?: number;
 }
 
 
 export class GetUserRoleDto {
     @IsNumber()
     @IsNotEmpty()
-        userId: number;
+      userId: number;
 }
 
 class UpdateUserRoleArg {
     @IsString()
     @IsNotEmpty()
-        name: string;
+      name: string;
 
     @IsNumber()
     @IsNotEmpty()
-        id: number;
+      id: number;
 }
 
 export class UpdateUserRoleDto {
     @IsNumber()
     @IsNotEmpty()
-        userId: number;
+      userId: number;
 
     @IsArray()
     @IsNotEmpty()
-        payload: UpdateUserRoleArg[];
+      payload: UpdateUserRoleArg[];
 }

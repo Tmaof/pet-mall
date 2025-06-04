@@ -4,47 +4,47 @@ import { ClientGender, ClientStatus } from '~/enum';
 export class CreateClientDto {
     @IsNotEmpty()
     @IsString()
-        clientname: string;
+      clientname: string;
 
     @IsNotEmpty()
     @IsString()
-        password: string;
+      password: string;
 }
 
 export class UpdateClientDto {
     @IsNotEmpty()
     @IsString()
-        clientname?: string;
+      clientname?: string;
 
     @IsOptional()
     @IsString()
-        avatar?: string;
+      avatar?: string;
 
     @IsOptional()
     @IsString()
-        introduction?: string;
+      introduction?: string;
 
     @IsOptional()
     @IsString()
-        email?: string;
+      email?: string;
 
     @IsOptional()
     @IsString()
-        phone?: string;
+      phone?: string;
 
     @IsOptional()
     @IsNumber()
-        gender?: number;
+      gender?: number;
 }
 
 export class UpdatePasswordDto {
     @IsNotEmpty()
     @IsString()
-        oldPassword: string;
+      oldPassword: string;
 
     @IsNotEmpty()
     @IsString()
-        newPassword: string;
+      newPassword: string;
 }
 
 /**
@@ -53,33 +53,33 @@ export class UpdatePasswordDto {
 export class QueryClientListDto {
     @IsOptional()
     @IsNumber()
-        id?: number;
+      id?: number;
 
     @IsOptional()
     @IsString()
-        clientname?: string;
+      clientname?: string;
 
     @IsOptional()
     @IsEnum(ClientGender)
-        gender?: ClientGender;
+      gender?: ClientGender;
 
     @IsOptional()
     @IsEnum(ClientStatus)
-        status?: ClientStatus;
+      status?: ClientStatus;
 
     @IsOptional()
     @IsString()
-        startTime?: string;
+      startTime?: string;
 
     @IsOptional()
     @IsString()
-        endTime?: string;
+      endTime?: string;
 
     @IsOptional()
     @IsNumber()
-        page?: number = 1;
+      page?: number = 1;
 
     @IsOptional()
     @IsNumber()
-        pageSize?: number = 10;
+      pageSize?: number = 10;
 }

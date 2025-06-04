@@ -4,20 +4,20 @@ import { ProductBriefDto } from '~/product/product';
  * 购物车项响应 DTO
  */
 export class CartItemDto {
-    id: number;
+  id: number;
 
-    product: ProductBriefDto;
+  product: ProductBriefDto;
 
-    count: number;
+  count: number;
 
-    createdAt: Date;
+  createdAt: Date;
 }
 
 /**
  * 购物车列表响应 DTO
  */
 export class CartListDto {
-    items: CartItemDto[];
+  items: CartItemDto[];
 
-    total: number;
+  total: number;
 }

@@ -27,10 +27,11 @@
         "./*": "./dist/lib/packages/types/*"
     },
     "scripts": {
+        "lint": "eslint . --fix",
         "clean": "rimraf dist/es && rimraf dist/lib",
         "build:es": "tsc --project tsconfig.es.json && tsc-alias -p tsconfig.es.json",
         "build:lib": "tsc && tsc-alias",
-        "build": "pnpm clean && pnpm build:lib && pnpm build:es",
+        "build": "pnpm lint && pnpm clean && pnpm build:lib && pnpm build:es",
         "dev": "nodemon --config nodemon.json --exec \"pnpm build || exit 1 \""
     },
     "dependencies": {
@@ -38,10 +39,15 @@
         "class-validator": "0.13.2"
     },
     "devDependencies": {
+        "@mao-fu/eslint-config": "^1.0.1",
+        "@nestjs/mapped-types": "^1.2.2",
+        "@typescript-eslint/eslint-plugin": "^8.33.1",
+        "eslint": "catalog:eslint8",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-jsdoc": "^50.7.1",
         "nodemon": "^3.1.10",
         "rimraf": "^6.0.1",
         "tsc-alias": "^1.8.16",
-        "typescript": "catalog:",
-        "@nestjs/mapped-types": "^1.2.2"
+        "typescript": "catalog:"
     }
 }

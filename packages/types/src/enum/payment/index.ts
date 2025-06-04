@@ -22,14 +22,14 @@ export enum PaymentMethod {
 
 /** h5pay 支付类型映射 */
 export const PAYMENT_TYPE_MAP = {
-    [PaymentMethod.WECHAT]: 'wechat',
-    [PaymentMethod.ALIPAY]: 'alipay',
+  [PaymentMethod.WECHAT]: 'wechat',
+  [PaymentMethod.ALIPAY]: 'alipay',
 } as const;
 
 /**
  * 支付方式映射
  */
 export const PAYMENT_LABEL_MAP = {
-    [PaymentMethod.WECHAT]: '微信支付',
-    [PaymentMethod.ALIPAY]: '支付宝',
+  [PaymentMethod.WECHAT]: '微信支付',
+  [PaymentMethod.ALIPAY]: '支付宝',
 };
